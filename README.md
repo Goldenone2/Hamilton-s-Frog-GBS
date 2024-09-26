@@ -10,7 +10,7 @@ List:
 
 Square brackets to display and normal for link.
 
-[NZfrogs](https://nzfrog.org)
+[NZfrogs](https://nzfrogs.org)
 
 
 **this is bodl text**
