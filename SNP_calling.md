@@ -2,6 +2,7 @@
 
 First, I create a folder for the source files and folders to run Stacks, raw (which will contain the trimmed data) and samples. 
 
+
 ```
 mkdir source_files raw samples 
 ```
