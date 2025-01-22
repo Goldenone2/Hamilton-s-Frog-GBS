@@ -1,54 +1,56 @@
 # SNP calling
 
-First, I create a folder for the source files and folders to run Stacks, raw (which will contain the trimmed data) and samples. 
-
+First, I create a folder for the source files and folders to run Stacks, raw (which will contain the trimmed data) and samples. For my future reference, my source files are called NS0229_S1_L004_R1_001.fastq.gz & NS0229_S1_L004_R2_001.fastq.gz
 
 ```
-mkdir source_files raw samples 
+mkdir source_files
 ```
 
-Once the raw data is in source_files, I go in there and take a subset of 1'00000 lines, 250'000 reads.
+Once the raw data is in source_files, I go in there and take a subset of 1'00000 lines, 250'000 reads. I will use the subset to trial the code on the firest run through, and check there are no issues with my sequences before I submit a full job (which runs for ages).
 
 ```
 cd source_files
-zcat Grasshopper_GBS_S1_R1_001.fastq.gz | head -n 1000000 > testR1.fastq
-zcat Grasshopper_GBS_S1_R2_001.fastq.gz | head -n 1000000 > testR2.fastq
+zcat NS0229_S1_L004_R1_001.fastq.gz | head -n 1000000 > testR1.fastq 
+zcat NS0229_S1_L004_R2_001.fastq.gz | head -n 1000000 > testR2.fastq
 ```
-
+Let's check quality with FastQC
 ```
-module load FastQC # Anything after the # is ignored, # means comment, useful to document your code.
+module load FastQC 
 fastqc *.fastq # The star means everything that ends with fastq.
 ```
-I then look at the generated testR1.html and testR2.html after downloading them. Quite a few adapter's in there.
+I then look at the generated testR1.html and testR2.html after downloading them (I just had a look in the Jupyter borwser). There's quite a few adapter's in there, especially in high read positions.
 
 ## Adapter trimming
 
 Trimming off adapters and removing reads shorter than 95bp with cutadapt.
 
-First on the sample files. The files with trimmed are the output files. 
-Use `cutadapt --help` after loading the module to learn what all the parameters are.
+First on the sample files. The files with trimmed are the output files. Use `cutadapt --help` after loading the module to learn what all the parameters are:
+
+-a specifies the adaptor sequence for forward reads (R1), and -A for reverse (R2) reads, -q specifies trimming low quaility bases below a QC score of 25 from the 3' end, -o (-p) specifies the output file for forward reads (and for reverse reads), minimum length specifies that reads must be 95bp long or should be discarded, length shortens all reads to the requeired length.
 
 ```
 cd source_files
-module load cutadapt #
-cutadapt -a AGATCGGAAGAGC -A AGATCGGAAGAGC  -q 25 -o trimmed_testR1.fastq  --minimum-length 95:95 --length 50  -p  trimmed_testR2.fastq testR1.fastq  testR2.fastq
+module load cutadapt # 
+cutadapt -a AGATCGGAAGAGC -A AGATCGGAAGAGC  -q 25 -o trimmed_testR1.fastq  --minimum-length 95:95 --length 95  -p  trimmed_testR2.fastq testR1.fastq  testR2.fastq
 cd ..
 ```
 Let's check  the adapters are gone
 ```
 fastqc trimmed*fastq # the star make it that it runs on anything that start with trimmed and end with fastq
 ```
-Check the .html files. That worked!
+Checking the .html files, that worked. We do see there is an issue with 'per base sequence content' but this is caused by the presence of a limited the number of barcodes in our sequence, so we can ignore this for now.
 
-Let's now run that on all reads, with a 95bp reads limit, so that we have one common length for all reads.
+Now let's now run that on all reads, with a 95bp reads limit, so that we have one common length for all reads. (the only code difference is 'j' which specifies the number of cores).
+
+NS0229_S1_L004_R1_001.fastq.gz & NS0229_S1_L004_R2_001.fastq.gz
 ```
 cd source_files
-cutadapt -j 8 -a AGATCGGAAGAGC -A AGATCGGAAGAGC  -q 25 -o trimmed_Grasshopper_GBS_S1_R1_001.fastq   --minimum-length 95:95  --length 95  -p  trimmed_Grasshopper_GBS_S1_R2_001.fastq Grasshopper_GBS_S1_R1_001.fastq.gz  Grasshopper_GBS_S1_R2_001.fastq.gz
+cutadapt -j 8 -a AGATCGGAAGAGC -A AGATCGGAAGAGC  -q 25  -o trimmed_NS0229_Hamiltons_S1_R1_001.fastq  --minimum-length 95:95  --length 95  -p trimmed_NS0229_Hamiltons_S1_R2_001.fastq  NS0229_S1_L004_R1_001.fastq.gz  NS0229_S1_L004_R2_001.fastq.gz
 cd ..
 ```
 Check that output:
 ```
-fastqc trimmed_Grasshopper_GBS_S1_R2_001.fastq.gz Grasshopper_GBS_S1_R1_001.fastq.gz
+fastqc trimmed_NS0229_Hamiltons_S1_R1_001.fastq trimmed_NS0229_Hamiltons_S1_R2_001.fastq
 ```
 
 
