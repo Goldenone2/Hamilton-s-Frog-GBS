@@ -73,8 +73,10 @@ Once we see cutadapt start working we can kill it with ctrl+c, and submit the jo
 ```
 sbatch Frogtrim.sl
 ```
-You can see the jobs in the queue by doing 'squeue -u mulha552' or cancel by scancel '<jobid>", use squeue to get the ID. 
-
+Lets check we are in the queue. We can also cancel by ' scancel '<jobid>" '. Use squeue to get the ID. 
+```
+squeue -u mulha552 # -u specifies just my user's jobs
+```
 Once the Job is complete use 'Cat' or 'Less' to check the output. 
 
 Finally, lets check that trimmed reads:
