@@ -107,6 +107,7 @@ with open("popmap.txt") as f:
 
 ### Parameters optimisation
 
+!!! Don't run all different numbers, but maybe just 2, with all the samples not a subsampled popmap
 At this stage, I'll make a popmap and exclude all Celmisia samples as well as all samples with less than 100'000 reads (combining forward and reverse, i.e. 50k retained reads). 3450F_TW_marg and 3450M_TW_marg  are also found twice on the same plate. Something is off, I ignore them.
 
 
