@@ -22,7 +22,7 @@ I then look at the generated testR1.html and testR2.html after downloading them 
 
 ## Adapter trimming
 
-Trimming off adapters and removing reads shorter than 95bp with cutadapt.
+Trimming off adapters and removing reads shorter than 125p with cutadapt. We choose 125bp based on the our FastQC quality check, stacks requeires everything to be the same length: if we cut too high the we will loose too many loose reads after the adaptors are removed, but if we make it too low then for those (in our case ~90%) of reads with no adaptors will be shortened too much loosing information. Also, it's good for you to remeber Ilumina reads are only 150bp long.
 
 First on the sample files. The files with trimmed are the output files. Use `cutadapt --help` after loading the module to learn what all the parameters are:
 
@@ -31,24 +31,53 @@ First on the sample files. The files with trimmed are the output files. Use `cut
 ```
 cd source_files
 module load cutadapt # 
-cutadapt -a AGATCGGAAGAGC -A AGATCGGAAGAGC  -q 25 -o trimmed_testR1.fastq  --minimum-length 95:95 --length 95  -p  trimmed_testR2.fastq testR1.fastq  testR2.fastq
+cutadapt -a AGATCGGAAGAGC -A AGATCGGAAGAGC  -q 25 -o trimmed_testR1.fastq  --minimum-length 125:125 --length 125  -p  trimmed_testR2.fastq testR1.fastq  testR2.fastq
 cd ..
 ```
-Let's check  the adapters are gone
+Let's check  the adapters are gone, we need to make this descicion based on the output. Specifically, looks for "bases preceeeding adaptors" these should be random, if a single nucleotide was overrepresented it indicates we haven't removed the whole adaptor. 
 ```
 fastqc trimmed*fastq # the star make it that it runs on anything that start with trimmed and end with fastq
 ```
 Checking the .html files, that worked. We do see there is an issue with 'per base sequence content' but this is caused by the presence of a limited the number of barcodes in our sequence, so we can ignore this for now.
 
-Now let's now run that on all reads, with a 95bp reads limit, so that we have one common length for all reads. (the only code difference is 'j' which specifies the number of cores).
+Now let's now run that on all reads, with a 125bp reads limit, so that we have one common length for all reads. (the only code difference is 'j' which specifies the number of cores).
 
-NS0229_S1_L004_R1_001.fastq.gz & NS0229_S1_L004_R2_001.fastq.gz
+Now, we will submit this as a job because I have too much data to sit around and analyse on a Jupyter Session.
+
+_Submitting a Slurm Job_
+
+Create a new file, and open it (nano is a text editor)
 ```
-cd source_files
-cutadapt -j 8 -a AGATCGGAAGAGC -A AGATCGGAAGAGC  -q 25  -o trimmed_NS0229_Hamiltons_S1_R1_001.fastq  --minimum-length 95:95  --length 95  -p trimmed_NS0229_Hamiltons_S1_R2_001.fastq  NS0229_S1_L004_R1_001.fastq.gz  NS0229_S1_L004_R2_001.fastq.gz
+nano Frogtrim.sl
+```
+We then specificy arguments with #SBATCH, and afterwards include our code. Let's copy in the below text, then save and exit the text editor with 'ctrl + x'. You can use 'sbatch --help' to see what we can specify.
+
+```
+#!/bin/bash -e
+#SBATCH --job-name=Frogtrim # job name (shows up in the queue)
+#SBATCH --time=48:00:00      # Walltime (HH:MM:SS), if our job finishes before this no worries but we can give ample time in case
+#SBATCH --mem=8G          # Memory in G, minimum 1G per core.
+#SBATCH --cpus-per-task=8 #number of cores for our job
+
+cd /home/mulha552/uoo04306/frogs_gbs/source_files
+module load cutadapt
+cutadapt -j 8 -a AGATCGGAAGAGC -A AGATCGGAAGAGC  -q 25  -o trimmed_NS0229_Hamiltons_S1_R1_001.fastq  --minimum-length 125:125  --length 125  -p trimmed_NS0229_Hamiltons_S1_R2_001.fastq  NS0229_S1_L004_R1_001.fastq.gz  NS0229_S1_L004_R2_001.fastq.gz
 cd ..
+
 ```
-Check that output:
+Now, beofre we submit this we want to check this is working. It may still breka later but we want no errors in the code. 
+```
+sh Frogtrim.sl
+```
+Once we see cutadapt start working we can kill it with ctrl+c, and submit the job:
+'''
+sbatch Frogtrim.sl
+'''
+You can see the jobs in the queue by doing 'squeue -u mulha552' or cancel by scancel '<jobid>", use squeue to get the ID. 
+
+Once the Job is complete use 'Cat' or 'Less' to check the output. 
+
+Finally, lets check that trimmed reads:
 ```
 fastqc trimmed_NS0229_Hamiltons_S1_R1_001.fastq trimmed_NS0229_Hamiltons_S1_R2_001.fastq
 ```
@@ -56,8 +85,10 @@ fastqc trimmed_NS0229_Hamiltons_S1_R1_001.fastq trimmed_NS0229_Hamiltons_S1_R2_0
 
 ## Demultiplexing
 
+*Breif Information on barcode.txt and popmap.txt*
+Barcode.txt was created by Ludo, which contains all three plates (remeber PstI-1a,2a,3a) with the unique barcode which identify the wells on each palte. I can change the names of my frogs in each well to give an informative name on population etc; remeber this must simple to make future analysis easy. 
 
-
+Popmap.txt is created/will be created by me and has a first column as the frogIDs taken from Barcode.txt, with the second column just all filled with 'Pop.' Basically this allows us to just analyse all of the frogs, ignore the skinks, snails etc. verything is labeled 'pop' as we do not want to run stacks based on population.  
 
 Copy trimmed data to raw folder.
 
@@ -86,6 +117,7 @@ process_radtags -P   -p raw/ -o ./samples/ -b barcodes.txt -e pstI -r -c  --inli
 The goal is to have one file per sample inside the folder samples_concat. The file popmap is the stacks population map. Google population map stacks and create popmap.txt.
 
 Load any python module (module load Python) and then the code below after entering the ipython console.
+
 ```
 import os
 #os.mkdir("samples_concat")
@@ -104,13 +136,30 @@ with open("popmap.txt") as f:
 			os.system("zcat "+" ".join(["samples/"+checkfile for checkfile in checkfiles])+"|  gzip -c > samples_concat/"+samplename+".fq.gz" )
 
 ```
+*Hamilton's frog have a large genome so I have special code*
+We will subsample from the concatenated reads to take the first 5 million reads (code reads 20,000,000 lines because each read is 4 lines in a .fastq) so we are working with an actually workable amount of sequence. We still run the previous code, because for those samples where we may have <5million reads we need to take all of it.
+
+```
+mkdir samples_subsampled
+```
+Load any python module (module load Python) and then the code below after entering the ipython console.
+```
+import os
+with open("popmap.txt") as f:
+	for line in f:
+		sample  =line.split("\t")[0]
+		print(sample)
+		os.system("zcat samples_concat/"+sample+".fq.gz |  head -n 20000000  | gzip -c > samples_subsampled/"+sample+".fq ") 
+
+
+```
+Then, run denovo_map with samples_concat as input.
 
 ### Parameters optimisation
 
 !!! Don't run all different numbers, but maybe just 2, with all the samples not a subsampled popmap
+
 At this stage, I'll make a popmap and exclude all Celmisia samples as well as all samples with less than 100'000 reads (combining forward and reverse, i.e. 50k retained reads). 3450F_TW_marg and 3450M_TW_marg  are also found twice on the same plate. Something is off, I ignore them.
-
-
 
 ```
 popmap_100k.txt
