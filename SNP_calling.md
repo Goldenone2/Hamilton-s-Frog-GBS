@@ -151,7 +151,7 @@ with open("popmap.txt") as f:
 	for line in f:
 		sample  =line.split("\t")[0]
 		print(sample)
-		os.system("zcat samples_concat/"+sample+".fq.gz |  head -n 20000000  | gzip -c > samples_subsampled/"+sample+".fq ") 
+		os.system("zcat samples_concat/"+sample+".fq.gz |  head -n 20000000  | gzip -c > samples_subsampled/"+sample+".fq.gz ") 
 
 
 ```
