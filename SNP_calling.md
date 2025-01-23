@@ -26,7 +26,7 @@ Trimming off adapters and removing reads shorter than 125p with cutadapt. We cho
 
 First on the sample files. The files with trimmed are the output files. Use `cutadapt --help` after loading the module to learn what all the parameters are:
 
--a specifies the adaptor sequence for forward reads (R1), and -A for reverse (R2) reads, -q specifies trimming low quaility bases below a QC score of 25 from the 3' end, -o (-p) specifies the output file for forward reads (and for reverse reads), minimum length specifies that reads must be 95bp long or should be discarded, length shortens all reads to the requeired length.
+-a specifies the adaptor sequence for forward reads (R1), and -A for reverse (R2) reads, -q specifies trimming low quaility bases below a QC score of 25 from the 3' end, -o (-p) specifies the output file for forward reads (and for reverse reads), minimum length specifies that reads must be 125bp long or should be discarded, length shortens all reads to the requeired 125 length.
 
 ```
 cd source_files
@@ -70,9 +70,9 @@ Now, beofre we submit this we want to check this is working. It may still breka 
 sh Frogtrim.sl
 ```
 Once we see cutadapt start working we can kill it with ctrl+c, and submit the job:
-'''
+```
 sbatch Frogtrim.sl
-'''
+```
 You can see the jobs in the queue by doing 'squeue -u mulha552' or cancel by scancel '<jobid>", use squeue to get the ID. 
 
 Once the Job is complete use 'Cat' or 'Less' to check the output. 
