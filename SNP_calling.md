@@ -94,10 +94,14 @@ Barcode.txt was created by Ludo, which contains all three plates (remeber PstI-1
 Popmap.txt is created/will be created by me and has a first column as the frogIDs taken from Barcode.txt, with the second column just all filled with 'Pop.' Basically this allows us to just analyse all of the frogs, ignore the skinks, snails etc. verything is labeled 'pop' as we do not want to run stacks based on population.  
 
 Copy trimmed data to raw folder.
+```
+cd .. #assuming I'm in source files
+mkdir raw
+```
 
 ```
 cd raw
-ln -s ../source_files/trimmed_Grasshopper* .
+cp /home/mulha552/uoo04306/frogs_gbs/source_files/trimmed_NS0229_Hamiltons_S1_R1_001.fastq /home/mulha552/uoo04306/frogs_gbs/source_files/trimmed_NS0229_Hamiltons_S1_R2_001.fastq /home/mulha552/uoo04306/frogs_gbs/raw
 cd ..
 ```
 Run demultiplexing ([info](https://catchenlab.life.illinois.edu/stacks/comp/process_radtags.php) on files and run)
