@@ -89,7 +89,7 @@ fastqc trimmed_NS0229_Hamiltons_S1_R1_001.fastq trimmed_NS0229_Hamiltons_S1_R2_0
 
 *Breif Information on barcode.txt and popmap.txt*
 
-Barcode.txt was created by Ludo, which contains all three plates (remeber PstI-1a,2a,3a) with the unique barcode which identify the wells on each palte. I can change the names of my frogs in each well to give an informative name on population etc; remeber this must simple to make future analysis easy. 
+Barcode.txt was created by Ludo, which contains all three plates (remeber PstI-1a,2a,3a) with the unique barcode which identify the wells on each palte. I have changed the names of my frogs in each well to give an informative name on population etc; remeber this must simple to make future analysis easy. 
 
 Popmap.txt is created/will be created by me and has a first column as the frogIDs taken from Barcode.txt, with the second column just all filled with 'Pop.' Basically this allows us to just analyse all of the frogs, ignore the skinks, snails etc. verything is labeled 'pop' as we do not want to run stacks based on population.  
 
@@ -97,6 +97,7 @@ Copy trimmed data to raw folder.
 ```
 cd .. #assuming I'm in source files
 mkdir raw
+mkdir # I recived an error trying process_radtags without this directory.
 ```
 
 ```
@@ -107,9 +108,11 @@ cd ..
 Run demultiplexing, here is some [info](https://catchenlab.life.illinois.edu/stacks/comp/process_radtags.php) on files and run. I have run the code below as a SLURM job, as above in adaptor trimming. 
 
 ```
+cd /home/mulha552/uoo04306/frogs_gbs/source_files/raw
 module load Stacks #2.61
-process_radtags -P   -p raw/ -o ./samples/ -b barcodes.txt -e pstI -r -c  --inline-inline # NO -q often used for process-radtags gives me an error because of it, but no worries, cutadapatalready took care of this
+process_radtags -P   -p ../raw/ -o ../samples/ -b ../barcodes.txt -e pstI -r -c  --inline-inline # NO -q often used for process-radtags gives me an error because of it, but no worries, cutadapatalready took care of this
  ```
+
  Good results:
  
  ```
