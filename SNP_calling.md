@@ -114,7 +114,7 @@ process_radtags -P   -p ../raw/ -o ../samples/ -b ../barcodes.txt -e pstI -r -c 
  ```
 
  Good results:
- 
+ !! Remember to check my results somehow.....
  ```
 1168510270 total sequences
  336643722 barcode not found drops (28.8%)
