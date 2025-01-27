@@ -98,7 +98,7 @@ Copy trimmed data to raw folder.
 cd .. #assuming I'm in source files
 mkdir raw
 ```
-!!!! probably best to run the copy code in a slurm job as well? Just have to check stacks is working first I guesss?
+
 ```
 cd raw
 cp /home/mulha552/uoo04306/frogs_gbs/source_files/trimmed_NS0229_Hamiltons_S1_R1_001.fastq /home/mulha552/uoo04306/frogs_gbs/source_files/trimmed_NS0229_Hamiltons_S1_R2_001.fastq /home/mulha552/uoo04306/frogs_gbs/raw
