@@ -104,7 +104,7 @@ cd raw
 cp /home/mulha552/uoo04306/frogs_gbs/source_files/trimmed_NS0229_Hamiltons_S1_R1_001.fastq /home/mulha552/uoo04306/frogs_gbs/source_files/trimmed_NS0229_Hamiltons_S1_R2_001.fastq /home/mulha552/uoo04306/frogs_gbs/raw
 cd ..
 ```
-Run demultiplexing ([info](https://catchenlab.life.illinois.edu/stacks/comp/process_radtags.php) on files and run)
+Run demultiplexing ([info](https://catchenlab.life.illinois.edu/stacks/comp/process_radtags.php) on files and run). I have run the code below as a SLURM job, as specified above for adaptor trimming with a modified job name, .sl name, and code (obviously). 
 
 ```
 module load Stacks #2.61
