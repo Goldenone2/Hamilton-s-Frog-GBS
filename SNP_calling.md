@@ -160,7 +160,8 @@ with open("popmap.txt") as f:
 ```
 I'll check the code before submitting the job
 ```
-sh frogconcat.py
+module load Python #need to load a python environment//ipython console
+python3 frogconcat.py
 ```
 Finally, once this is working we can submit a job, and ofr python we specify arguments here. -A specifies the account to 'charge' the job, -t specifies time, -c specifies the number of cpus per task, --mem specifies memory, --job-name specifies a job name
 ```
