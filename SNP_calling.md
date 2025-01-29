@@ -122,22 +122,36 @@ My Results (maybe to ask Ludo about at a later date..)
   43575443 RAD cutsite not found drops (1.2%)
 3131895512 retained reads (85.4%)
 ```
-### concatenate reads
+### Concatenate reads
 
-The goal is to have one file per sample inside the folder samples_concat. The file popmap is the stacks population map. Google population map stacks and create popmap.txt.
+The goal is to have one file per sample, that we care about, (remeber there are skinks, snails etc in this sequencing run) inside the folder samples_concat. The file popmap is the stacks population map [info](http://catchenlab.life.illinois.edu/stacks/manual/#popmap); Create popmap.txt:
+```
+nano popmap.txt #copy in the frogs sample prefixes and keep all in a single 'pop'
+mkdir samples_concat
+```
+As normal we will be running concatenating as a SLURM job, but because this is in a Python Enviornment we must do this a little differently....
+```
+nano frogconcat.py #create python script
+```
+Now, we use a python shebang for this file (rather than a shell/bash one) and we cannot specify requirments using #SBATCH, this is now done later. Copy the code below into 'frogconcat.py'
 
-Load any python module (module load Python) and then the code below after entering the ipython console.
+Note: popmap.txt needs to be in the current working directoy (/frogs_gbs) from which it will look for the subdirectory samples, and create a new directory as output samples_concat
+
+Now, load any python module (module load Python) and then the code below after entering the ipython console.
 
 ```
+#!/usr/bin/env python3
+cd /home/mulha552/uoo04306/frogs_gbs
+module load Python #need to load a python environment//ipython console
+
 import os
-#os.mkdir("samples_concat")
 allfiles_to_concat = os.listdir("samples/")
 alltokeep=[]
 with open("popmap.txt") as f:
 	for line in f:
 		print(line)
 		samplename=line.split("\t")[0]
-		#print (samplename)
+		#print (samplename) # should be commented out in the slurm job, but I can use this as a check things are running.
 		checkfiles=[filename for filename in allfiles_to_concat  if filename.startswith(samplename)]
 		if len (checkfiles)!=4: # that was weirdly complicated because some sample name are contained in others different ways, but the vcheck above solve it uysing the rem file
 			print(line)
@@ -145,6 +159,14 @@ with open("popmap.txt") as f:
 		else:
 			os.system("zcat "+" ".join(["samples/"+checkfile for checkfile in checkfiles])+"|  gzip -c > samples_concat/"+samplename+".fq.gz" )
 
+```
+I'll check the code before submitting the job
+```
+sh frogconcat.py
+```
+Finally, once this is working we can submit a job, and ofr python we specify arguments here. -A specifies the account to 'charge' the job, -t specifies time, -c specifies the number of cpus per task, --mem specifies memory, --job-name specifies a job name
+```
+sbatch -A uoo04306 -t 48:00:00 -c 8 --mem 8G --job-name=frogconcat frogconcat.py
 ```
 *Hamilton's frog have a large genome so I have special code*
 We will subsample from the concatenated reads to take the first 5 million reads (code reads 20,000,000 lines because each read is 4 lines in a .fastq) so we are working with an actually workable amount of sequence. We still run the previous code, because for those samples where we may have <5million reads we need to take all of it.
