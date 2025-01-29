@@ -165,6 +165,7 @@ python3 frogconcat.py
 Finally, once this is working we can submit a job, and ofr python we specify arguments here. -A specifies the account to 'charge' the job, -t specifies time, -c specifies the number of cpus per task, --mem specifies memory, --job-name specifies a job name
 ```
 sbatch -A uoo04306 -t 48:00:00 -c 8 --mem 8G --job-name=frogconcat frogconcat.py
+squeue -u mulha552 #check its working
 ```
 ## Subsampling
 *Hamilton's frog have a large genome so I have special code*
