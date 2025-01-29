@@ -133,7 +133,7 @@ As normal we will be running concatenating as a SLURM job, but because this is i
 ```
 nano frogconcat.py #create python script
 ```
-Now, we use a python shebang for this file (rather than a shell/bash one) and we cannot specify requirments using #SBATCH, this is now done later. Copy the code below into 'frogconcat.py'
+We use a python shebang for this file (rather than a shell/bash one) and we cannot specify requirments using #SBATCH, this is now done later. Copy the code below into 'frogconcat.py'
 
 Note: popmap.txt needs to be in the current working directoy (/frogs_gbs) from which it will look for the subdirectory samples, and create a new directory as output samples_concat
 
