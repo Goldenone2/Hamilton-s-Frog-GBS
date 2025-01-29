@@ -127,7 +127,7 @@ My Results (maybe to ask Ludo about at a later date..)
 The goal is to have one file per sample, that we care about, (remeber there are skinks, snails etc in this sequencing run) inside the folder samples_concat. The file popmap is the stacks population map [info](http://catchenlab.life.illinois.edu/stacks/manual/#popmap); Create popmap.txt:
 ```
 nano popmap.txt #copy in the frogs sample prefixes and keep all in a single 'pop'
-mkdir samples_concat
+# mkdir samples_concat
 ```
 As normal we will be running concatenating as a SLURM job, but because this is in a Python Enviornment we must do this a little differently....
 ```
