@@ -122,7 +122,7 @@ My Results (maybe to ask Ludo about at a later date..)
   43575443 RAD cutsite not found drops (1.2%)
 3131895512 retained reads (85.4%)
 ```
-### Concatenate reads
+## Concatenate reads
 
 The goal is to have one file per sample, that we care about, (remeber there are skinks, snails etc in this sequencing run) inside the folder samples_concat. The file popmap is the stacks population map [info](http://catchenlab.life.illinois.edu/stacks/manual/#popmap); Create popmap.txt:
 ```
@@ -136,8 +136,6 @@ nano frogconcat.py #create python script
 We use a python shebang for this file (rather than a shell/bash one) and we cannot specify requirments using #SBATCH, this is now done later. Copy the code below into 'frogconcat.py'
 
 Note: popmap.txt needs to be in the current working directoy (/frogs_gbs) from which it will look for the subdirectory samples, and create a new directory as output samples_concat
-
-Now, load any python module (module load Python) and then the code below after entering the ipython console.
 
 ```
 #!/usr/bin/env python3
@@ -168,6 +166,7 @@ Finally, once this is working we can submit a job, and ofr python we specify arg
 ```
 sbatch -A uoo04306 -t 48:00:00 -c 8 --mem 8G --job-name=frogconcat frogconcat.py
 ```
+## Subsampling
 *Hamilton's frog have a large genome so I have special code*
 We will subsample from the concatenated reads to take the first 5 million reads (code reads 20,000,000 lines because each read is 4 lines in a .fastq) so we are working with an actually workable amount of sequence. We still run the previous code, because for those samples where we may have <5million reads we need to take all of it.
 
