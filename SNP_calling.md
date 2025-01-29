@@ -113,14 +113,14 @@ module load Stacks #2.61
 process_radtags -P   -p ../raw/ -o ../samples/ -b ../barcodes.txt -e pstI -r -c  --inline-inline # NO -q often used for process-radtags gives me an error because of it, but no worries, cutadapatalready took care of this
  ```
 
- Good results:
- !! Remember to check my results somehow.....
+My Results (maybe to ask Ludo about at a later date..)
  ```
-1168510270 total sequences
- 336643722 barcode not found drops (28.8%)
-         0 low quality read drops (0.0%)
-  17120888 RAD cutsite not found drops (1.5%)
- 814745660 retained reads (69.7%)
+3666129448 total sequences
+ 489768784 barcode not found drops (13.4%)
+    889709 low quality read drops (0.0%)
+         0 poly-G run drops (0.0%)
+  43575443 RAD cutsite not found drops (1.2%)
+3131895512 retained reads (85.4%)
 ```
 ### concatenate reads
 
