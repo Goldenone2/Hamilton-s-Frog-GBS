@@ -141,7 +141,7 @@ Note: popmap.txt needs to be in the current working directoy (/frogs_gbs) from w
 #!/usr/bin/env python3
 
 import os
-os.chdir('/home/mulha552/uoo04306/frogs_gbs) #python for 'cd'
+os.chdir('/home/mulha552/uoo04306/frogs_gbs') #python for 'cd'
 allfiles_to_concat = os.listdir("samples/")
 alltokeep=[]
 with open("popmap.txt") as f:
