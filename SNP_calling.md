@@ -171,19 +171,18 @@ squeue -u mulha552 #check its working
 *Hamilton's frog have a large genome so I have special code*
 We will subsample from the concatenated reads to take the first 5 million reads (code reads 20,000,000 lines because each read is 4 lines in a .fastq) so we are working with an actually workable amount of sequence. We still run the previous code, because for those samples where we may have <5million reads we need to take all of it.
 
+ We're also running as a pyhton slurm job, as above...
 ```
 mkdir samples_subsampled
 ```
-Load any python module (module load Python) and then the code below after entering the ipython console.
 ```
 import os
+os.chdir('/home/mulha552/uoo04306/frogs_gbs') #python for 'cd'
 with open("popmap.txt") as f:
 	for line in f:
 		sample  =line.split("\t")[0]
 		print(sample)
 		os.system("zcat samples_concat/"+sample+".fq.gz |  head -n 20000000  | gzip -c > samples_subsampled/"+sample+".fq.gz ") 
-
-
 ```
 Then, run denovo_map with samples_concat as input.
 
