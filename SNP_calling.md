@@ -186,36 +186,56 @@ with open("popmap.txt") as f:
 ```
 Then, run denovo_map with samples_concat as input.
 
-### Parameters optimisation
+## Parameters optimisation
+Ok, so, paramater optimisation is about deciding with stacks paramters (-M, -m, -o, -T etc) we will continue to use when running on the entire dataset. You can read a relatively clear tutorial [here](http://catchenlab.life.illinois.edu/stacks/param_tut.php), which describes how stacks without a reference genome works and, what these paramters dictate. Not included here are -o, output directory and, -t, number of threads.
 
-!!! Don't run all different numbers, but maybe just 2, with all the samples not a subsampled popmap
+!!! Don't run all different numbers, but maybe just 2, with all the samples not a subsampled popmap; I can't remeber what excatly was meant by this, so I'll ask Ludo later... but, from now on I've run everything on my *subsampled data.....*
 
-At this stage, I'll make a popmap and exclude all Celmisia samples as well as all samples with less than 100'000 reads (combining forward and reverse, i.e. 50k retained reads). 3450F_TW_marg and 3450M_TW_marg  are also found twice on the same plate. Something is off, I ignore them.
+At this stage, I'll make a popmap and exclude all samples with less than 100'000 reads (combining forward and reverse, i.e. 50k retained reads). First check number of reads (remember .fq files have 4 lines for each read), then create popmap.
 
 ```
-popmap_100k.txt
+cd samples_subsampled #assuming in frogs_gbs
+output_file="read_counts.txt"
+> "$output_file" # clears previous contents
+for fq_file in *.fq.gz; do # Loop through all fq.gz files in the current directory
+lines=$(zcat "$fq_file" | wc -l)  # retrieve number of lines in the file
+reads=$((lines / 4)) # Calculate the number of reads
+echo "$fq_file: $reads reads" >> "$output_file"  # echo the file name and number of reads to the output file
+done
+
+# read_counts.txt #optionally delete text file, I'm unsure whether this inerfere's with future script...
 ```
 
+Great, it looks like we don't need to remove any frogs from our analysis!
 
 ### Parameter optimisation
 
 Run on a random 30 samples.
 ```
-shuf popmap_100k.txt | head -n 30 > popmap_opti.txt # not done if no optimisation
+#mkdir para_opti
+cd para_opti
+shuf ../popmap.txt | head -n 30 > popmap_opti.txt # not done if no optimisation
 ```
+This code is a "for loop." This loop automates the creation of directories, scripts, and slurm job for processing the specified random 30 samples using the denovo_map.pl tool. Each job is submitted with different parameters (based on the loop variable i), and each job will run with different configurations of parameters (see where variable i is included in the code). 
 
+I believe this method of paramater optimisation, roughly, follow this [paper](https://besjournals.onlinelibrary.wiley.com/doi/10.1111/2041-210X.12775).
 
 ```
 for i in 2 3 4 5 6 7 8
 do mkdir -p M$i; echo '#!/bin/sh' > runM$i.sh
+echo cd /home/mulha552/uoo04306/frogs_gbs/source_files/para_opti
 echo "module load Stacks/2.61-gimkl-2022a" >> runM$i.sh
-echo "denovo_map.pl --samples samples_concat/ --popmap popmap_opti.txt  -o M$i  -M $i -n $i -m 3 -T 8" >> runM$i.sh
-sbatch -A uoo00116 -t 2-00:00:00 -J M$i -c 8 --mem=64G runM$i.sh
+echo "denovo_map.pl --samples ../samples_subsampled/ --popmap ../popmap.txt  -o M$i  -M $i -n $i -m 3 -T 8" >> runM$i.sh
+sbatch -A uoo04306 -t 2-00:00:00 -J M$i -c 8 --mem=64G runM$i.sh
 done
 ```
+```
+squeue -u mulha552 # -u specifies just my user's jobs
+```
+
+*I'm up to here, read that paper to interpret results*
 
 Focus on the number of loci at -R 0.8 (loci covered in 80% of inds):
-
 ```
 for i in 2 3 4 5 6 7 8 
 do
