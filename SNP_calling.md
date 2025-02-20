@@ -232,14 +232,15 @@ done
 ```
 squeue -u mulha552 # -u specifies just my user's jobs
 ```
+Alright, this failed as all 7 slurm jobs did not complete beofre the time limit. 
 
-*I'm up to here, read that paper to interpret results*
+!!I'm up to here, read that paper to interpret results!!
 
 Focus on the number of loci at -R 0.8 (loci covered in 80% of inds):
 ```
 for i in 2 3 4 5 6 7 8 
 do
-populations -P M$i -R 0.8 -M popmap.txt --vcf
+populations -P M$i -R 0.8 -M ../popmap.txt --vcf
 done
 ```
 see how many loci are left by looking in the log of populations:
