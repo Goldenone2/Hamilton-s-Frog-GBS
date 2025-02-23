@@ -225,17 +225,13 @@ for i in 2 3 4 5 6 7 8
 do mkdir -p M$i; echo '#!/bin/sh' > runM$i.sh
 echo cd /home/mulha552/uoo04306/frogs_gbs/source_files/para_opti
 echo "module load Stacks/2.61-gimkl-2022a" >> runM$i.sh
-echo "denovo_map.pl --samples ../samples_subsampled/ --popmap ../popmap.txt  -o M$i  -M $i -n $i -m 3 -T 8" >> runM$i.sh
+echo "denovo_map.pl --samples ../samples_subsampled/ --popmap popmap_opti.txt  -o M$i  -M $i -n $i -m 3 -T 8" >> runM$i.sh
 sbatch -A uoo04306 -t 2-00:00:00 -J M$i -c 8 --mem=64G runM$i.sh
 done
 ```
 ```
-squeue -u mulha552 # -u specifies just my user's jobs
+squeue -u mulha552
 ```
-Alright, this failed as all 7 slurm jobs did not complete beofre the time limit. 
-
-!!I'm up to here, read that paper to interpret results!!
-
 Focus on the number of loci at -R 0.8 (loci covered in 80% of inds):
 ```
 for i in 2 3 4 5 6 7 8 
