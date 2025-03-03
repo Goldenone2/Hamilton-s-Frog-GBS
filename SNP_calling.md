@@ -232,14 +232,18 @@ done
 ```
 squeue -u mulha552
 ```
+The *populations* command takes the the SNP data from *denovo_map.pl* and, can compute a variety of useful population genetics statistics, See [here](http://catchenlab.life.illinois.edu/stacks/comp/populations.php) for more information. 
 Focus on the number of loci at -R 0.8 (loci covered in 80% of inds):
+```
+module load Stacks/2.61-gimkl-2022a
+```
 ```
 for i in 2 3 4 5 6 7 8 
 do
-populations -P M$i -R 0.8 -M ../popmap.txt --vcf
+populations -P M$i -R 0.8 -M popmap_opti.txt --vcf
 done
 ```
-see how many loci are left by looking in the log of populations:
+See how many loci are left by looking in the log of populations:
 
 ```
 for i in 2 3 4 5 6 7 8
