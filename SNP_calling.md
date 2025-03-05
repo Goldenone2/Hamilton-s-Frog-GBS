@@ -245,6 +245,7 @@ done
 ```
 See how many loci are left by looking in the log of populations:
 
+cut -f 1, is looking only a column one which lists fragment ID, and uniq means we are only counting unique fragment IDs....
 ```
 for i in 2 3 4 5 6 7 8
 do
@@ -252,8 +253,7 @@ echo $i
 cat M$i/populations.snps.vcf | grep -v '#' | cut -f 1 | uniq | wc -l
 done
 ```
-
-We'll keep 3, it seems to have a lot of data.
+We have the most polymoprhic loci with M=n of 2, so that is now what we'll run for the enitre study!!
 
 
 ## Run on the whole dataset
