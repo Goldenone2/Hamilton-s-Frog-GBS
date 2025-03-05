@@ -257,14 +257,18 @@ We have the most polymoprhic loci with M=n of 2, so that is now what we'll run f
 
 
 ## Run on the whole dataset
-
-
+I will run this as SLURM job, we have a lot of data...
 ```
-#!/bin/s
+mkdir M2_final
+```
+```
+#!/bin/bash
+cd /home/mulha552/uoo04306/frogs_gbs
 module load Stacks/2.61-gimkl-2022a
-denovo_map.pl --samples samples_concat/ --popmap popmap_100k.txt  -o M3_final  -M 3 -n 3 -m 3 -T 8 
-
-sbatch -A uoo00116 -t 5-00:00:00 -J M3 -c 8 --mem=300G -p hugemem runM3final.sh
+denovo_map.pl --samples samples_subsampled/ --popmap popmap.txt  -o M2_final  -M 2 -n 2 -m 3 -T 8
+```
+```
+sbatch -A uoo04306 -t 5-00:00:00 -J M2Final -c 8 --mem=300G -p hugemem M2Final.sl
 ```
 
 I run populations again to obtain a VCF and check for low quality samples.
