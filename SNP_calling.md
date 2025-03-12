@@ -270,73 +270,26 @@ denovo_map.pl --samples samples_subsampled/ --popmap popmap.txt  -o M2_final  -M
 ```
 sbatch -A uoo04306 -t 5-00:00:00 -J M2Final -c 8 --mem=300G -p hugemem M2Final.sl
 ```
-
-I run populations again to obtain a VCF and check for low quality samples.
-
+First lets run populations with a lower threshold (-R 0.5) and check for low quality samples. *For your info sort is a shell command -k is saying to sort in order by column 4, so it shows everything sorted by the amount of missing data*
 ```
-populations -P output_refmap/ -M popmap.txt  --vcf --structure --plink --treemix --max-obs-het 0.65 -R 0.5  -O M3_final
+populations -P M2_final -M popmap.txt  --vcf --structure --plink --treemix --max-obs-het 0.65 -R 0.5  -O Pop_M2_Final
 ```
-
-
 ```
 module load VCFtools 
-vcftools --vcf M3_final/populations.snps.vcf --missing-indv
+vcftools --vcf Pop_M2_Final/populations.snps.vcf --missing-indv
 sort -k 4n out.imiss
 ``` 
-
-The following samples have more than 60% missing data:
-
+The following sample has more than 60% missing data:
 ```
-3308_AG_marg
-3204_AT_ota
-3442F_TE_ota
-3424M_TE_ota
-3427M_TE_ota
-3425M_TE_ota
-3060_TB_marg
-3059_TB_marg
-3256M_AL_ota
-3454M_TW_ota
-3424F_TE_ota
-3051_TB_marg
-3418F_AL_Notinmetadata_NA
-3435M_TE_ota
-3034_TR_marg
-3438F_TE_ota
-3259M_AL_ota
-3456M_TW_marg
-3254M_CD_ota
-3258M_AL_ota
-3264M_AL_ota
-3303_AG_ota
-3213_LP_marg
-3237M_DQ_ota
-3305_AG_ota
-3299_AG_marg
-3194_CD_ota
-3309_AG_marg
-3205_AT_marg
-3041_TR_marg
-3441M_TE_marg
-3311_AG_marg
-3298_AG_marg
-3441F_TE_ota
-3199_AT_ota
-3304_AG_marg
-3054_TB_marg
+MT_24_FAU
 ```
-
-Remove them from the popmap.txt to create popmap_clean.txt . Added to the other samples we now miss 19 samples.
-
+Grep is a tool used to search and manipulate text within files. We can remove 'FAU' from popmap.txt and create popmap_clean.txt by using -v which prints all the lines that *do not* match waht I've specified. ^ ensures our match is at the beginning of a line and \\s account for any whitespace
 ```
-grep -Ev "^3308_AG_marg\\s|^3204_AT_ota\\s|^3442F_TE_ota\\s|^3424M_TE_ota\\s|^3427M_TE_ota\\s|^3425M_TE_ota\\s|^3060_TB_marg\\s|^3059_TB_marg\\s|^3256M_AL_ota\\s|^3454M_TW_ota\\s|^3424F_TE_ota\\s|^3051_TB_marg\\s|^3418F_AL_Notinmetadata_NA\\s|^3435M_TE_ota\\s|^3034_TR_marg\\s|^3438F_TE_ota\\s|^3259M_AL_ota\\s|^3456M_TW_marg\\s|^3254M_CD_ota\\s|^3258M_AL_ota\\s|^3264M_AL_ota\\s|^3303_AG_ota\\s|^3213_LP_marg\\s|^3237M_DQ_ota\\s|^3305_AG_ota\\s|^3299_AG_marg\\s|^3194_CD_ota\\s|^3309_AG_marg\\s|^3205_AT_marg\\s|^3041_TR_marg\\s|^3441M_TE_marg\\s|^3311_AG_marg\\s|^3298_AG_marg\\s|^3441F_TE_ota\\s|^3199_AT_ota\\s|^3304_AG_marg\\s|^3054_TB_marg\\s" popmap_100k.txt > popmap_clean.txt```
+grep -v "^MT_24_FAU\\s" popmap.txt > popmap_clean.txt
 ```
-
-
-re run populations filtering positions found in less than 80% and keeping max one snp per locus.
-
+Now I'll re-run populations, but filtering positions found in less than 80% and keeping a maximum of one SNP per locus.
 ```
-populations -P M3_final/ -M popmap_clean.txt  --vcf --structure --plink --treemix --max-obs-het 0.65 -R 0.8  --write-single-snp -O M3_final
+populations -P M2_final/ -M popmap_clean.txt  --vcf --structure --plink --treemix --max-obs-het 0.65 -R 0.8  --write-single-snp -O M2_final
 ```
 
 
