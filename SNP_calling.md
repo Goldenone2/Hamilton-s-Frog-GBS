@@ -277,7 +277,7 @@ populations -P M2_final -M popmap.txt  --vcf --structure --plink --treemix --max
 !!!! Ask Ludo why we do this step with a filtering for SNPs found across only 0.65 of samples?
 ```
 module load VCFtools 
-vcftools --vcf Pop_M2_Final/populations.snps.vcf --missing-indv
+vcftools --vcf M2_Final/populations.snps.vcf --missing-indv
 sort -k 4n out.imiss
 ``` 
 The following sample has more than 60% missing data:
@@ -305,6 +305,8 @@ Population summary statistics (more detail in populations.sumstats_summary.tsv):
 Populations is done.
 ```
 Only SNPs found in 80% of individuals are kept, so 21,250 variable sites! 
+
+We also have indv missigness (using code above) <0.23 which is great give we subsampled, reaffirms our choice.
 
 Save it with a meaningful name:
 
