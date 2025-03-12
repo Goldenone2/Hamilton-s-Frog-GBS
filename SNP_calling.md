@@ -272,8 +272,9 @@ sbatch -A uoo04306 -t 5-00:00:00 -J M2Final -c 8 --mem=300G -p hugemem M2Final.s
 ```
 First lets run populations with a lower threshold (-R 0.5) and check for low quality samples. *For your info sort is a shell command -k is saying to sort in order by column 4, so it shows everything sorted by the amount of missing data*
 ```
-populations -P M2_final -M popmap.txt  --vcf --structure --plink --treemix --max-obs-het 0.65 -R 0.5  -O Pop_M2_Final
+populations -P M2_final -M popmap.txt  --vcf --structure --plink --treemix --max-obs-het 0.65 -R 0.5  -O M2_Final
 ```
+!!!! Ask Ludo why we do this step with a filtering for SNPs found across only 0.65 of samples?
 ```
 module load VCFtools 
 vcftools --vcf Pop_M2_Final/populations.snps.vcf --missing-indv
@@ -287,22 +288,26 @@ Grep is a tool used to search and manipulate text within files. We can remove 'F
 ```
 grep -v "^MT_24_FAU\\s" popmap.txt > popmap_clean.txt
 ```
-Now I'll re-run populations, but filtering positions found in less than 80% and keeping a maximum of one SNP per locus.
+Now I'll re-run populations, but filtering positions found in less than 80% and keeping a maximum of one SNP per locus. 
+
+!!! Ask Ludo why only one SNP per locus, and what the max-obs-het about?
 ```
 populations -P M2_final/ -M popmap_clean.txt  --vcf --structure --plink --treemix --max-obs-het 0.65 -R 0.8  --write-single-snp -O M2_final
 ```
+My results:
+```
+Removed 4068568 loci that did not pass sample/population constraints from 4090567 loci.
+Kept 21999 loci, composed of 2605505 sites; 37125 of those sites were filtered, 21250 variant sites remained.
+Mean genotyped sites per locus: 118.44bp (stderr 0.01).
 
-
-Only SNPs found in 80% of individuals are kept > 269k. 
-
-Now let's have a look at how many SNP per locus.
-
-
-
-23570 variant sites remained.
+Population summary statistics (more detail in populations.sumstats_summary.tsv):
+  pop: 70.591 samples per locus; pi: 0.028234; all/variant/polymorphic sites: 2605505/21250/21250; private alleles: 0
+Populations is done.
+```
+Only SNPs found in 80% of individuals are kept, so 21,250 variable sites! 
 
 Save it with a meaningful name:
 
 ```
- cp M3_final/populations.snps.vcf phau190indsR08maxsnps1.recode.vcf
- ```
+ cp M3_final/populations.snps.vcf HamFrogR08maxsnps1.vcf
+```
