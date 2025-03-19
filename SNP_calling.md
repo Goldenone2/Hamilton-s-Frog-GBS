@@ -189,8 +189,6 @@ Then, run denovo_map with samples_concat as input.
 ## Parameters optimisation
 Ok, so, paramater optimisation is about deciding with stacks paramters (-M, -m, -o, -T etc) we will continue to use when running on the entire dataset. You can read a relatively clear tutorial [here](http://catchenlab.life.illinois.edu/stacks/param_tut.php), which describes how stacks without a reference genome works and, what these paramters dictate. Not included here are -o, output directory and, -t, number of threads.
 
-!!! Don't run all different numbers, but maybe just 2, with all the samples not a subsampled popmap; I can't remeber what excatly was meant by this, so I'll ask Ludo later... but, from now on I've run everything on my *subsampled data.....*
-
 At this stage, I'll make a popmap and exclude all samples with less than 100'000 reads (combining forward and reverse, i.e. 50k retained reads). First check number of reads (remember .fq files have 4 lines for each read), then create popmap.
 
 ```
@@ -272,9 +270,9 @@ sbatch -A uoo04306 -t 5-00:00:00 -J M2Final -c 8 --mem=300G -p hugemem M2Final.s
 ```
 First lets run populations with a lower threshold (-R 0.5) and check for low quality samples. *For your info sort is a shell command -k is saying to sort in order by column 4, so it shows everything sorted by the amount of missing data*
 ```
-populations -P M2_final -M popmap.txt  --vcf --structure --plink --treemix --max-obs-het 0.65 -R 0.5  -O M2_Final
+populations -P M2_final -M popmap.txt  --vcf --structure --plink --treemix --max-obs-het 0.65 -R 0.8  -O M2_Final
 ```
-!!!! Ask Ludo why we do this step with a filtering for SNPs found across only 0.65 of samples?
+You can reduce the -R value here if you had a poor read depth dataset.
 ```
 module load VCFtools 
 vcftools --vcf M2_Final/populations.snps.vcf --missing-indv
@@ -288,9 +286,7 @@ Grep is a tool used to search and manipulate text within files. We can remove 'F
 ```
 grep -v "^MT_24_FAU\\s" popmap.txt > popmap_clean.txt
 ```
-Now I'll re-run populations, but filtering positions found in less than 80% and keeping a maximum of one SNP per locus. 
-
-!!! Ask Ludo why only one SNP per locus, and what the max-obs-het about?
+Now I'll re-run populations, but filtering positions found in less than 80% and keeping a maximum of one SNP per locus. I keep one SNP per locus because ou anlaysis assume that SNPs are independant, and thsoe on the same loci are not (also because it can reduce the impact of erroneous loci made up of repetitive regions....but not a reason for my methods). I've also set the max-obs-het to 0.65, becasue we'd never expect het to be >0.5. If we have a duplication in the Hamilton's frog genome then these may assemble together with all individuals called at Heterozygotes at a mutation site, max-obvs-het allows us to filter this out. 
 ```
 populations -P M2_final/ -M popmap_clean.txt  --vcf --structure --plink --treemix --max-obs-het 0.65 -R 0.8  --write-single-snp -O M2_final
 ```
