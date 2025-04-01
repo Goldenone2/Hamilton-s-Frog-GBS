@@ -307,5 +307,5 @@ We also have indv missigness (using code above) <0.23 which is great give we sub
 Save it with a meaningful name:
 
 ```
- cp M3_final/populations.snps.vcf HamFrogR08maxsnps1.vcf
+ cp M2_final/populations.snps.vcf HamFrogR08maxsnps1.vcf
 ```
