@@ -2,19 +2,19 @@
 
 First, I create a folder for the source files and folders to run Stacks, raw (which will contain the trimmed data) and samples. For my future reference, my source files are called NS0229_S1_L004_R1_001.fastq.gz & NS0229_S1_L004_R2_001.fastq.gz
 
-```
+```bash 
 mkdir source_files
 ```
 
 Once the raw data is in source_files, I go in there and take a subset of 1'00000 lines, 250'000 reads. I will use the subset to trial the code on the firest run through, and check there are no issues with my sequences before I submit a full job (which runs for ages).
 
-```
+```bash 
 cd source_files
 zcat NS0229_S1_L004_R1_001.fastq.gz | head -n 1000000 > testR1.fastq 
 zcat NS0229_S1_L004_R2_001.fastq.gz | head -n 1000000 > testR2.fastq
 ```
 Let's check quality with FastQC
-```
+```bash 
 module load FastQC 
 fastqc *.fastq # The star means everything that ends with fastq.
 ```
@@ -28,14 +28,14 @@ First on the sample files. The files with trimmed are the output files. Use `cut
 
 -a specifies the adaptor sequence for forward reads (R1), and -A for reverse (R2) reads, -q specifies trimming low quaility bases below a QC score of 25 from the 3' end, -o (-p) specifies the output file for forward reads (and for reverse reads), minimum length specifies that reads must be 125bp long or should be discarded, length shortens all reads to the requeired 125 length.
 
-```
+```bash 
 cd source_files
 module load cutadapt # 
 cutadapt -a AGATCGGAAGAGC -A AGATCGGAAGAGC  -q 25 -o trimmed_testR1.fastq  --minimum-length 125:125 --length 125  -p  trimmed_testR2.fastq testR1.fastq  testR2.fastq
 cd ..
 ```
 Let's check  the adapters are gone, we need to make this descicion based on the output. Specifically, looks for "bases preceeeding adaptors" these should be random, if a single nucleotide was overrepresented it indicates we haven't removed the whole adaptor. 
-```
+```bash 
 fastqc trimmed*fastq # the star make it that it runs on anything that start with trimmed and end with fastq
 ```
 Checking the .html files, that worked. We do see there is an issue with 'per base sequence content' but this is caused by the presence of a limited the number of barcodes in our sequence, so we can ignore this for now.
@@ -47,12 +47,12 @@ Now, we will submit this as a job because I have too much data to sit around and
 _Submitting a Slurm Job_
 
 Create a new file, and open it (nano is a text editor)
-```
+```bash 
 nano Frogtrim.sl
 ```
 We then specificy arguments with #SBATCH, and afterwards include our code. Let's copy in the below text, then save and exit the text editor with 'ctrl + x'. You can use 'sbatch --help' to see what we can specify.
 
-```
+```bash 
 #!/bin/bash -e
 #SBATCH --job-name=Frogtrim # job name (shows up in the queue)
 #SBATCH --time=48:00:00      # Walltime (HH:MM:SS), if our job finishes before this no worries but we can give ample time in case
@@ -66,21 +66,21 @@ cd ..
 
 ```
 Now, beofre we submit this we want to check this is working. It may still breka later but we want no errors in the code. 
-```
+```bash 
 sh Frogtrim.sl
 ```
 Once we see cutadapt start working we can kill it with ctrl+c, and submit the job:
-```
+```bash 
 sbatch Frogtrim.sl
 ```
 Lets check we are in the queue. We can also cancel by ' scancel '<jobid>" '. Use squeue to get the ID. 
-```
+```bash 
 squeue -u mulha552 # -u specifies just my user's jobs
 ```
 Once the Job is complete use 'Cat' or 'Less' to check the output. 
 
 Finally, lets check that trimmed reads:
-```
+```bash 
 fastqc trimmed_NS0229_Hamiltons_S1_R1_001.fastq trimmed_NS0229_Hamiltons_S1_R2_001.fastq
 ```
 
@@ -94,20 +94,19 @@ Barcode.txt was created by Ludo, which contains all three plates (remeber PstI-1
 Popmap.txt is created/will be created by me and has a first column as the frogIDs taken from Barcode.txt, with the second column just all filled with 'Pop.' Basically this allows us to just analyse all of the frogs, ignore the skinks, snails etc. verything is labeled 'pop' as we do not want to run stacks based on population.  
 
 Copy trimmed data to raw folder.
-```
+```bash 
 cd .. #assuming I'm in source files
 mkdir raw
 mkdir # I recived an error trying process_radtags without this directory.
 ```
-
-```
+```bash 
 cd raw
 cp /home/mulha552/uoo04306/frogs_gbs/source_files/trimmed_NS0229_Hamiltons_S1_R1_001.fastq /home/mulha552/uoo04306/frogs_gbs/source_files/trimmed_NS0229_Hamiltons_S1_R2_001.fastq /home/mulha552/uoo04306/frogs_gbs/raw
 cd ..
 ```
 Run demultiplexing, here is some [info](https://catchenlab.life.illinois.edu/stacks/comp/process_radtags.php) on files and run. I have run the code below as a SLURM job, as above in adaptor trimming. 
 
-```
+```bash 
 cd /home/mulha552/uoo04306/frogs_gbs/source_files/raw
 module load Stacks #2.61
 process_radtags -P   -p ../raw/ -o ../samples/ -b ../barcodes.txt -e pstI -r -c  --inline-inline # NO -q often used for process-radtags gives me an error because of it, but no worries, cutadapatalready took care of this
@@ -125,19 +124,19 @@ My Results (maybe to ask Ludo about at a later date..)
 ## Concatenate reads
 
 The goal is to have one file per sample, that we care about, (remeber there are skinks, snails etc in this sequencing run) inside the folder samples_concat. The file popmap is the stacks population map [info](http://catchenlab.life.illinois.edu/stacks/manual/#popmap); Create popmap.txt:
-```
+```bash 
 nano popmap.txt #copy in the frogs sample prefixes and keep all in a single 'pop'
 # mkdir samples_concat
 ```
 As normal we will be running concatenating as a SLURM job, but because this is in a Python Enviornment we must do this a little differently....
-```
+```bash 
 nano frogconcat.py #create python script
 ```
 We use a python shebang for this file (rather than a shell/bash one) and we cannot specify requirments using #SBATCH, this is now done later. Copy the code below into 'frogconcat.py'
 
 Note: popmap.txt needs to be in the current working directoy (/frogs_gbs) from which it will look for the subdirectory samples, and create a new directory as output samples_concat
 
-```
+```python
 #!/usr/bin/env python3
 
 import os
@@ -158,12 +157,12 @@ with open("popmap.txt") as f:
 
 ```
 I'll check the code before submitting the job
-```
+```bash
 module load Python #need to load a python environment//ipython console
 python3 frogconcat.py
 ```
 Finally, once this is working we can submit a job, and ofr python we specify arguments here. -A specifies the account to 'charge' the job, -t specifies time, -c specifies the number of cpus per task, --mem specifies memory, --job-name specifies a job name
-```
+```bash
 sbatch -A uoo04306 -t 48:00:00 -c 8 --mem 8G --job-name=frogconcat frogconcat.py
 squeue -u mulha552 #check its working
 ```
@@ -172,10 +171,10 @@ squeue -u mulha552 #check its working
 We will subsample from the concatenated reads to take the first 5 million reads (code reads 20,000,000 lines because each read is 4 lines in a .fastq) so we are working with an actually workable amount of sequence. We still run the previous code, because for those samples where we may have <5million reads we need to take all of it.
 
  We're also running as a pyhton slurm job, as above...
-```
+```bash
 mkdir samples_subsampled
 ```
-```
+```python
 import os
 os.chdir('/home/mulha552/uoo04306/frogs_gbs') #python for 'cd'
 with open("popmap.txt") as f:
@@ -191,7 +190,7 @@ Ok, so, paramater optimisation is about deciding with stacks paramters (-M, -m, 
 
 At this stage, I'll make a popmap and exclude all samples with less than 100'000 reads (combining forward and reverse, i.e. 50k retained reads). First check number of reads (remember .fq files have 4 lines for each read), then create popmap.
 
-```
+```bash
 cd samples_subsampled #assuming in frogs_gbs
 output_file="read_counts.txt"
 > "$output_file" # clears previous contents
@@ -209,16 +208,18 @@ Great, it looks like we don't need to remove any frogs from our analysis!
 ### Parameter optimisation
 
 Run on a random 30 samples.
-```
+```bash
 #mkdir para_opti
 cd para_opti
 shuf ../popmap.txt | head -n 30 > popmap_opti.txt # not done if no optimisation
 ```
 This code is a "for loop." This loop automates the creation of directories, scripts, and slurm job for processing the specified random 30 samples using the denovo_map.pl tool. Each job is submitted with different parameters (based on the loop variable i), and each job will run with different configurations of parameters (see where variable i is included in the code). 
 
+Note from future Hadley, Ludo has used echo which doesn't execute the code rather repeats it in the terminal; Ludo's told it to 'echo' in the slurm (.sh) files. This technique is different from something you could just do in the terminal....
+
 I believe this method of paramater optimisation, roughly, follow this [paper](https://besjournals.onlinelibrary.wiley.com/doi/10.1111/2041-210X.12775).
 
-```
+```bash
 for i in 2 3 4 5 6 7 8
 do mkdir -p M$i; echo '#!/bin/sh' > runM$i.sh
 echo cd /home/mulha552/uoo04306/frogs_gbs/source_files/para_opti
@@ -227,15 +228,15 @@ echo "denovo_map.pl --samples ../samples_subsampled/ --popmap popmap_opti.txt  -
 sbatch -A uoo04306 -t 2-00:00:00 -J M$i -c 8 --mem=64G runM$i.sh
 done
 ```
-```
+```bash
 squeue -u mulha552
 ```
 The *populations* command takes the the SNP data from *denovo_map.pl* and, can compute a variety of useful population genetics statistics, See [here](http://catchenlab.life.illinois.edu/stacks/comp/populations.php) for more information. 
 Focus on the number of loci at -R 0.8 (loci covered in 80% of inds):
-```
+```bash
 module load Stacks/2.61-gimkl-2022a
 ```
-```
+```bash
 for i in 2 3 4 5 6 7 8 
 do
 populations -P M$i -R 0.8 -M popmap_opti.txt --vcf
@@ -244,7 +245,7 @@ done
 See how many loci are left by looking in the log of populations:
 
 cut -f 1, is looking only a column one which lists fragment ID, and uniq means we are only counting unique fragment IDs....
-```
+```bash
 for i in 2 3 4 5 6 7 8
 do
 echo $i
@@ -256,38 +257,38 @@ We have the most polymoprhic loci with M=n of 2, so that is now what we'll run f
 
 ## Run on the whole dataset
 I will run this as SLURM job, we have a lot of data...
-```
+```bash
 mkdir M2_final
 ```
-```
+```bash
 #!/bin/bash
 cd /home/mulha552/uoo04306/frogs_gbs
 module load Stacks/2.61-gimkl-2022a
 denovo_map.pl --samples samples_subsampled/ --popmap popmap.txt  -o M2_final  -M 2 -n 2 -m 3 -T 8
 ```
-```
+```bash
 sbatch -A uoo04306 -t 5-00:00:00 -J M2Final -c 8 --mem=300G -p hugemem M2Final.sl
 ```
-First lets run populations with a lower threshold (-R 0.5) and check for low quality samples. *For your info sort is a shell command -k is saying to sort in order by column 4, so it shows everything sorted by the amount of missing data*
-```
+First lets run populations with a lower threshold (-R 0.5) and check for low quality samples. 
+```bash
 populations -P M2_final -M popmap.txt  --vcf --structure --plink --treemix --max-obs-het 0.65 -R 0.8  -O M2_Final
 ```
-You can reduce the -R value here if you had a poor read depth dataset.
-```
+You can reduce the -R value here if you had a poor read depth dataset. *For your info sort is a shell command -k is saying to sort in order by column 4, so it shows everything sorted by the amount of missing data*
+```bash
 module load VCFtools 
 vcftools --vcf M2_Final/populations.snps.vcf --missing-indv
 sort -k 4n out.imiss
-``` 
+```bash
 The following sample has more than 60% missing data:
 ```
 MT_24_FAU
 ```
 Grep is a tool used to search and manipulate text within files. We can remove 'FAU' from popmap.txt and create popmap_clean.txt by using -v which prints all the lines that *do not* match waht I've specified. ^ ensures our match is at the beginning of a line and \\s account for any whitespace
-```
+```bash
 grep -v "^MT_24_FAU\\s" popmap.txt > popmap_clean.txt
 ```
 Now I'll re-run populations, but filtering positions found in less than 80% and keeping a maximum of one SNP per locus. I keep one SNP per locus because ou anlaysis assume that SNPs are independant, and thsoe on the same loci are not (also because it can reduce the impact of erroneous loci made up of repetitive regions....but not a reason for my methods). I've also set the max-obs-het to 0.65, becasue we'd never expect het to be >0.5. If we have a duplication in the Hamilton's frog genome then these may assemble together with all individuals called at Heterozygotes at a mutation site, max-obvs-het allows us to filter this out. 
-```
+```bash
 populations -P M2_final/ -M popmap_clean.txt  --vcf --structure --plink --treemix --max-obs-het 0.65 -R 0.8  --write-single-snp -O M2_final
 ```
 My results:
@@ -306,6 +307,24 @@ We also have indv missigness (using code above) <0.23 which is great give we sub
 
 Save it with a meaningful name:
 
-```
+```bash
  cp M2_final/populations.snps.vcf HamFrogR08maxsnps1.vcf
 ```
+### Filtering by Coverage
+Finally, I must filter my dataset by coverage. Remeber, if we have a 'true' heterozygote, but at low coverage (say two), then we have a 50% chance of incorrectly calling a homozygote in our data.... there will be an inherent relationship between coverage depth and heterozygosity (at low depth). I want to filter my SNPs so that we loose this relationship. 
+
+I've madea bsic a 'for' loop. I filter for minimum depth using --minDP from values of 2 to 6, --recode generate a new .vcf files for each filter. Then I calculte heterozygosity  using --het, and depth using --depth.
+```bash
+module load VCFtools
+#mkdir filtered_coverage
+```
+```bash
+for i in 2 3 4 5 6
+do
+vcftools --vcf ../HamFrogR08maxsnps1.vcf --minDP $i --recode --out filtered_Depth$i
+vcftools --vcf filtered_Depth$i.recode.vcf --het --out het_Depth$i
+vcftools --vcf filtered_Depth$i.recode.vcf --depth --out depth$i
+echo "Complete for minDP = $i"
+done
+```
+
