@@ -327,4 +327,3 @@ vcftools --vcf filtered_Depth$i.recode.vcf --depth --out depth$i
 echo "Complete for minDP = $i"
 done
 ```
-
