@@ -327,3 +327,4 @@ vcftools --vcf filtered_Depth$i.recode.vcf --depth --out depth$i
 echo "Complete for minDP = $i"
 done
 ```
+Right, so, if we have a lack at the Coverage Plots we can see that even with a minimum coverage depth of two there is no relationship at all! Overall, the results usggest we have a high coverage dataset. I'll still make the choice to cut of at --minDP of five; although we don't see any relationship --minDP is still a good choice and, given our dataset we will not use much data!
