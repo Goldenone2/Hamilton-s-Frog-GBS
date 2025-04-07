@@ -70,7 +70,8 @@ plot2 <- ggplot(Data, aes(x = Tissue, y = MEAN_DEPTH)) +
   theme_light() +
   labs(y= "Mean Depth", x = "Sample material")
 
-plot1 +plot2
+(plots = wrap_plots(plot1,plot2)) +
+  plot_layout(axis_titles = "collect")
 ```
 
 ![](Swab.Tissue.Jitter_files/figure-gfm/unnamed-chunk-2-1.png)<!-- -->
