@@ -332,4 +332,5 @@ Right, so, if we have a lack at the Coverage Plots we can see that even with a m
 cd ../
 vcftools --vcf HamFrogR08maxsnps1.vcf --minDP 5 --recode --out HamFrogR08maxsnps1DP5
 vcftools --vcf HamFrogR08maxsnps1DP5.recode.vcf --het --out Heterozygosity
+vcftools --vcf HamFrogR08maxsnps1DP5.recode.vcf --depth --out Depth
 ```
