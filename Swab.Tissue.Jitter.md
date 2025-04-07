@@ -1,7 +1,5 @@
 Swab.Tissue.Jitter
 ================
-Hadley Muller
-2025-04-07
 
 I have completed SNP calling for the Hamilton’s Frog data, which
 contains both tissues and, buccal swabs.
