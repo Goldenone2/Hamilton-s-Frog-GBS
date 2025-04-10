@@ -48,6 +48,33 @@ t.test(Dtoeclip, Dswab, var.equal=FALSE)
 
 t.test(Ntoeclip, Nswab, var.equal=FALSE)
 ```
+```
+> t.test(Dtoeclip, Dswab, var.equal=FALSE)
+
+	Welch Two Sample t-test
+
+data:  Dtoeclip and Dswab
+t = -3.7698, df = 33.403, p-value = 0.000635
+alternative hypothesis: true difference in means is not equal to 0
+95 percent confidence interval:
+ -3.1831964 -0.9523396
+sample estimates:
+mean of x mean of y 
+ 13.45097  15.51874 
+
+> t.test(Ntoeclip, Nswab, var.equal=FALSE)
+
+	Welch Two Sample t-test
+
+data:  Ntoeclip and Nswab
+t = -0.35383, df = 45.437, p-value = 0.7251
+alternative hypothesis: true difference in means is not equal to 0
+95 percent confidence interval:
+ -540.6913  379.0671
+sample estimates:
+mean of x mean of y 
+ 18266.85  18347.67
+```
 
 #Create Jitterplot
 
