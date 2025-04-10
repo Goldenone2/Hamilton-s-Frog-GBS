@@ -52,8 +52,22 @@ Data <- Dep %>%
     grepl("^G", INDV) ~ "Toe Clip"
     ))
 ```
+#Simple t-test
+```r
+#Subset data
+Dtoeclip <- (Data[Data$Tissue == "Toe Clip", "MEAN_DEPTH"])
+Dswab <- (Data[Data$Tissue == "Buccal Swab", "MEAN_DEPTH"])
 
-\#Create Jitterplot
+Ntoeclip <- (Data[Data$Tissue == "Toe Clip", "N_SITES"])
+Nswab <- (Data[Data$Tissue == "Buccal Swab", "N_SITES"])
+
+#Welch's t-test
+t.test(Dtoeclip, Dswab, var.equal=FALSE)
+
+t.test(Ntoeclip, Nswab, var.equal=FALSE)
+```
+
+#Create Jitterplot
 
 ``` r
 #Total Sites
