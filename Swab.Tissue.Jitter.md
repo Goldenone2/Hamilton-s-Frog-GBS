@@ -19,26 +19,8 @@ rm(list = ls())
 # Load required Packages
 library(ggplot2)
 library(dplyr)
-```
-
-    ## 
-    ## Attaching package: 'dplyr'
-
-    ## The following objects are masked from 'package:stats':
-    ## 
-    ##     filter, lag
-
-    ## The following objects are masked from 'package:base':
-    ## 
-    ##     intersect, setdiff, setequal, union
-
-``` r
 library(patchwork)
-```
 
-    ## Warning: package 'patchwork' was built under R version 4.4.3
-
-``` r
 # Load data
 Dep <- read.table("Depth.idepth", header = TRUE)
 
