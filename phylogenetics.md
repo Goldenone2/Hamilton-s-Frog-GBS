@@ -1,4 +1,4 @@
-## phylogenetics 
+## Phylogenetics 
 I will do a phylogenetic analysis using IQTREE; to understand the natural populaiton structure between Maud Island and Stephen's Island; population level dynamics between founder and source populations will not have an effect here.
 ```sh
 mdkir tree
@@ -17,9 +17,13 @@ I have no idea what subsitution model is best for my data, so I'll try a model s
 module load IQ-TREE
 iqtree2 -s HamFrogR08maxsnps1DP5.recode.min4.phy -m MFP -st DNA
 ```
-Then I run IQtree using my own conda environment, the GTR+G model with 1000 bootstraps.
+Let's have a look at the results:
+```
+Best-fit model: TIM+F+I+R2 chosen according to BIC
+```
+Now, I can run my final tree, with the TIM+F+I+R2 model with 1000 bootstraps. Ludo originally to GTR+G, but our paramters are little more restrictive...
 
 ```sh
-iqtree2 -nt 16 -s HamFrogR08maxsnps1DP5.recode.min4.phy -st DNA -m GTR+G -bb 1000  -pre inferred
+iqtree2 -nt 16 -s HamFrogR08maxsnps1DP5.recode.min4.phy -st DNA -m TIM+F+I+R2 -bb 1000  -pre Final.FrogTree
 ```
 download FIGtree to visualise it.
