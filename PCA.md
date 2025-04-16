@@ -11,5 +11,9 @@ cd PCA
 awk '{if($0 !~ /^#/) print "contig"$0; else print $0}' ../HamFrogR08maxsnps1DP5.recode.vcf > PLINKvcf_with_contig.vcf
 ```
 ```sh
-plink --vcf ../HamFrogR08maxsnps1DP5.recode.vcf --make-bed --out PLINK_Ham --allow-extra-chr --double-id
+plink --vcf PLINKvcf_with_contig.vcf --make-bed --out PLINK_Ham --allow-extra-chr --double-id
+```
+## Peform PCA
+```sh
+plink --bfile PLINK_Ham --pca --out PCA_Ham --allow-extra-chr --double-id
 ```
