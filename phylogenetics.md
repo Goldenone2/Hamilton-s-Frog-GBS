@@ -23,9 +23,7 @@ Best-fit model: TIM+F+I+R2 chosen according to BIC
 ```
 Now, I can run my final tree, with the TIM+F+I+R2 model and 1000 bootstraps. Our parameters specify: -TIM trnasitional model, allows different rates for transitions and transversion, +F use tghe emprirical base frequencies rather than assuming equal (frogs have higher GC proportions than other species), +I account for sites which don't evolve at all and +R2 use the FreeRate model with 2 discrete categories (modelling how some sites evolve faster than others). 
 
-UFBoot does not converge after 1000 bootstraps, so I will trial with 3,000!
-
 ```sh
-iqtree2 -nt 16 -s HamFrogR08maxsnps1DP5.recode.min4.phy -st DNA -m TIM+F+I+R2 -bb 3000  -pre Final.FrogTree
+iqtree2 -nt 16 -s HamFrogR08maxsnps1DP5.recode.min4.phy -st DNA -m TIM+F+I+R2 -bb 1000 -pre Final.FrogTree
 ```
 Download FIGtree to visualise it.
