@@ -25,7 +25,6 @@ allfiles_to_count = os.listdir("samples/")
 with open("forward_counts.txt", "w") as output_file:
     with open("popmap.txt") as f:
         for line in f:
-            print(line)
             samplename=line.split("\t")[0]
             print (samplename) # should be commented out in a slurm job, but I can use this as a check things are running.
             checkfiles=[filename for filename in allfiles_to_count  if filename.startswith(samplename)]
