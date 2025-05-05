@@ -15,7 +15,7 @@ cd /home/mulha552/uoo04306/frogs_gbs
 nano forwardreads.py
 ```
 Copy the code below into 'forwardsreads.py
-
+Note: the correct way to count the number of forwards reads would be to count the total number of lines and divide by four, because @ is a PHred score we are potentially counting additional lines. However, this is unlikely to matter for our purposes. 
 ```python
 #!/usr/bin/env python3
 
