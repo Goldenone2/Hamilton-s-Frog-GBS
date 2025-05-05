@@ -50,15 +50,19 @@ Now we'll run it
 module load Python #need to load a python environment//ipython console
 python3 forwardreads.py
 ```
-# How many forwards reads are there if I demultiplex, wihtout cutadapt?
+# How many forwards reads are there if I demultiplex, without cutadapt?
 Ok, now we know there is no obvious difference in the number of forwards reads following our orignal pipeline that would lead to the difference in coverage depth; We now need to understand whether this difference is because of lab or sequencing errors or if it is genuine. To do this I will demultiplex the raw.reads without using cutadapt (or any cleaning option like -c) if there is a difference we know this is a sequencing or lab error (maybe during normalization ?) if not then buccal swabs would have to have a lower percentage of reads lost during CutAdapt ..... I beleive the latter is more likely. 
 
 Run as a SLURM Job. 
 ```bash
-#mkdir samples.noQC
+#mkdir samples_noQC
 cd /home/mulha552/uoo04306/frogs_gbs
 module load Stacks #2.61
-process_radtags -P   -p raw/ -o samples.noQC/ -b ../barcodes.txt -e pstI -r  --inline-inline 
+process_radtags -P   -p raw/ -o samples_noQC/ -b ../barcodes.txt -e pstI -r  --inline-inline
+```
+```bash
+sh deplex_noQC.sl # make sure it works
+squeue -u mulha552 # check job is running
 ```
 Once complete modify "forwardreads.py" to count the number of forwards reads without quality control.
 
