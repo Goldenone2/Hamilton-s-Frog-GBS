@@ -14,6 +14,20 @@ also utilising the package
 
 ### Data Import and Setup
 
+Let's first take our popmap.txt we've used for denovo_map.pl in Stacks, and create a new tab separted .txt file that *actually* contains the relevant 'pop' information
+
+```bash
+cd /home/mulha552/uoo04306/frogs_gbs
+awk '{
+  if ($1 ~ /^B/)   $2 = "Boat Bay";
+  else if ($1 ~ /^T/)  $2 = "Stephens Island";
+  else if ($1 ~ /^M_/) $2 = "Maud Island";
+  else if ($1 ~ /^MT/) $2 = "Motuara";
+  else if ($1 ~ /^G/)  $2 = "Maud Island";
+  print $1, $2;
+}' popmap.txt > meta.txt
+```
+
 ``` r
 # Clear workspace
 rm(list = ls())
