@@ -1,9 +1,6 @@
-Pairwise Fst
-================
-Hadley Muller
-2025-04-01
+#Analysis Overview
 
-\#Analysis Overview I’d like to calculate pairwise F<sub>st</sub> across
+I’d like to calculate pairwise F<sub>st</sub> across
 my four populations in this analysis. Although
 [VCFtools](https://vcftools.github.io/documentation.html) does allow you
 to do this, it is inefficient and I’d have to do so manually for each
