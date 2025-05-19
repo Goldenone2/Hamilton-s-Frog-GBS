@@ -1,8 +1,3 @@
-Swab.Tissue.Jitter
-================
-Hadley Muller
-2025-04-07
-
 # Sample comparison
 
 I have completed SNP calling for the Hamilton’s Frog GBS data, which
