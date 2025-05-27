@@ -6,7 +6,7 @@ The site frequnecy spectra (SFS) is a summary of allele frequencies across my SN
 
 I am interested in the history of the natural populations of Hamilton's frog on Stephen's Island and, Maud Island. I will use [easySFS](https://github.com/isaacovercast/easySFS) to create an SFS of the polymorphic sites, but then manually add a bin for the monomoprphic sites which *are* reported in my output from populations. 
 
-````bash
+```bash
 mkdir stairway
 cd stairway
 git clone https://github.com/isaacovercast/easySFS.git
