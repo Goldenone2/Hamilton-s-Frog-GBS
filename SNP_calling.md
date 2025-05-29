@@ -205,7 +205,7 @@ done
 
 Great, it looks like we don't need to remove any frogs from our analysis!
 
-### Parameter optimisation
+## Parameter optimisation
 
 Run on a random 30 samples.
 ```bash
@@ -269,7 +269,7 @@ denovo_map.pl --samples samples_subsampled/ --popmap popmap.txt  -o M2_final  -M
 ```bash
 sbatch -A uoo04306 -t 5-00:00:00 -J M2Final -c 8 --mem=300G -p hugemem M2Final.sl
 ```
-First lets run populations with a lower threshold (-R 0.5) and check for low quality samples. 
+First lets run populations with a lower threshold (-R 0.5) aallowing us to check for low quality samples. 
 ```bash
 populations -P M2_final -M popmap.txt  --vcf --structure --plink --treemix --max-obs-het 0.65 -R 0.8  -O M2_Final
 ```
@@ -278,12 +278,10 @@ You can reduce the -R value here if you had a poor read depth dataset. *For your
 module load VCFtools 
 vcftools --vcf M2_Final/populations.snps.vcf --missing-indv
 sort -k 4n out.imiss
-```bash
-The following sample has more than 60% missing data:
 ```
-MT_24_FAU
+The following sample has more than 60% missing data: MT_24_FAU
 ```
-Grep is a tool used to search and manipulate text within files. We can remove 'FAU' from popmap.txt and create popmap_clean.txt by using -v which prints all the lines that *do not* match waht I've specified. ^ ensures our match is at the beginning of a line and \\s account for any whitespace
+Let's remove 'FAU' from popmap.txt and create popmap_clean.txt by using -v which prints all the lines that *do not* match waht I've specified. ^ ensures our match is at the beginning of a line and \\s account for any whitespace; Grep is a tool used to search and manipulate text within files.
 ```bash
 grep -v "^MT_24_FAU\\s" popmap.txt > popmap_clean.txt
 ```
@@ -310,13 +308,13 @@ Save it with a meaningful name:
 ```bash
  cp M2_final/populations.snps.vcf HamFrogR08maxsnps1.vcf
 ```
-### Filtering by Coverage
-Finally, I must filter my dataset by coverage. Remeber, if we have a 'true' heterozygote, but at low coverage (say two), then we have a 50% chance of incorrectly calling a homozygote in our data.... there will be an inherent relationship between coverage depth and heterozygosity (at low depth). I want to filter my SNPs so that we loose this relationship. 
+## Coverage
+I must filter my dataset by coverage; remeber, if we have a 'true' heterozygote, but at low coverage (say two), then we have a 50% chance of incorrectly calling a homozygote in our data.... there will be an inherent relationship between coverage depth and heterozygosity (at low depth). I want to filter my SNPs so that we loose this relationship. 
 
 I've madea bsic a 'for' loop. I filter for minimum depth using --minDP from values of 2 to 6, --recode generate a new .vcf files for each filter. Then I calculte heterozygosity  using --het, and depth using --depth.
 ```bash
 module load VCFtools
-#mkdir filtered_coverage
+mkdir filtered_coverage
 ```
 ```bash
 for i in 2 3 4 5 6
@@ -327,10 +325,20 @@ vcftools --vcf filtered_Depth$i.recode.vcf --depth --out depth$i
 echo "Complete for minDP = $i"
 done
 ```
-Right, so, if we have a lack at the Coverage Plots we can see that even with a minimum coverage depth of two there is no relationship at all! Overall, the results usggest we have a high coverage dataset. I'll still make the choice to cut of at --minDP of five; although we don't see any relationship --minDP is still a good choice and, given our dataset we will not use much data!
+Right, so, if we have a lack at the Coverage Plots we can see that even with a minimum coverage depth of two there is no relationship at all! Overall, the results usggest we have a high coverage dataset. I'll still make the choice to cut of at a miniumum depth of five; although we don't see any relationship this is still a good choice and, given our dataset we will not use much data!
+
+### Re-run populations
+For some analyses, specifcally for Stairway Plot, we need to filter using *populaitons* not *VCFTools.* When we filter with VCFTools we may remove the variable individuals for some of the called SNPs making them monomorphic, which can be problematic. Addtionally, stairway plot 2 requires accurate information of the number of *sites* both monomoprhic and polymorphics; it's easiest to get this infromation directly from population's output. 
+
+**in the final published version of this code this should happen in the initial instance afterwhich we'd still check for any addtional realtionship (which are more likely in low coverage datasets).**
+
 ```bash
-cd ../
-vcftools --vcf HamFrogR08maxsnps1.vcf --minDP 5 --recode --out HamFrogR08maxsnps1DP5
+mkdir M2_FInal_minGT5
+populations -P M2_final/ -M popmap_clean.txt  --vcf --structure --plink --treemix --max-obs-het 0.65 -R 0.8  --write-single-snp --min-gt-depth 5 -O M2_FInal_minGT5
+```
+
+## Final Datasets
+```bash
 vcftools --vcf HamFrogR08maxsnps1DP5.recode.vcf --het --out Heterozygosity
 vcftools --vcf HamFrogR08maxsnps1DP5.recode.vcf --depth --out Depth
 ```
