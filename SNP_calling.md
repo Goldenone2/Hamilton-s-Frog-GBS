@@ -336,9 +336,23 @@ For some analyses, specifcally for Stairway Plot, we need to filter using *popul
 mkdir M2_FInal_minGT5
 populations -P M2_final/ -M popmap_clean.txt  --vcf --structure --plink --treemix --max-obs-het 0.65 -R 0.8  --write-single-snp --min-gt-depth 5 -O M2_FInal_minGT5
 ```
+My results:
+```
+Removed 4068568 loci that did not pass sample/population constraints from 4090567 loci.
+Kept 21999 loci, composed of 2605505 sites; 280618 of those sites were filtered, 11611 variant sites remained.
+Filtered 912593 genotypes that fell below the minimum genotype depth threshold.
+Mean genotyped sites per locus: 111.27bp (stderr 0.04).
+
+Population summary statistics (more detail in populations.sumstats_summary.tsv):
+  pop: 70.486 samples per locus; pi: 0.029416; all/variant/polymorphic sites: 2447914/11611/11611; private alleles: 0
+Populations is done.
+```
 
 ## Final Datasets
 ```bash
-vcftools --vcf HamFrogR08maxsnps1DP5.recode.vcf --het --out Heterozygosity
-vcftools --vcf HamFrogR08maxsnps1DP5.recode.vcf --depth --out Depth
+cd /home/mulha552/uoo04306/frogs_gbs
+cp M2_FInal_minGT5/populations.snps.vcf HamFrogR08maxsnps1minGT5.vcf
+module load VCFtools
+vcftools --vcf HamFrogR08maxsnps1minGT5.vcf --het --out Heterozygosity
+vcftools --vcf HamFrogR08maxsnps1minGT5.vcf --depth --out Depth
 ```
