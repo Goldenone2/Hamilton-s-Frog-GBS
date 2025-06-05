@@ -10,10 +10,10 @@ I am interested in the history of the natural populations of Hamilton's frog on 
 mkdir stairway
 cd stairway
 git clone https://github.com/isaacovercast/easySFS.git
-easySFS/easySFS.py -i ../HamFrogR08maxsnps1DP5.recode.vcf -p pops_file.txt --preview
+easySFS/easySFS.py -i ../HamFrogR08maxsnps1minGT5.vcf -p pops_file.txt --preview
 ```
 ```
- Processing 4 populations - ['Boat', 'Maud', 'Motuara', 'Stephens']
+  Processing 4 populations - ['Boat', 'Maud', 'Motuara', 'Stephens']
   Sampling one snp per locus (CHROM)
 
     Running preview mode. We will print out the results for # of segregating sites
@@ -25,22 +25,22 @@ easySFS/easySFS.py -i ../HamFrogR08maxsnps1DP5.recode.vcf -p pops_file.txt --pre
     best and then rerun easySFS with the `--proj` flag.
     
 Boat
-(2, 484)        (3, 726)        (4, 945)        (5, 1152)       (6, 1352)       (7, 1548)       (8, 1740)       (9, 1929)   (10, 2115)       (11, 2300)      (12, 2483)      (13, 2664)      (14, 2844)      (15, 3023)      (16, 3201)      (17, 3373)  (18, 3549)       (19, 3714)      (20, 3887)      (21, 4017)      (22, 4186)      (23, 4252)      (24, 4416)      (25, 4326)  (26, 4479)       (27, 4208)      (28, 4346)      (29, 3858)      (30, 3976)      (31, 3197)      (32, 3288)      (33, 2428)  (34, 2493)       (35, 1573)      (36, 1613)      (37, 878)       (38, 899)       (39, 320)       (40, 328)
+(2, 258)        (3, 387)        (4, 502)        (5, 611)        (6, 714)        (7, 815)        (8, 914)        (9, 1011)       (10, 1107)       (11, 1201)      (12, 1295)      (13, 1387)      (14, 1479)      (15, 1570)      (16, 1660)      (17, 1750)      (18, 1839)      (19, 1928)       (20, 2016)      (21, 2104)      (22, 2191)      (23, 2275)      (24, 2362)      (25, 2432)      (26, 2517)      (27, 2553)       (28, 2635)      (29, 2537)      (30, 2613)      (31, 2312)      (32, 2377)      (33, 1932)      (34, 1983)      (35, 1363)      (36, 1398)       (37, 817)       (38, 837)       (39, 316)       (40, 323)
 
 Maud
-(2, 467)        (3, 700)        (4, 909)        (5, 1107)       (6, 1297)       (7, 1483)       (8, 1665)       (9, 1844)   (10, 2021)       (11, 2196)      (12, 2370)      (13, 2542)      (14, 2713)      (15, 2883)      (16, 3052)      (17, 3219)  (18, 3386)       (19, 3546)      (20, 3711)      (21, 3857)      (22, 4020)      (23, 4122)      (24, 4281)      (25, 4322)  (26, 4475)       (27, 4358)      (28, 4501)      (29, 4101)      (30, 4226)      (31, 3601)      (32, 3704)      (33, 2853)  (34, 2930)       (35, 1950)      (36, 2000)      (37, 1054)      (38, 1079)      (39, 387)       (40, 396)
+(2, 252)        (3, 378)        (4, 490)        (5, 594)        (6, 694)        (7, 791)        (8, 886)        (9, 979)        (10, 1071)       (11, 1162)      (12, 1252)      (13, 1341)      (14, 1429)      (15, 1517)      (16, 1604)      (17, 1691)      (18, 1777)      (19, 1863)       (20, 1948)      (21, 2033)      (22, 2117)      (23, 2199)      (24, 2283)      (25, 2355)      (26, 2438)      (27, 2489)       (28, 2570)      (29, 2544)      (30, 2621)      (31, 2463)      (32, 2533)      (33, 2153)      (34, 2210)      (35, 1609)      (36, 1650)       (37, 953)       (38, 976)       (39, 374)       (40, 383)
 
 Motuara
-(2, 455)        (3, 683)        (4, 887)        (5, 1080)       (6, 1266)       (7, 1446)       (8, 1624)       (9, 1798)   (10, 1970)       (11, 2140)      (12, 2309)      (13, 2476)      (14, 2642)      (15, 2807)      (16, 2971)      (17, 3134)  (18, 3296)       (19, 3457)      (20, 3617)      (21, 3772)      (22, 3930)      (23, 4082)      (24, 4239)      (25, 4383)  (26, 4538)       (27, 4666)      (28, 4819)      (29, 4922)      (30, 5072)      (31, 5123)      (32, 5269)      (33, 5287)  (34, 5429)       (35, 5328)      (36, 5463)      (37, 5285)      (38, 5412)      (39, 5061)      (40, 5176)      (41, 4684)  (42, 4786)       (43, 4053)      (44, 4136)      (45, 3197)      (46, 3260)      (47, 2259)      (48, 2301)      (49, 1363)  (50, 1388)       (51, 676)       (52, 687)       (53, 223)       (54, 227)
+(2, 250)        (3, 376)        (4, 487)        (5, 591)        (6, 691)        (7, 788)        (8, 882)        (9, 975)        (10, 1067)       (11, 1157)      (12, 1247)      (13, 1335)      (14, 1423)      (15, 1511)      (16, 1597)      (17, 1683)      (18, 1769)      (19, 1854)       (20, 1938)      (21, 2022)      (22, 2106)      (23, 2189)      (24, 2272)      (25, 2355)      (26, 2437)      (27, 2519)       (28, 2600)      (29, 2675)      (30, 2756)      (31, 2825)      (32, 2904)      (33, 2960)      (34, 3038)      (35, 3056)      (36, 3132)       (37, 3123)      (38, 3197)      (39, 3124)      (40, 3194)      (41, 3031)      (42, 3095)      (43, 2775)      (44, 2831)       (45, 2355)      (46, 2401)      (47, 1811)      (48, 1845)      (49, 1163)      (50, 1184)      (51, 621)       (52, 632)       (53, 215)        (54, 219)
 
 Stephens
-(2, 699)        (3, 1045)       (4, 1334)       (5, 1585)       (6, 1828)       (7, 2046)       (8, 2270)       (9, 2456)   (10, 2668)       (11, 2836)      (12, 3041)      (13, 3172)      (14, 3370)      (15, 3444)      (16, 3634)      (17, 3625)  (18, 3805)       (19, 3629)      (20, 3792)      (21, 3391)      (22, 3530)      (23, 2918)      (24, 3029)      (25, 2159)  (26, 2235)       (27, 1257)      (28, 1298)      (29, 487)       (30, 502)
+(2, 432)        (3, 644)        (4, 816)        (5, 959)        (6, 1097)       (7, 1217)       (8, 1341)       (9, 1442)       (10, 1559)       (11, 1646)      (12, 1758)      (13, 1824)      (14, 1931)      (15, 1979)      (16, 2082)      (17, 2105)      (18, 2205)      (19, 2164)       (20, 2258)      (21, 2143)      (22, 2228)      (23, 1975)      (24, 2048)      (25, 1602)      (26, 1657)      (27, 1042)       (28, 1076)      (29, 438)       (30, 451)
 ```
 
-We want to *maximise* the number of segregating sites based on our downsampling. So, based on these results I will use 20, 20, 27 and, 15 i.e. the actual sample sizes.
+We want to *maximise* the number of segregating sites based on our downsampling. So, based on these results I will use 20, 20, 27 and, 15 i.e. the actual sample sizes (obviously you cannot sample any higher than the real value of n).
 
 ```bash
-easySFS/easySFS.py -i ../HamFrogR08maxsnps1DP5.recode.vcf -p pops_file.txt --proj 20,20,27,15
+easySFS/easySFS.py -i ../HamFrogR08maxsnps1minGT5.vcf -p pops_file.txt --proj 20,20,27,15
 ```
 
 ### Run Stairway Plot 2
@@ -49,15 +49,15 @@ I'll run this seperately for each natural population; it's key to remeber that t
 mkdir stairway_plot_v2.1
 unzip stairway_plot_v2.1.1.zip -d stairway_plot_v2.1
 ```
-Now, navigate to the the folder with the directory *stairway_plot_es* and create a new blueprint file, for Maud Island an example is below. !!! To ask Ludo about number of sequences, and L, and mutation rate
+Now, navigate to the the folder with the directory *stairway_plot_es* and create a new blueprint file, for Maud Island an example is below.
 ```
 #example blueprint file
 #input setting
 popid: Maud # id of the population (no white space)
 nseq: 40 # number of sequences
-L: 21250  # total number of observed nucleic sites, including polymorphic and monomorphic
+L: 2447914  # total number of observed nucleic sites, including polymorphic and monomorphic
 whether_folded: true # whethr the SFS is folded (true or false)
-SFS:17491.80837554265 3301.764618504911 151.7453490091901 46.28577101110631 37.24021196697853 35.629259603028 33.53631783139479 29.79094109313708 29.30350398686251 30.34035372805283 15.5552977227085 0 0 0 0 0 0 0 0 0 0
+SFS:9661.055806599743 1704.375413890788 83.63644452072168 29.10547129405674 23.85557294590284 23.52054970321189 22.94194565168617 20.48442680527145 17.35117731143766 15.32602919721953 7.347162079966721 0 0 0 0 0 0 0 0 0
 smallest_size_of_SFS_bin_used_for_estimation: 1 # default is 1; to ignore singletons, uncomment this line and change this number to 2
 largest_size_of_SFS_bin_used_for_estimation: 10 # default is nseq/2 for folded SFS
 pct_training: 0.67 # percentage of sites for training
@@ -79,6 +79,7 @@ fontsize: 12 # Font size
 ```
 Create batch file.
 ```bash
+module load Java
 java -cp stairway_plot_es Stairbuilder Maud.blueprint
 ```
 Run Stairway Plot 2
