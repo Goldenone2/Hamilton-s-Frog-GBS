@@ -67,7 +67,7 @@ stairway_plot_dir: stairway_plot_es # directory to the stairway plot files
 ninput: 200 # number of input files to be created for each estimation
 random_seed: 77
 #output setting
-mu: 2.7e-6 # assumed mutation rate per site per generation
+mu:9.15e–9 # assumed mutation rate per site per generation based on bombina (another achaebatrachia). 
 year_per_generation: 7 # assumed generation time (in years)
 #plot setting
 plot_title: two-epoch_fold # title of the plot
