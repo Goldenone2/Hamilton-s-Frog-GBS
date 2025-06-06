@@ -71,7 +71,7 @@ mu:9.15e–9 # assumed mutation rate per site per generation based on bombina (a
 year_per_generation: 7 # assumed generation time (in years)
 #plot setting
 plot_title: two-epoch_fold # title of the plot
-xrange: 0.1,10000 # Time (1k year) range; format: xmin,xmax; "0,0" for default
+xrange: 0,0 # Time (1k year) range; format: xmin,xmax; "0,0" for default
 yrange: 0,0 # Ne (1k individual) range; format: xmin,xmax; "0,0" for default
 xspacing: 2 # X axis spacing
 yspacing: 2 # Y axis spacing
