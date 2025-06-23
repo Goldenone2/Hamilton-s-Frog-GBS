@@ -347,7 +347,7 @@ Population summary statistics (more detail in populations.sumstats_summary.tsv):
   pop: 70.486 samples per locus; pi: 0.029416; all/variant/polymorphic sites: 2447914/11611/11611; private alleles: 0
 Populations is done.
 ```
-
+!!!!! Ineeed to remove this section, actually this will not impact Stairway Plot except in the negative sense because have so so many less loci .......
 ## Final Datasets
 ```bash
 cd /home/mulha552/uoo04306/frogs_gbs
