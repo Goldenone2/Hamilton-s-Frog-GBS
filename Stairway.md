@@ -54,7 +54,7 @@ unzip stairway_plot_v2.1.1.zip -d stairway_plot_v2.1
 Now, navigate to the the folder with the directory *stairway_plot_es* and create a blueprint file, for Maud Island:
 ```
 #input setting
-popid: Maud # id of the population (no white space)
+popid: Stephens # id of the population (no white space)
 nseq: 40 # number of sequences
 L: 2605505  # total number of observed nucleic sites, including polymorphic and monomorphic
 whether_folded: true # whethr the SFS is folded (true or false)
