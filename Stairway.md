@@ -54,7 +54,7 @@ unzip stairway_plot_v2.1.1.zip -d stairway_plot_v2.1
 Now, navigate to the the folder with the directory *stairway_plot_es* and create a blueprint file, for Maud Island:
 ```
 #input setting
-popid: Stephens # id of the population (no white space)
+popid: Maud # id of the population (no white space)
 nseq: 40 # number of sequences
 L: 2605505  # total number of observed nucleic sites, including polymorphic and monomorphic
 whether_folded: true # whethr the SFS is folded (true or false)
@@ -63,7 +63,7 @@ smallest_size_of_SFS_bin_used_for_estimation: 1 # default is 1; to ignore single
 largest_size_of_SFS_bin_used_for_estimation: 20 # default is nseq/2 for folded SFS
 pct_training: 0.67 # percentage of sites for training
 nrand: 9      19      28    38 # number of random break points for each try (separated by white space) integers only
-project_dir: Muad_Island # project directory
+project_dir: Maud_Island # project directory
 stairway_plot_dir: stairway_plot_es # directory to the stairway plot files
 ninput: 200 # number of input files to be created for each estimation
 random_seed: 77
@@ -81,7 +81,7 @@ fontsize: 12 # Font size
 For Stephen's Island
 ```
 #input setting
-popid: Maud # id of the population (no white space)
+popid: Stephens # id of the population (no white space)
 nseq: 30 # number of sequences
 L: 2605505  # total number of observed nucleic sites, including polymorphic and monomorphic
 whether_folded: true # whethr the SFS is folded (true or false)
