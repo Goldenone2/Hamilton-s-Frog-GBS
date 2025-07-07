@@ -43,9 +43,9 @@ unzip stairway_plot_v2.1.1.zip -d stairway_plot_v2.1
 Now, Navigate to the the folder with the directory *stairway_plot_es* and, create blueprint files for our two natural populations; pay attention to the paramters specified here always consult the [manual](https://github.com/xiaoming-liu/stairway-plot-v2/blob/master/READMEv2.1.pdf). Then, create the batch files (example for Maud Island).
 ```bash
 module load Java
-java -cp stairway_plot_es Stairbuilder Maud.Island.blueprint
+java -cp stairway_plot_es Stairbuilder Maud_Island.blueprint
 ```
 Finally, run Stairway Plot 2
 ```bash
-bash Maud.Island.blueprint.sh
+bash Maud_Island.blueprint.sh
 ```
