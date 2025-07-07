@@ -4,7 +4,7 @@ nseq: 30 # number of sequences
 L: 2605505  # total number of observed nucleic sites, including polymorphic and monomorphic
 whether_folded: true # whethr the SFS is folded (true or false)
 SFS:1566.567129611135 112.6161097390954 57.81801664077921 50.41244154226956 51.1004795525355 61.26638206954328 78.97219323774655 0 0 0 0 0 0 0 0
-smallest_size_of_SFS_bin_used_for_estimation: 1 # default is 1; to ignore singletons, uncomment this line and change this number to 2
+smallest_size_of_SFS_bin_used_for_estimation: 2 # default is 1; to ignore singletons, uncomment this line and change this number to 2
 largest_size_of_SFS_bin_used_for_estimation: 15 # default is nseq/2 for folded SFS
 pct_training: 0.67 # percentage of sites for training
 nrand: 7      14      22    28 # number of random break points for each try (separated by white space) integers only
