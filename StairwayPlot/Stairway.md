@@ -4,30 +4,25 @@ Stairway Plot is a method for inferring detailed population demographic history 
 ### Site Frequencing Spectra 
 The site frequnecy spectra (SFS) is a summary of allele frequencies across my SNPs, it describes the proportion of samples carrying the minor alelle. I am interested in the history of the natural populations of Hamilton's frog on Stephen's Island and, Maud Island. I will use [easySFS](https://github.com/isaacovercast/easySFS) to create an SFS of the polymorphic sites. It's important to note that I also need the total number of sites from the "populations" output as Stairway Plot 2 requires information on the number of monomorphic loci. 
 
+My pops_file.txt labels samples for Boat Bay and, Motuara as "Maud" giving me more data. Stairway Plot is looked at coalescence i.e. it only incorporates informaiton about mutation; the founder effects or drift experienced by these translocated populations will not impact these inferences. 
+
 ```bash
 mkdir stairway
 cd stairway
 git clone https://github.com/isaacovercast/easySFS.git
-easySFS/easySFS.py -i ../HamFrogR08maxsnps1DP5.recode.vcf -p pops_file.txt --preview
+easySFS/easySFS.py -i ../HamFrogR08maxsnps1DP5.recode.vcf -p pops_file_updated.txt --preview
 ```
 Preview mode allows us to project segragating sites for multiple vlaues of projecting down for each populaiton; we want to maximise the number of segregating sites.
 ```    
-Boat
-(2, 484)        (3, 726)        (4, 945)        (5, 1152)       (6, 1352)       (7, 1548)       (8, 1740)       (9, 1929)       (10, 2115)      (11, 2300)      (12, 2483)      (13, 2664)    (14, 2844)      (15, 3023)      (16, 3201)      (17, 3373)      (18, 3549)      (19, 3714)      (20, 3887)      (21, 4017)      (22, 4186)      (23, 4252)      (24, 4416)   (25, 4326)       (26, 4479)      (27, 4208)      (28, 4346)      (29, 3858)      (30, 3976)      (31, 3197)      (32, 3288)      (33, 2428)      (34, 2493)      (35, 1573)      (36, 1613)    (37, 878)       (38, 899)       (39, 320)       (40, 328)
-
 Maud
-(2, 467)        (3, 700)        (4, 909)        (5, 1107)       (6, 1297)       (7, 1483)       (8, 1665)       (9, 1844)       (10, 2021)      (11, 2196)      (12, 2370)      (13, 2542)    (14, 2713)      (15, 2883)      (16, 3052)      (17, 3219)      (18, 3386)      (19, 3546)      (20, 3711)      (21, 3857)      (22, 4020)      (23, 4122)      (24, 4281)   (25, 4322)       (26, 4475)      (27, 4358)      (28, 4501)      (29, 4101)      (30, 4226)      (31, 3601)      (32, 3704)      (33, 2853)      (34, 2930)      (35, 1950)      (36, 2000)    (37, 1054)      (38, 1079)      (39, 387)       (40, 396)
-
-Motuara
-(2, 455)        (3, 683)        (4, 887)        (5, 1080)       (6, 1266)       (7, 1446)       (8, 1624)       (9, 1798)       (10, 1970)      (11, 2140)      (12, 2309)      (13, 2476)    (14, 2642)      (15, 2807)      (16, 2971)      (17, 3134)      (18, 3296)      (19, 3457)      (20, 3617)      (21, 3772)      (22, 3930)      (23, 4082)      (24, 4239)   (25, 4383)       (26, 4538)      (27, 4666)      (28, 4819)      (29, 4922)      (30, 5072)      (31, 5123)      (32, 5269)      (33, 5287)      (34, 5429)      (35, 5328)      (36, 5463)    (37, 5285)      (38, 5412)      (39, 5061)      (40, 5176)      (41, 4684)      (42, 4786)      (43, 4053)      (44, 4136)      (45, 3197)      (46, 3260)      (47, 2259)   (48, 2301)       (49, 1363)      (50, 1388)      (51, 676)       (52, 687)       (53, 223)       (54, 227)
+(2, 466)        (3, 700)        (4, 910)        (5, 1108)       (6, 1299)       (7, 1486)       (8, 1668)       (9, 1849)       (10, 2026)      (11, 2203)      (12, 2377)      (13, 2550)     (14, 2722)       (15, 2893)      (16, 3063)      (17, 3231)      (18, 3399)      (19, 3567)      (20, 3733)      (21, 3898)      (22, 4063)      (23, 4227)      (24, 4391)      (25, 4554)     (26, 4716)       (27, 4877)      (28, 5038)      (29, 5199)      (30, 5358)      (31, 5518)      (32, 5676)      (33, 5834)      (34, 5992)      (35, 6149)      (36, 6305)      (37, 6461)     (38, 6616)       (39, 6771)      (40, 6926)      (41, 7080)      (42, 7233)      (43, 7386)      (44, 7538)      (45, 7690)      (46, 7842)      (47, 7993)      (48, 8143)      (49, 8294)     (50, 8443)       (51, 8592)      (52, 8741)      (53, 8889)      (54, 9037)      (55, 9185)      (56, 9332)      (57, 9478)      (58, 9624)      (59, 9770)      (60, 9915)      (61, 10060)    (62, 10205)      (63, 10349)     (64, 10492)     (65, 10636)     (66, 10778)     (67, 10921)     (68, 11063)     (69, 11204)     (70, 11346)     (71, 11486)     (72, 11627)     (73, 11766)    (74, 11906)      (75, 12043)     (76, 12182)     (77, 12319)     (78, 12457)     (79, 12591)     (80, 12728)     (81, 12852)     (82, 12989)     (83, 13098)     (84, 13234)     (85, 13327)    (86, 13462)      (87, 13527)     (88, 13660)     (89, 13646)     (90, 13776)     (91, 13693)     (92, 13821)     (93, 13634)     (94, 13759)     (95, 13379)     (96, 13499)     (97, 12930)    (98, 13042)      (99, 12300)     (100, 12405)    (101, 11487)    (102, 11583)    (103, 10409)    (104, 10494)    (105, 9339)     (106, 9414)     (107, 8165)     (108, 8229)     (109, 7079)    (110, 7134)      (111, 5978)     (112, 6024)     (113, 5009)     (114, 5046)     (115, 4075)     (116, 4105)     (117, 3243)     (118, 3266)     (119, 2571)     (120, 2590)     (121, 1944)    (122, 1957)      (123, 1448)     (124, 1458)     (125, 1022)     (126, 1029)     (127, 702)      (128, 707)      (129, 420)      (130, 423)      (131, 232)      (132, 234)      (133, 72)      (134, 72)
 
 Stephens
-(2, 699)        (3, 1045)       (4, 1334)       (5, 1585)       (6, 1828)       (7, 2046)       (8, 2270)       (9, 2456)       (10, 2668)      (11, 2836)      (12, 3041)      (13, 3172)    (14, 3370)      (15, 3444)      (16, 3634)      (17, 3625)      (18, 3805)      (19, 3629)      (20, 3792)      (21, 3391)      (22, 3530)      (23, 2918)      (24, 3029)   (25, 2159)       (26, 2235)      (27, 1257)      (28, 1298)      (29, 487)       (30, 502)
-
+(2, 699)        (3, 1045)       (4, 1334)       (5, 1585)       (6, 1828)       (7, 2046)       (8, 2270)       (9, 2456)       (10, 2668)      (11, 2836)      (12, 3041)      (13, 3172)     (14, 3370)       (15, 3444)      (16, 3634)      (17, 3625)      (18, 3805)      (19, 3629)      (20, 3792)      (21, 3391)      (22, 3530)      (23, 2918)      (24, 3029)      (25, 2159)     (26, 2235)       (27, 1257)      (28, 1298)      (29, 487)       (30, 502)
 ```
 Based on these results I will use 20, 20, 27 and, 15 i.e. the actual sample sizes. Obviously you cannot sample any higher than the real value of n.
 ```bash
-easySFS/easySFS.py -i ../HamFrogR08maxsnps1minGT5.vcf -p pops_file.txt --proj 20,20,27,15
+easySFS/easySFS.py -i ../HamFrogR08maxsnps1minGT5.vcf -p pops_file_updated.txt --proj 67,15
 ```
 ### Run Stairway Plot 2
 I'll run this for the two natural populations 'Maud' and 'Stephens.' Remember, that the stariway plot is only using information from mutation to understand historical demogrphics. So, will become unreliable over the most recent ~100 generations, what is more important to infer from this analysis is the overall trend we see in the data here. Other methods, based on recombinations or drift, such as GONE are more reliable for these more recent events. Nevertheless, it's useful for our situaiton where we have limited geneitc resources for Hamilton's forg. 
@@ -49,3 +44,5 @@ Finally, run Stairway Plot 2
 ```bash
 bash Maud_Island.blueprint.sh
 ```
+### Visualisation in R
+Stairway Plot does provide its own grpahs in .pdf & .png but I've found the x-axsis has several labels overalpping; which is not ideal for publishing. I will downlaod
