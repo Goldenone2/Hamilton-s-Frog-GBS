@@ -110,5 +110,3 @@ Inbreeding <- ggplot(Het, aes(x = Pop, y = F)) +
 ggsave(filename="total_sites.png", plot = total_sites, dpi = 300 )
 ggsave(filename = "inbreeding.png", plot = Inbreeding, dpi =300)
 ```
-![](GeneticDiversity_Inbreeding/total_sites.png)<!-- -->
-![](Hamilton-s-Frog-GBS/GeneticDiversity_Inbreeding/inbreeding.png)<!-- -->
