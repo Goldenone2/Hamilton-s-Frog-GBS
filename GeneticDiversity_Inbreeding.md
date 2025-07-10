@@ -2,7 +2,7 @@
 I'd like to compare heterozygosity and, inbreeding across the four populations I've sequenced. 
 
 ## Data Import and Setup
-```{r}
+```r
 # Clear workspace
 rm(list = ls())
 
@@ -29,20 +29,20 @@ Het$Prop.Het <- (Het$N_SITES - Het$O.HOM.) / Het$N_SITES
 ```
 ## Simple ANOVA
 First for heterozygosity.
-```{r}
+```r
 m1 <- aov(Prop.Het ~ Pop, data = Het)
 summary(m1)
 TukeyHSD(m1)
 
 ```
 And for inbreeding
-```{r}
+```r
 m2 <- aov(F ~ Pop, data = Het)
 summary(m2)
 TukeyHSD(m2)
 ```
 ## Create Jitterplots
-```{r}
+```r
 
 #Total Sites
 total_sites <- ggplot(Het, aes(x = Pop, y = Prop.Het)) +
@@ -61,7 +61,7 @@ Inbreeding <- ggplot(Het, aes(x = Pop, y = F)) +
   xlab("Population")
   
 ```
-```{r}
+```r
 ggsave(filename="total_sites.png", plot = total_sites, dpi = 300 )
 ggsave(filename = "inbreeding.png", plot = Inbreeding, dpi =300)
 ```
