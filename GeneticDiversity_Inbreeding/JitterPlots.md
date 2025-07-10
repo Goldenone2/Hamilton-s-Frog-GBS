@@ -111,4 +111,4 @@ ggsave(filename="total_sites.png", plot = total_sites, dpi = 300 )
 ggsave(filename = "inbreeding.png", plot = Inbreeding, dpi =300)
 ```
 ![](GeneticDiversity_Inbreeding/total_sites.png)<!-- -->
-![](GeneticDiversity_Inbreeding/inbreeding.png)<!-- -->
+![](Hamilton-s-Frog-GBS/GeneticDiversity_Inbreeding/inbreeding.png)<!-- -->
