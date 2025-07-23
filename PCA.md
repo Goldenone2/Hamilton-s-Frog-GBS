@@ -1,7 +1,35 @@
-PCA
-================
-Hadley Muller
-2025-04-16
+# Principal Component Analysis
+I will investigate the natural divergence or structure between Hamilton’s frog populations (esp. Takapourewa & Te Pakeka) using PCA, a dimensionalality reduction analysis that takes our high-dimensional data and reduces it to a few principal components.
+
+### Set up
+First, we need to convert our .vcf in the relevant plink formats. Plink was made for human genomic data and thus expects: chromosome location information, and pedigree information: --allow-extra-chr allows me to proceed with non-standard chromosome names and numbers,  --double-id allows me to duplicate the ID of my samples for both "family" and "individual" ID
+
+Notes from the [PLINK Documentation](https://www.cog-genomics.org/plink/1.9/input) that if you're dealing with a draft assembly with lots of contigs, rather than actual autosomes—the standard PLINK build can handle that if you name your contigs 'contig1', 'contig2', etc. and use the --allow-extra-chr flag!
+```sh
+# mkdir PCA
+cd PCA
+awk '{if($0 !~ /^#/) print "contig"$0; else print $0}' ../HamFrogR08maxsnps1DP5.recode.vcf > PLINKvcf_with_contig.vcf
+```
+```sh
+plink --vcf PLINKvcf_with_contig.vcf --make-bed --out PLINK_Ham --allow-extra-chr --double-id
+```
+
+### Peform PCA
+```sh
+plink --bfile PLINK_Ham --pca --out PCA_Ham --allow-extra-chr --double-id
+```
+
+## Peform PCA on a subset: translocation data only
+To see whether there is more intricate structure between the Muad Island (natural source populaiton) and, Boat Bay or Motuara (translocated populations) I will run PCA on this small subset. I will make a .txt file with the individuals I want to --keep
+```sh
+cd /home/mulha552/uoo04306/frogs_gbs/PCA/PCA_Focused
+module load VCFtools
+vcftools --vcf ../PLINKvcf_with_contig.vcf --keep Maud.txt --recode --recode --out MaudIslandOnly
+```
+```sh
+plink --vcf MaudIslandOnly.recode.vcf plink --make-bed --out PLINK_Maud --allow-extra-chr --double-id
+plink --bfile PLINK_Maud --pca --out PCA_Maud --allow-extra-chr --double-id
+```
 
 # Data Visualisation in R
 
