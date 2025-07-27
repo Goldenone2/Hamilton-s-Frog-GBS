@@ -1,10 +1,3 @@
----
-title: "Relatedness"
-author: "Hadley Muller"
-date: "2025-07-25"
-output: github_document
----
-
 #Analysis Overview
 I have measured inbreeding as F<sub>H</sub>, this estimate is inherently related to estimates of genetic diversity and, hence, you can see it effectively follows the opposite pattern to H<sub>O<sub>. Our inbreeding coefficient may be calculated to be ≤0 even when there is mating between relatives, because the estimate is based of a comparison to an "ideal" random mating population under Hardy Weinberg.In small populations random mating doesn't exclude relatives breeding, especially in our case where historical demographic factors (see Stairway Plots) are leading to excess heterozygosity in the smallest population, Takapourewa. 
 
@@ -136,3 +129,4 @@ results <- coancestry("HamGeno.txt", trioml = 1, trioml.num.reference = 82)
 #RDS means we can save the R object for plotting later :) 
 saveRDS(results, file = "TrioML_results.rds")
 ```
+I ran this as a SLURM job, because it ran all weekend on my laptop and had not finished!
