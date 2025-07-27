@@ -116,7 +116,7 @@ allele_df[,-1] <- lapply(allele_df[,-1], function(col) {
 
 That was so hard to understand, and is confusing as hell, chatgpt is my friend here when it is *not* involved in real analysis. I'd recommend saving this as a .txt file for future use, we don't need to make this odd binary format again & again .... but it is important to understand what is going on with the the data formatting. 
 ```{r}
-write.table(allele_df, "HamGeno.txt", quote=FALSE, row.names=FALSE, col.names=TRUE)
+write.table(allele_df, "HamGeno.txt", quote=FALSE, row.names=FALSE, col.names=FALSE, sep = " ")
 ```
 
 ### Calculate Relatedness
