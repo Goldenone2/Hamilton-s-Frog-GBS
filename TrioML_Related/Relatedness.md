@@ -130,3 +130,16 @@ results <- coancestry("HamGeno.txt", trioml = 1, trioml.num.reference = 82)
 saveRDS(results, file = "TrioML_results.rds")
 ```
 I ran this as a SLURM job, because it ran all weekend on my laptop and had not finished!
+
+```
+#!/bin/bash -e
+#SBATCH --job-name= TrioML # job name (shows up in the queue)
+#SBATCH --time=48:00:00      # Walltime (HH:MM:SS), if our job finishes before this no worries but we can give ample time in case
+#SBATCH --mem= 8G          # Memory in G, minimum 1G per core.
+#SBATCH --cpus-per-task= 8 #number of cores for our job
+
+cd /home/mulha552/uoo04306/frogs_gbs/TrioML
+module load R
+Rscript --vanilla TrioML_SLURM.R
+echo done
+```
