@@ -16,3 +16,5 @@ message("Packages_Loaded")
 results <- coancestry("HamGeno.txt", trioml = 1, trioml.num.reference = 82)
 #RDS means we can save the R object for plotting later :) 
 saveRDS(results, file = "TrioML_results.rds")
+
+warnings()
