@@ -1,5 +1,5 @@
 # Analysis Overview
-I have measured inbreeding as F<sub>H</sub>, this estimate is inherently related to estimates of genetic diversity and, hence, you can see it effectively follows the opposite pattern to H<sub>O<sub>. Our inbreeding coefficient may be calculated to be ≤0 even when there is mating between relatives, because the estimate is based of a comparison to an "ideal" random mating population under Hardy Weinberg.In small populations random mating doesn't exclude relatives breeding, especially in our case where historical demographic factors (see Stairway Plots) are leading to excess heterozygosity in the smallest population, Takapourewa. 
+I have measured inbreeding as F<sub>H</sub>, this estimate is inherently related to estimates of genetic diversity and, hence, you can see it effectively follows the opposite pattern to observed heterozygosity. Our inbreeding coefficient may be calculated to be ≤0 even when there is mating between relatives, because the estimate is based of a comparison to an "ideal" random mating population under Hardy Weinberg.In small populations random mating doesn't exclude relatives breeding, especially in our case where historical demographic factors (see Stairway Plots) are leading to excess heterozygosity in the smallest population, Takapourewa. 
 
 ### Setting up related
 An annoying first time step...
