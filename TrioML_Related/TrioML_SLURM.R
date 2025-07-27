@@ -10,6 +10,8 @@ library("ggplot2")
 library("related")
 library("adegenet")
 
+message("Packages_Loaded")
+
 # Run TrioML
 results <- coancestry("HamGeno.txt", trioml = 1, trioml.num.reference = 82)
 #RDS means we can save the R object for plotting later :) 
