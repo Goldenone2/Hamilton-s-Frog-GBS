@@ -118,11 +118,32 @@ That was so hard to understand, and is confusing as hell, chatgpt is my friend h
 ```{r}
 write.table(allele_df, "HamGeno.txt", quote=FALSE, row.names=FALSE, col.names=FALSE, sep = " ")
 ```
+### Subset by population
+Because TrioML uses a reference for each pariwsie estimate we can bias results by using a referecne from a divergent population, this is important for Takapourewa specifically. 
+```{r}
+BoatBay <- allele_df %>%
+  filter(startsWith(InDV, "BB"))
+write.table(BoatBay, "BoatBay.txt", quote=FALSE, row.names=FALSE, col.names=FALSE, sep = " ")
+
+TePakeka <- allele_df %>%
+  filter(startsWith(InDV, "MA"))
+write.table(TePakeka, "TePakeka.txt", quote=FALSE, row.names=FALSE, col.names=FALSE, sep = " ")
+
+Motuara <- allele_df %>%
+  filter(startsWith(InDV, "MT"))
+write.table(Motuara, "Motuara.txt", quote=FALSE, row.names=FALSE, col.names=FALSE, sep = " ")
+
+Takapourewa <- allele_df %>%
+  filter(startsWith(InDV, "TA"))
+write.table(Takapourewa, "Takapourewa.txt", quote=FALSE, row.names=FALSE, col.names=FALSE, sep = " ")
+```
 
 ### Calculate Relatedness
 I will calculate relatedness using the [triadic likelihood method](https://www.cambridge.org/core/journals/genetics-research/article/triadic-ibd-coefficients-and-applications-to-estimating-pairwise-relatedness/19C27DCC0F90870C52B5040132922281).
 
-I must specify how many reference individuals are selected from my data. Reference individuals serve to estimate population allele frequencies and genotype probabilities, but this doesn't stop them from being used as focal individuals; the default is 100, so I will nominate my entire data set.
+I must specify how many reference individuals are selected from my data. Reference individuals serve to estimate population allele frequencies and genotype probabilities, but this doesn't stop them from being used as focal individuals; the default is 100, so I will nominate my entire data set. Boat Bay = 20, Te Pakeka = 20, Takapourewa = 15, Motuara = 27.
+
+Example Code:
 
 ```{r}
 results <- coancestry("HamGeno.txt", trioml = 1, trioml.num.reference = 82)
