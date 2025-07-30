@@ -143,21 +143,21 @@ I will calculate relatedness using the [triadic likelihood method](https://www.c
 
 I must specify how many reference individuals are selected from my data. Reference individuals serve to estimate population allele frequencies and genotype probabilities, but this doesn't stop them from being used as focal individuals; the default is 100, so I will nominate my entire data set. Boat Bay = 20, Te Pakeka = 20, Takapourewa = 15, Motuara = 27.
 
-Example Code:
+Example Code (see the r script I've run for each population seperately):
 
 ```{r}
 results <- coancestry("HamGeno.txt", trioml = 1, trioml.num.reference = 82)
 #RDS means we can save the R object for plotting later :) 
 saveRDS(results, file = "TrioML_results.rds")
 ```
-I ran this as a SLURM job, because it ran all weekend on my laptop and had not finished!
+I ran this as a SLURM job, because it ran all weekend on my laptop and had not finished! I think the walltime etc. are massive overkill now that I have removed singletons, but we will see!
 
 ```
 #!/bin/bash -e
 #SBATCH --job-name= TrioML # job name (shows up in the queue)
-#SBATCH --time=48:00:00      # Walltime (HH:MM:SS), if our job finishes before this no worries but we can give ample time in case
-#SBATCH --mem= 8G          # Memory in G, minimum 1G per core.
-#SBATCH --cpus-per-task= 8 #number of cores for our job
+#SBATCH --time=72:00:00      # Walltime (HH:MM:SS), if our job finishes before this no worries but we can give ample time in case
+#SBATCH --mem= 10G          # Memory in G, minimum 1G per core.
+#SBATCH --cpus-per-task= 10 #number of cores for our job
 
 cd /home/mulha552/uoo04306/frogs_gbs/TrioML
 module load R
