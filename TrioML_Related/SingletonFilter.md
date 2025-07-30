@@ -2,12 +2,11 @@
 TrioML is both computationally arduous. I'll do a little additonal filtering here to make our lives easier down the road by removing singletons.
 [bcftools](https://samtools.github.io/bcftools/bcftools.html#common_options) can make our lives much easier here; where vcftools doesn't have the filtering we'de like.
 
-````bash
+```bash
 cd TrioML
 module load VCFtools
 module load BCFtools
 ```
-
 ### singletons first
 Vcftools --singeltons creates an output file listing all singletons and private doubletons.
 ```bash
