@@ -122,19 +122,19 @@ write.table(allele_df, "HamGeno.txt", quote=FALSE, row.names=FALSE, col.names=FA
 Because TrioML uses a reference for each pariwsie estimate we can bias results by using a referecne from a divergent population, this is important for Takapourewa specifically. 
 ```{r}
 BoatBay <- allele_df %>%
-  filter(startsWith(InDV, "BB"))
+  filter(startsWith(IndividualID, "BB"))
 write.table(BoatBay, "BoatBay.txt", quote=FALSE, row.names=FALSE, col.names=FALSE, sep = " ")
 
 TePakeka <- allele_df %>%
-  filter(startsWith(InDV, "MA"))
+  filter(startsWith(IndividualID, "MA"))
 write.table(TePakeka, "TePakeka.txt", quote=FALSE, row.names=FALSE, col.names=FALSE, sep = " ")
 
 Motuara <- allele_df %>%
-  filter(startsWith(InDV, "MT"))
+  filter(startsWith(IndividualID, "MT"))
 write.table(Motuara, "Motuara.txt", quote=FALSE, row.names=FALSE, col.names=FALSE, sep = " ")
 
 Takapourewa <- allele_df %>%
-  filter(startsWith(InDV, "TA"))
+  filter(startsWith(IndividualID, "TA"))
 write.table(Takapourewa, "Takapourewa.txt", quote=FALSE, row.names=FALSE, col.names=FALSE, sep = " ")
 ```
 
