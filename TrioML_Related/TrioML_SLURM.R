@@ -12,6 +12,7 @@ library("adegenet")
 library("dplyr")
 
 message("Packages_Loaded")
+# these are great to check in the terminal my R code is working
 
 # Run TrioML
 BoatBay_results <- coancestry("BoatBay.txt", trioml = 1, trioml.num.reference = 20)
