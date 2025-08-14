@@ -139,16 +139,14 @@ write.table(Takapourewa, "Takapourewa.txt", quote=FALSE, row.names=FALSE, col.na
 ```
 
 ### Calculate Relatedness
-I will calculate relatedness using the [triadic likelihood method](https://www.cambridge.org/core/journals/genetics-research/article/triadic-ibd-coefficients-and-applications-to-estimating-pairwise-relatedness/19C27DCC0F90870C52B5040132922281).
-
-I must specify how many reference individuals are selected from my data. Reference individuals serve to estimate population allele frequencies and genotype probabilities, but this doesn't stop them from being used as focal individuals; the default is 100, so I will nominate my entire data set. Boat Bay = 20, Te Pakeka = 20, Takapourewa = 15, Motuara = 27.
+Orignally, I'd wanted to calculate relatedness using the [triadic likelihood method](https://www.cambridge.org/core/journals/genetics-research/article/triadic-ibd-coefficients-and-applications-to-estimating-pairwise-relatedness/19C27DCC0F90870C52B5040132922281). However, Takapourewa doesn't have sufficient data to create an adequate reference populations. I will trial another maximum liklihood method, these are generally better, but the dyadic method may overestimate relatedness .... so I will also use a method of moments. I can compare both a see what's up, selecting the best for my final chapter. 
 
 Example Code (see the r script I've run for each population seperately):
 
 ```{r}
-results <- coancestry("HamGeno.txt", trioml = 1, trioml.num.reference = 82)
+BoatBay_results <- coancestry("BoatBay.txt", dyadml =1, wang =1 )
 #RDS means we can save the R object for plotting later :) 
-saveRDS(results, file = "TrioML_results.rds")
+saveRDS(BoatBay_results, file = "BoatBay_results.rds")
 ```
 I ran this as a SLURM job, because it ran all weekend on my laptop and had not finished! I think the walltime etc. are massive overkill now that I have removed singletons, but we will see!
 
@@ -164,3 +162,4 @@ module load R
 Rscript --vanilla TrioML_SLURM.R
 echo done
 ```
+
