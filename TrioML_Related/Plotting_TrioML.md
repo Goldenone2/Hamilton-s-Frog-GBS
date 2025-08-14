@@ -1,8 +1,3 @@
-TrioML Plotting
-================
-Hadley Muller
-2025-08-03
-
 # Analysis Overview
 
 I’ve got the .rds results saved and, I’d like to make a nice box plot to
@@ -81,3 +76,4 @@ ggsave(filename="done.png", plot = done, dpi = 300, width = 9, height = 8 )
 
     ## Warning: Removed 34 rows containing missing values or values outside the scale range
     ## (`geom_point()`).
+
