@@ -138,13 +138,59 @@ Takapourewa <- allele_df %>%
 write.table(Takapourewa, "Takapourewa.txt", quote=FALSE, row.names=FALSE, col.names=FALSE, sep = " ")
 ```
 
+#### Takapourewa
+After sub-setting and removing singletons, looks like Takapourewa has lots of monomoprhic loci. Normally, these are excluded from analysis; the current Takapourewa subset fails to run any anlaysis even simple method of moments. I believe the large number of monomoprhic loci is why this population isn't running. I will go through and remove the monomorphic sites to see if this helps:
+
+I've used a function *sapply* this is a shortcut for looping over elements of something (vecotr,list or sequence) and applying the same function to each element one at a time
+e.g. I first use it to ensure every genotype column is coded as.numeric 
+
+I also used base R subsetting:
+         object[ rows , columns ]
+- Leave something blank to select all in that dimension.
+- Numeric index = positions
+- Logical index = TRUE/FALSE mask (length must match rows/columns)
+- Character index (for data frames) = column names
+
+For example: 
+- geno[1, ] → first row, all columns
+- geno[, 3] → all rows, third column
+- geno[2:4, c(1,3)] → rows 2–4, columns 1 and 3
+
+```{r}
+Takapourewa <- read.table("Takapourewa.txt", header = FALSE, stringsAsFactors = FALSE)
+
+# pull the first column to preserve it later
+id_col <- Takapourewa[,1]
+
+# Convert genotype columns to numeric matrix
+geno <- as.matrix(sapply(Takapourewa[,-1], as.numeric)) 
+
+# Check polymorphism within each locus
+is_poly <- sapply(seq(1, ncol(geno), by=2), # gnerates the starting column index of each locus pair i.e. 1 , 3 5 ....
+function(i) { # function is then taking the values and run the code inside {}
+  locus <- geno[, i:(i+1)] # extracts a n_individuals x2 matrix i.e. both alleles columns 
+  alleles <- as.vector(locus) # flattens the matrix to a single vector
+  alleles <- alleles[alleles != 0]  # ignore missing when deciding polymorphism 
+  length(unique(alleles)) > 1       # in the vector is there more than 1 alelles i.e. values of 1 & 2?
+})
+
+# is_poly is now a vector with one entry per locus ..... we keep both columns for loci that are polymorphic, stored as TRUE in is_poly
+
+geno_poly <- geno[, rep(is_poly, each = 2)] # rep is used here to turn soomething like c(TRUE, FALSE) into c(TRUE, TRUE, FALSE, FALSE)
+                                               
+# new data frame
+Takapourewa_poly <- data.frame(id_col, geno_poly)
+write.table(Takapourewa_poly, "Takapourewa_poly.txt",
+            quote=FALSE, row.names=FALSE, col.names=FALSE, sep=" ")
+```
+
 ### Calculate Relatedness
-Orignally, I'd wanted to calculate relatedness using the [triadic likelihood method](https://www.cambridge.org/core/journals/genetics-research/article/triadic-ibd-coefficients-and-applications-to-estimating-pairwise-relatedness/19C27DCC0F90870C52B5040132922281). However, Takapourewa doesn't have sufficient data to create an adequate reference populations. I will trial another maximum liklihood method, these are generally better, but the dyadic method may overestimate relatedness .... so I will also use a method of moments. I can compare both a see what's up, selecting the best for my final chapter. 
+I will calculate relatedness using the [triadic likelihood method](https://www.cambridge.org/core/journals/genetics-research/article/triadic-ibd-coefficients-and-applications-to-estimating-pairwise-relatedness/19C27DCC0F90870C52B5040132922281). I will use the entire data as the reference population, the default is normally 100 so this is prudent. 
 
 Example Code (see the r script I've run for each population seperately):
 
 ```{r}
-BoatBay_results <- coancestry("BoatBay.txt", dyadml =1, wang =1 )
+BoatBay_results <- coancestry("BoatBay.txt", trioml =1, trioml.num.reference = 20)
 #RDS means we can save the R object for plotting later :) 
 saveRDS(BoatBay_results, file = "BoatBay_results.rds")
 ```
@@ -162,4 +208,5 @@ module load R
 Rscript --vanilla TrioML_SLURM.R
 echo done
 ```
+
 
