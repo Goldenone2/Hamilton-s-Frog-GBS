@@ -199,7 +199,7 @@ I ran this as a SLURM job, because it ran all weekend on my laptop and had not f
 ```
 #!/bin/bash -e
 #SBATCH --job-name= TrioML # job name (shows up in the queue)
-#SBATCH --time=72:00:00      # Walltime (HH:MM:SS), if our job finishes before this no worries but we can give ample time in case
+#SBATCH --time=4:00:00      # Walltime (HH:MM:SS), if our job finishes before this no worries but we can give ample time in case
 #SBATCH --mem= 10G          # Memory in G, minimum 1G per core.
 #SBATCH --cpus-per-task= 10 #number of cores for our job
 
@@ -208,5 +208,6 @@ module load R
 Rscript --vanilla TrioML_SLURM.R
 echo done
 ```
+
 
 
