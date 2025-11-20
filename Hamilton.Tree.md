@@ -1,0 +1,142 @@
+Hamilton.Tree
+================
+Hadley Muller
+2025-04-16
+
+# Analysis Overview
+
+Righto, I’ve now done my maximum-likelihood phylogenetic analysis using
+IQTREE2. I will visualise this using the package ‘ggtree’ loosely
+following [this
+tutorial](https://arftrhmn.net/creating-a-publication-quality-phylogeny-using-ggtree/).
+
+### Data Import and Setup
+
+``` r
+# Clear workspace
+rm(list = ls())
+
+#Load required packages
+
+# install.packages("phangorn")
+# install.packages("BiocManager")
+# BiocManager::install("ggtree")
+# BiocManager::install("treeio")
+
+library(phangorn)
+```
+
+    ## Loading required package: ape
+
+``` r
+library(ggtree)
+```
+
+    ## ggtree v3.16.0 Learn more at https://yulab-smu.top/contribution-tree-data/
+    ## 
+    ## Please cite:
+    ## 
+    ## S Xu, Z Dai, P Guo, X Fu, S Liu, L Zhou, W Tang, T Feng, M Chen, L
+    ## Zhan, T Wu, E Hu, Y Jiang, X Bo, G Yu. ggtreeExtra: Compact
+    ## visualization of richly annotated phylogenetic data. Molecular Biology
+    ## and Evolution. 2021, 38(9):4039-4042. doi: 10.1093/molbev/msab166
+
+    ## 
+    ## Attaching package: 'ggtree'
+
+    ## The following object is masked from 'package:ape':
+    ## 
+    ##     rotate
+
+``` r
+library(treeio)
+```
+
+    ## treeio v1.32.0 Learn more at https://yulab-smu.top/contribution-tree-data/
+    ## 
+    ## Please cite:
+    ## 
+    ## LG Wang, TTY Lam, S Xu, Z Dai, L Zhou, T Feng, P Guo, CW Dunn, BR
+    ## Jones, T Bradley, H Zhu, Y Guan, Y Jiang, G Yu. treeio: an R package
+    ## for phylogenetic tree input and output with richly annotated and
+    ## associated data. Molecular Biology and Evolution. 2020, 37(2):599-603.
+    ## doi: 10.1093/molbev/msz240
+
+``` r
+library(ggnewscale)
+library(patchwork)
+
+# Load data
+Tree <- read.iqtree('Final.FrogTree.treefile')
+meta <- read.csv('meta.csv', fileEncoding = "UTF-8")
+
+#Set factor levels
+meta$Population <- factor(meta$Population, levels = c("Takapourewa", "Te Pākeka", "Boat Bay", "Motuara" ))
+
+# Midpoint root the phylo *inside* the tree data object, keeping other metadata.
+Tree@phylo <- midpoint(Tree@phylo)
+```
+
+## Visualisations
+
+``` r
+Tree1 <- ggtree(Tree) %<+% meta + 
+  geom_tippoint(aes(colour = Population)) +
+  scale_colour_manual(values = c("cornflowerblue", "darkorange","palevioletred1", "#44AA99"))  +
+  theme(legend.position="none")
+
+Tree1
+```
+
+![](Hamilton.Tree_files/figure-gfm/unnamed-chunk-2-1.png)<!-- -->
+
+# Extra content
+
+### Bootstrap Support
+
+IQTree2 comes with bootstrap support in both SH_aLRT and UFBoot values.
+In order to annotate or filter our tree, we want to know which nodes are
+supported by both values by adding a new column to our tree data.
+
+``` r
+# Add bootstrap support
+Tree1$data$bootstrap <- '0'
+
+Tree1$data[which(Tree1$data$SH_aLRT >= 70 & Tree1$data$UFboot >= 70),]$bootstrap <- '1'
+
+Tree1$data$bootstrap <- as.factor(Tree1$data$bootstrap)
+
+Tree1 <- Tree1 + new_scale_color() +
+  geom_tree(aes(color=bootstrap)) +
+  scale_colour_manual(name = 'Bootstrap', values = c('1' = 'black', '0' = 'grey'), guide = "none")
+
+Tree1
+```
+
+![](Hamilton.Tree_files/figure-gfm/unnamed-chunk-3-1.png)<!-- -->
+
+``` r
+summary(Tree1$data$SH_aLRT)
+```
+
+    ##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA's 
+    ##   24.00   58.50   70.00   69.01   81.50  100.00      84
+
+``` r
+summary(Tree1$data$UFboot)
+```
+
+    ##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA's 
+    ##   24.00   58.50   70.00   69.01   81.50  100.00      84
+
+### Final Plot Alongside PCA
+
+``` r
+# library(patchwork)
+
+# Overview <- (plots = wrap_plots(Tree1, PCA)) +
+# plot_layout(axis_titles = "collect") + plot_annotation(tag_levels = "A")
+# Overview
+
+# ggsave(filename="overview.png", plot = Overview, dpi = 300, width = 18, height = 9 )
+```
