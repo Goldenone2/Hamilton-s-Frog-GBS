@@ -1,8 +1,3 @@
-Stairway
-================
-Hadley Muller
-2025-05-27
-
 # Stairway Plot
 
 ### Data Import and Setup
@@ -111,3 +106,4 @@ Stairway2
 ``` r
  # ggsave(filename="Stairway.png", plot = Stairway2, dpi = 300, width = 8, height = 6 )
 ```
+
