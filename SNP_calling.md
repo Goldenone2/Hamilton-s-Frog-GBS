@@ -166,6 +166,16 @@ Finally, once this is working we can submit a job, and ofr python we specify arg
 sbatch -A uoo04306 -t 48:00:00 -c 8 --mem 8G --job-name=frogconcat frogconcat.py
 squeue -u mulha552 #check its working
 ```
+I want to take a final check of how many million reads I have per sample, important for later discussion
+```
+cd /home/mulha552/uoo04306/frogs_gbs//samples_concat
+for fq in *.fq.gz; do
+   sample=$(basename "$fq" .fq.gz)
+    reads=$(zgrep -c "^@" "$fq")
+     reads_mill=$(awk -v r="$reads" 'BEGIN {printf "%.2f", r/1000000}')
+     echo -e "${sample}\t${reads}\t${reads_mill}M"
+done > ../read_counts_all_samples.txt
+```
 ## Subsampling
 *Hamilton's frog have a large genome so I have special code*
 We will subsample from the concatenated reads to take the first 5 million reads (code reads 20,000,000 lines because each read is 4 lines in a .fastq) so we are working with an actually workable amount of sequence. We still run the previous code, because for those samples where we may have <5million reads we need to take all of it.
