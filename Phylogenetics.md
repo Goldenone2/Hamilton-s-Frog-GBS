@@ -184,8 +184,8 @@ using patchwork.
 
 ``` r
 Plot_Manuscript <- 
-  (Tree_UF_2 / (PCA_All | PCA_Maud)) +
-  plot_layout(heights  = c(2, 1), 
+  ((PCA_All | PCA_Maud)/ Tree_UF) +
+  plot_layout(heights  = c(1, 2), 
     axis_titles = "collect") +
   plot_annotation(tag_levels = "A")
 
