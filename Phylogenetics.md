@@ -166,7 +166,7 @@ create an effective visualisaiton.
 
 ``` r
 # Add bootstrap support
-Tree_UF <- Tree1 + geom_text2(aes(subset = !isTip, label = label),size = 2,hjust = -0.3) +
+Tree_UF <- Tree1 + geom_text2(aes(subset = !isTip, label = label),size = 2.2,hjust = -0.3, fontface = "bold") +
   theme(
    legend.position = c(0.02, 0.95),
   legend.justification = c(0, 1) # anchor top left
