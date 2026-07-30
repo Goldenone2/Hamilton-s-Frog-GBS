@@ -1,5 +1,5 @@
 # Phylogenetic Modelling
-I will do a phylogenetic analysis using IQTREE; to understand the natural divergence between Maud Island and Stephen's Island; population level dynamics between founder and source populations will not have an effect here.
+I undertook a simple phylogenetic analysis using IQTREE. Primarily, to visualise the natural divergence between Maud Island and Stephen's Island; population level dynamics between founder and source populations will not have an effect here.
 ```sh
 mdkir tree
 cd tree
