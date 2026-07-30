@@ -17,7 +17,7 @@ awk '{
   print $1, $2;
 }' popmap.txt > meta.txt
 ```
-Export to R, code can be run locally on a PC.
+Export to R, all following code can be run locally on a PC; comments are inline. 
 ``` r
 # Clear workspace
 rm(list = ls())
@@ -97,7 +97,7 @@ as.data.frame(popmatrix)
     ## Motuara                 Motuara/Motuara         Motuara/Stephens Island
     ## Stephens Island Stephens Island/Motuara Stephens Island/Stephens Island
 
-### Calculate Pairwise F<sub>st</sub>
+## Calculate Pairwise F<sub>st</sub>
 
 ``` r
 # We extract & separate each population pair & save this as a vector "poplem"
@@ -212,7 +212,7 @@ popmatrix=data.frame(apply(popmatrix, 2, function(x) as.numeric(as.character(x))
 row.names(popmatrix)=poplevels
 ```
 
-### Plotting with ggplot
+## Plotting with ggplot2
 
 ``` r
 # Remove the upper triangle 
