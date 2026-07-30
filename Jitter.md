@@ -1,5 +1,5 @@
 # Genetic Diversity and Inbreeding
-I have compared heterozygosity and, inbreeding across the four populations I’ve sequenced.
+I compared heterozygosity and, inbreeding across the four populations I sequenced.
 
 ## Data Import and Setup
 ``` r
@@ -119,7 +119,7 @@ TukeyHSD(m2)
 
 
 ## Descriptive Statistics
-I calculate these for the species overall, and by population.
+I calculated these for the species overall, and by population.
 ``` r
 mean(Het$Prop.Het)
 ```
@@ -195,7 +195,6 @@ Together
 
 ![](Jitter_files/figure-gfm/unnamed-chunk-7-1.png)<!-- -->
 
-Cairo_pdf allows us to render to render macrons.
 ``` r
 ggsave(filename="Figure 3.pdf", plot = Together, dpi = 300, width = 11, height = 7, device = cairo_pdf)
 ```
