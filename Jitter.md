@@ -86,7 +86,7 @@ TukeyHSD(m1)
     ## Boat Bay-Te Pākeka     0.0004765059 -0.001476295  0.0024293068 0.9185007
     ## Motuara-Te Pākeka     -0.0011673416 -0.002989181  0.0006544975 0.3399711
     ## Motuara-Boat Bay      -0.0016438475 -0.003465687  0.0001779915 0.0917234
-```
+
 And for inbreeding
 ``` r
 m2 <- aov(F ~ Pop, data = Het)
@@ -117,9 +117,9 @@ TukeyHSD(m2)
     ## Motuara-Te Pākeka      0.03831978 -0.022980202 0.09961976 0.3619248
     ## Motuara-Boat Bay       0.05704978 -0.004250202 0.11834976 0.0773821
 
+
 ## Descriptive Statistics
 I calculate these for the species overall, and by population.
-
 ``` r
 mean(Het$Prop.Het)
 ```
@@ -149,8 +149,8 @@ print(group_mean)
     ## 3 Boat Bay           0.0231  0.214
     ## 4 Motuara            0.0214  0.271
 
-## Create Jitterplots
 
+## Create Jitterplots
 ``` r
 #Total Sites
 A <- ggplot(Het, aes(x = Pop, y = Prop.Het, colour = Pop)) +
