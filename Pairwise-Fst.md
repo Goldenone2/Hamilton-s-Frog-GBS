@@ -1,5 +1,5 @@
 # Analysis Overview
-We will calculate F<sub>st</sub> across the four populations in this analysis. Although [VCFtools](https://vcftools.github.io/documentation.html) does allow you to do this, it is inefficient and we'd have to do so manually for each pair. Instead, we we'll try to streamline this analysis in R with the package SNPRelate.
+I calculated F<sub>st</sub> across the four populations in this analysis. Although [VCFtools](https://vcftools.github.io/documentation.html) does allow you to do this, it is inefficient and we'd have to do so manually for each pair. Instead, I streamlined this analysis in R with the package SNPRelate.
 
 Code loosely follows tutorials [here](https://github.com/rgiannico/RpairwiseFST/tree/master?tab=readme-ov-file), also utilising the package [vignette](https://bioconductor.org/packages/release/bioc/vignettes/SNPRelate/inst/doc/SNPRelate.html#format-conversion-from-vcf-files).
 
