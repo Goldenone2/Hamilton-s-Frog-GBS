@@ -1,10 +1,10 @@
 # Principal Component Analysis
-I will investigate the natural divergence or structure between Hamilton’s frog populations (esp. Takapourewa & Te Pakeka) using PCA, a dimensionalality reduction analysis that takes our high-dimensional data and reduces it to a few principal components.
+I investigated the natural divergence or structure between Hamilton’s frog populations (esp. Takapourewa & Te Pakeka) using PCA, a dimensionality reduction analysis that takes our high-dimensional data and reduces it to a few principal components. I ran this separately in PLINK. Loosely following this [useful tutorial](https://speciationgenomics.github.io/pca/) on cichlids.
 
-### Set up
-First, we need to convert our .vcf in the relevant plink formats. Plink was made for human genomic data and thus expects: chromosome location information, and pedigree information: --allow-extra-chr allows me to proceed with non-standard chromosome names and numbers,  --double-id allows me to duplicate the ID of my samples for both "family" and "individual" ID
+## Set up
+First, I convert our .vcf in the relevant plink formats. Plink was made for human genomic data and thus expects: chromosome location information, and pedigree information: --allow-extra-chr allows me to proceed with non-standard chromosome names and numbers,  --double-id allows me to duplicate the ID of my samples for both "family" and "individual" ID
 
-Notes from the [PLINK Documentation](https://www.cog-genomics.org/plink/1.9/input) that if you're dealing with a draft assembly with lots of contigs, rather than actual autosomes—the standard PLINK build can handle that if you name your contigs 'contig1', 'contig2', etc. and use the --allow-extra-chr flag!
+Notes from the [PLINK Documentation](https://www.cog-genomics.org/plink/1.9/input) that if you're dealing with a draft assembly with lots of contigs, rather than actual autosomes—the standard PLINK build can handle that if you name your contigs 'contig1', 'contig2', etc. and use the --allow-extra-chr flag.
 ```sh
 # mkdir PCA
 cd PCA
@@ -14,36 +14,32 @@ awk '{if($0 !~ /^#/) print "contig"$0; else print $0}' ../HamFrogR08maxsnps1DP5.
 plink --vcf PLINKvcf_with_contig.vcf --make-bed --out PLINK_Ham --allow-extra-chr --double-id
 ```
 
-### Peform PCA
+## Perform PCA
 ```sh
 plink --bfile PLINK_Ham --pca --out PCA_Ham --allow-extra-chr --double-id
 ```
 
-## Peform PCA on a subset: translocation data only
-To see whether there is more intricate structure between the Muad Island (natural source populaiton) and, Boat Bay or Motuara (translocated populations) I will run PCA on this small subset. I will make a .txt file with the individuals I want to --keep
+## Perform PCA on a subset: translocation data only
+To see whether there is more intricate structure between the Muad Island (natural source population) and Boat Bay or Motuara (translocated populations), I run a PCA on this small subset. 
+I will make a .txt file with the individuals I want to --keep
 ```sh
 cd /home/mulha552/uoo04306/frogs_gbs/PCA/PCA_Focused
 module load VCFtools
 vcftools --vcf ../PLINKvcf_with_contig.vcf --keep Maud.txt --recode --recode --out MaudIslandOnly
 ```
+Run PCA
 ```sh
 plink --vcf MaudIslandOnly.recode.vcf plink --make-bed --out PLINK_Maud --allow-extra-chr --double-id
 plink --bfile PLINK_Maud --pca --out PCA_Maud --allow-extra-chr --double-id
 ```
 
-# PCA: data visualisation in R
+# Data visualisation in R
 
-PCA plots will be included alongside a phylogeny of these same data. I
-will create two plots for publication:
-
+PCA plots will be included alongside a phylogeny of these same data. I will create two plots for publication:
 - all my data
 - Te Pākeka + translocated sites alongside
 
-I ran these separately in PLINK. Loosely following this [useful
-tutorial](https://speciationgenomics.github.io/pca/) on cichlids.
-
 ## Data Import and Setup
-
 ``` r
 # Clear workspace
 rm(list = ls())
@@ -80,10 +76,7 @@ eigenval <- read.delim("PCA_Ham.eigenval", header = FALSE)
 Maud_eigenvec <- read.delim("PCA_Maud.eigenvec", header = FALSE, sep = " ")
 Maud_eigenval <- read.delim("PCA_Maud.eigenval", header = FALSE)
 ```
-
-I’ll tidy the data set. PLINK’s output aren’t informative for
-visualization out the box; I need to add population information.
-
+I’ll tidy the data set. PLINK’s output aren’t informative for visualisation out the box; I need to add population information.
 ``` r
 # remove extra ID column
 eigenvec <- eigenvec[,-1]
@@ -122,11 +115,8 @@ Maud_eigenvec$Population <- factor(Maud_eigenvec$Population, levels = c("Takapou
 
 ## Visualise our Data
 
-### EigenValues
-
-The Eigenvalues ppaint a strong picture of the Takapourewa/Te Pākeka
-split being almost the sole driver of meaningful variance.
-
+### Eigenvalues
+Eigenvalues paint a strong picture of the Takapourewa/Te Pākeka split being almost the sole driver of meaningful variance.
 ``` r
 #Calculate the percentage variance explained
 PVE <- data.frame(PC = 1:20, pve = eigenval$V1/sum(eigenval$V1)*100)
@@ -150,8 +140,7 @@ ggplot(Maud_PVE, aes(x = Maud_PC, y = Maud_pve)) +
 
 ![](PCA_files/figure-gfm/unnamed-chunk-3-2.png)<!-- -->
 
-### Plots
-
+## Final PCA Plots
 ``` r
 PCA_All <- 
   ggplot(eigenvec, aes(x = PC1, y = PC2, colour =
@@ -204,7 +193,7 @@ PCA_Maud
 ![](PCA_files/figure-gfm/unnamed-chunk-5-1.png)<!-- -->
 
 ### Additional Plotting
-
+For interest, I examined PCA3, 4 etc.
 ``` r
 PCA_PC3 <- ggplot(eigenvec, aes(x = PC1, y = PC3, colour = Population)) +
   geom_point(size = 2) +
