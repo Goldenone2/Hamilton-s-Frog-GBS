@@ -1,6 +1,6 @@
 # Sample comparison
 
-I have completed SNP calling for the Hamilton’s Frog GBS data, which contains both toe clips and, buccal swabs; because this is the first time anyone has utilised buccal swabbing on *Leiopelma*, I’d will produce jitter plots comparing total sites and individual missingness. In addition, I investigate the apparent difference in coverage depth
+I have completed SNP calling for the Hamilton’s Frog GBS data, which contains both toe clips and, buccal swabs; because this is the first time anyone has utilised buccal swabbing on *Leiopelma*, I’d will produce jitter plots comparing total sites and individual missingness. In addition, I investigated the apparent difference in coverage depth
 between these sample types. Results from these analyses were published in [the New Zealand Journal of Ecology](https://newzealandecology.org/nzje/3631)
 
 ## Data Import and Setup
@@ -143,7 +143,7 @@ ggplot(data, aes(x = Tissue, y = MEAN_DEPTH)) +
 ![](Swab.Tissue.Jitter_files/figure-gfm/unnamed-chunk-4-1.png)<!-- -->
 
 ### Forwards Reads
-We can see there is a significant difference between our two sample types. Before these results are published, I need to find out whether this is because of 1) sample quality or 2) sequencing / lab error. So, I’ve counted the number of forwards reads from all our samples, with and, without quality control by Cutadapt.
+We can see there is a significant difference between our two sample types. Before these results were published, I needed to find out whether this is because of 1) sample quality or 2) sequencing / lab error. So, I’ve counted the number of forwards reads from all our samples, with and, without quality control by Cutadapt.
 
 ``` r
 # Load data, and add sample information
