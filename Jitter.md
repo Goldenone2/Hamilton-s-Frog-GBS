@@ -195,6 +195,7 @@ Together
 
 ![](Jitter_files/figure-gfm/unnamed-chunk-7-1.png)<!-- -->
 
+Cairo_pdf allows us to render to render macrons.
 ``` r
-ggsave(filename="together.tiff", plot = Together, dpi = 300, width = 11, height = 7)
+ggsave(filename="Figure 3.pdf", plot = Together, dpi = 300, width = 11, height = 7, device = cairo_pdf)
 ```
