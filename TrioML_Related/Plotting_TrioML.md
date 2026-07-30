@@ -145,10 +145,3 @@ done
     ## (`geom_point()`).
 
 ![](Plotting_TrioML_files/figure-gfm/unnamed-chunk-5-1.png)<!-- -->
-    ## (`geom_point()`).
-
-    ## Warning: Removed 86 rows containing missing values or values outside the scale range
-    ## (`geom_point()`).
-
-    ## Warning: Removed 37 rows containing missing values or values outside the scale range
-    ## (`geom_point()`).
