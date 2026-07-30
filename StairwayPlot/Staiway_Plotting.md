@@ -1,12 +1,6 @@
-Stairway
-================
-Hadley Muller
-2025-05-27
+# Stairway Plotting
 
-# Stairway Plot
-
-### Data Import and Setup
-
+## Data Import and Setup
 ``` r
 # Clear workspace
 rm(list = ls())
@@ -63,12 +57,8 @@ Together <- bind_rows(
   Takapourewa_scaled %>% mutate(pop = "Takapourewa"))
 ```
 
-# Plotting
-
-Geom_ribbon is creating the 95% confidence interval;Geom_Step is
-creating the Ne median line. I’ve borrowed the log scales limits from
-Stairway Plots native plots.
-
+## Plotting
+Geom_ribbon is creating the 95% confidence interval;Geom_Step is creating the Ne median line. I’ve borrowed the log scales limits from Stairway's native plots.
 ``` r
 Stairway <- ggplot(Together, aes(x = yeark)) +
   geom_ribbon(aes(ymin = Ne_2.5.K, ymax = Ne_97.5.K, fill = pop), alpha = 0.1) +
@@ -86,14 +76,7 @@ Stairway <- ggplot(Together, aes(x = yeark)) +
 ```
 
 ### Chronology of the Marlborough Sounds
-
-I want to add vertical lines to represent the key events in the
-chronology of the Marlborough Sounds:
-
-stabilization of sea levels (7 Kya), arrival of Maori (0.75 Kya),
-colonisation of Europeans (0.204 Kya and, the introduction of cats to
-Takapourewa (0.132 Kya).
-
+I added vertical lines to represent the key events in the chronology of the Marlborough Sounds: stabilisation of sea levels (7 Kya), arrival of Maori (0.75 Kya), colonisation of Europeans (0.204 Kya and, the introduction of cats to Takapourewa (0.132 Kya). Labels were added in Photoshop. 
 ``` r
 # create data frame
 events <- data.frame(
@@ -131,7 +114,7 @@ Stairway2
 ![](Staiway_Plotting_files/figure-gfm/unnamed-chunk-5-1.png)<!-- -->
 
 ``` r
-ggsave(filename="Stairway_ForNic.pdf", plot = Stairway2, dpi = 300, width = 11, height = 7, device = cairo_pdf)
+ggsave(filename="Stairway.pdf", plot = Stairway2, dpi = 300, width = 11, height = 7, device = cairo_pdf)
 ```
 
     ## Warning: Removed 390 rows containing missing values or values outside the scale range
