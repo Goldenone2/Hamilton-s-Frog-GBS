@@ -4,14 +4,13 @@ I undertook a simple phylogenetic analysis using IQTREE. Primarily, to visualise
 mdkir tree
 cd tree
 ```
-First , I need convert the SNPs in my .vcf file to a phylogenetic input format for IQtree: phylip, using [vcf2phylip](https://github.com/edgardomortiz/vcf2phylip)
-https://github.com/edgardomortiz/vcf2phylip
+First , I  convert the SNPs in my .vcf file to a phylogenetic input format for IQtree: phylip, using [vcf2phylip](https://github.com/edgardomortiz/vcf2phylip)
 
 ```sh
 git clone https://github.com/edgardomortiz/vcf2phylip.git
 vcf2phylip/vcf2phylip.py --input ../HamFrogR08maxsnps1DP5.recode.vcf
 ```
-I have no idea what subsitution model is best for my data, so I'll try a model selection method outlined [here](http://www.iqtree.org/doc/Tutorial). MFP is a specially model specifier *modelfinderplus* and looks for the model that gives the lowest bayesian information criterion.
+I had no idea what substitution model is best for my data, so I tried a model selection method outlined [here](http://www.iqtree.org/doc/Tutorial). MFP is a specially model specifier *modelfinderplus* and looks for the model that gives the lowest Bayesian information criterion.
 
 ```sh
 module load IQ-TREE
@@ -21,29 +20,23 @@ Let's have a look at the results:
 ```
 Best-fit model: TIM+F+I+R2 chosen according to BIC
 ```
-Now, I can run my final tree, with the TIM+F+I+R2 model and 1000 bootstraps. Our parameters specify: -TIM trnasitional model, allows different rates for transitions and transversion, +F use tghe emprirical base frequencies rather than assuming equal (frogs have higher GC proportions than other species), +I account for sites which don't evolve at all and +R2 use the FreeRate model with 2 discrete categories (modelling how some sites evolve faster than others). 
+I ran my final tree, with the TIM+F+I+R2 model and 1000 bootstraps. 
+Our parameters specify: -TIM trnasitional model, allows different rates for transitions and transversion, +F use tghe emprirical base frequencies rather than assuming equal (frogs have higher GC proportions than other species), +I account for sites which don't evolve at all and +R2 use the FreeRate model with 2 discrete categories (modelling how some sites evolve faster than others). 
 
 ```sh
 iqtree2 -nt 16 -s HamFrogR08maxsnps1DP5.recode.min4.phy -st DNA -m TIM+F+I+R2 -bb 1000 -pre Final.FrogTree
 ```
 
 # Phylogenetic Tree
-
-I ran a maximum-likelihood phylogenetic analysis using IQTREE2. Using
-the package ‘ggtree,’ I will loosely follow [this
-tutorial](https://arftrhmn.net/creating-a-publication-quality-phylogeny-using-ggtree/)
-to produce a midpoint rooted visualisation.
+Using the package ‘ggtree,’ I loosely followed [this tutorial](https://arftrhmn.net/creating-a-publication-quality-phylogeny-using-ggtree/) to produce a midpoint rooted visualisation.
 
 ## Data Import and Setup
-
 Install BiocManager related package if required.
-
 ``` r
-install.packages("BiocManager")
-BiocManager::install("ggtree")
-BiocManager::install("treeio")
+# install.packages("BiocManager")
+# BiocManager::install("ggtree")
+# BiocManager::install("treeio")
 ```
-
 ``` r
 # Clear workspace
 rm(list = ls())
@@ -115,11 +108,7 @@ Tree@phylo <- midpoint(Tree@phylo)
 ```
 
 ## Visualisations
-
-First a basic tree, coloured by population. Using *branch.length =
-‘none’* allows a cladogram without branch length scaling; useful to fit
-bootstrap values on the tree later.
-
+First a basic tree, coloured by population. Using *branch.length =‘none’* allows a cladogram without branch length scaling; useful to fit bootstrap values on the tree later.
 ``` r
 Tree1 <- 
   ggtree(Tree, branch.length = "none") %<+% meta +
@@ -151,18 +140,12 @@ Tree1
 ![](Phylogenetics_files/figure-gfm/unnamed-chunk-3-1.png)<!-- -->
 
 ### Bootstrap Support
-
 IQTree2 provides node support with:
 
 - SH_aLRT, a likelihood measure
 - UFBoot, a more *traditional* bootstrap measure.
 
-For the purpose of this simple tree, I will annotate with UFBoot.
-However, in other cases both measures can be used to evaluate node
-support.
-
-*Extra:* I need to move the legnd to the top left for patchwork to
-create an effective visualisaiton.
+For the purpose of this simple tree, I  annotate with UFBoot. However, in other cases both measures can be used to evaluate node support. I need to moved the legend to the top left for patchwork to create an effective visualisation.
 
 ``` r
 # Add bootstrap support
@@ -178,9 +161,7 @@ Tree_UF
 ![](Phylogenetics_files/figure-gfm/unnamed-chunk-4-1.png)<!-- -->
 
 ### Export final plot
-
-Plotting alongside PCA plots of the same data for final publication;
-using patchwork.
+This phylogeny and the PCAs were run locally, and plotted together using patchwork. The final plots with red stars indicating nodes with >80% bootstrap support, were added in Photoshop. 
 
 ``` r
 Plot_Manuscript <- 
@@ -191,5 +172,5 @@ Plot_Manuscript <-
 
 Plot_Manuscript
 
-ggsave(filename="Figure2.pdf", plot = Plot_Manuscript, dpi = 300, width = 11, height = 13)
+ggsave(filename="Figure2.pdf", plot = Plot_Manuscript, dpi = 300, width = 11, height = 13, device = cairo_pdf)
 ```
