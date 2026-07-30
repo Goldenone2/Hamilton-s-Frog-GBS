@@ -1,24 +1,23 @@
 # Analysis Overview
-I have measured inbreeding as F<sub>H</sub>, this estimate is inherently related to estimates of genetic diversity and, hence, you can see it effectively follows the opposite pattern to observed heterozygosity. Our inbreeding coefficient may be calculated to be ≤0 even when there is mating between relatives, because the estimate is based of a comparison to an "ideal" random mating population under Hardy Weinberg.In small populations random mating doesn't exclude relatives breeding, especially in our case where historical demographic factors (see Stairway Plots) are leading to excess heterozygosity in the smallest population, Takapourewa. 
+I measured inbreeding as F<sub>H</sub>, this estimate is inherently related to estimates of genetic diversity and, hence, you can see it effectively follows the opposite pattern to observed heterozygosity. The inbreeding coefficient may be calculated to be ≤0 even when there is mating between relatives, because the estimate is based of a comparison to an "ideal" random mating population under Hardy Weinberg. In small populations random mating doesn't exclude relatives breeding, especially in our case where historical demographic factors (see Stairway Plots) are leading to excess heterozygosity in the smallest population, Takapourewa. 
 
-### Setting up related
-An annoying first time step...
+## First time set up
+First time step:
 
-First, download the .tar.gz file from the [github](https://github.com/timothyfrasier/related) into *this* working directory.
+- download the .tar.gz file from the [github](https://github.com/timothyfrasier/related) into *this* working directory.
+- install [Rtools](https://cran.r-project.org/bin/windows/Rtools/), which is required to compile a package direct from source.
 
-Second, install [Rtools](https://cran.r-project.org/bin/windows/Rtools/), which is required to compile a package direct from source. You must ensure that the environment variable "PATH" has been updated:
+You must ensure that the environment variable "PATH" has been updated for Rtools.
 ```{r}
 Sys.which("gcc")
 Sys.which("make")
 ```
-If these both return a path then Rtools has installed correctly, if not you maust manually add Rtools to "PATH."
-
-Now install related
+If these both return a path then Rtools has installed correctly, if not you must manually add Rtools to "PATH." Now install related.
 ```{r}
 # install.packages("related_1.0.tar.gz", repos=NULL, type="source")
 ```
 
-### Data Import and Setup
+## Data Import and Setup
 ```{r}
 # Clear workspace
 rm(list = ls())
@@ -30,7 +29,7 @@ library("related")
 library("adegenet")
 
 ```
-Now, related is an R environment for an actual program called [COANCESTRY](https://onlinelibrary.wiley.com/doi/full/10.1111/j.1755-0998.2010.02885.x) and we need to reformat our vcf file.....
+Related is an R environment for an actual software called [COANCESTRY](https://onlinelibrary.wiley.com/doi/full/10.1111/j.1755-0998.2010.02885.x) and we had to to reformat our vcf file accordingly.
 ```{r}
 vcf <- read.vcfR("HamFrogR08maxsnps1DP5.recode.vcf")
 
@@ -111,15 +110,13 @@ allele_df[,-1] <- lapply(allele_df[,-1], function(col) {
   col_new[is_missing] <- 0
   return(as.integer(col_new))
 })
-
 ```
-
-That was so hard to understand, and is confusing as hell, chatgpt is my friend here when it is *not* involved in real analysis. I'd recommend saving this as a .txt file for future use, we don't need to make this odd binary format again & again .... but it is important to understand what is going on with the the data formatting. 
+I'd recommend saving this as a .txt file for future use, we don't need to make this odd binary format again & again. However, it is important to understand what is going on with the the data formatting. 
 ```{r}
 write.table(allele_df, "HamGeno.txt", quote=FALSE, row.names=FALSE, col.names=FALSE, sep = " ")
 ```
 ### Subset by population
-Because TrioML uses a reference for each pariwsie estimate we can bias results by using a referecne from a divergent population, this is important for Takapourewa specifically. 
+TrioML uses a reference for each pairwise estimate we can bias results by using a reference from a divergent population. Thus sub setting is important, especially given the population structure in Hamilton's frog.
 ```{r}
 BoatBay <- allele_df %>%
   filter(startsWith(IndividualID, "BB"))
@@ -138,14 +135,12 @@ Takapourewa <- allele_df %>%
 write.table(Takapourewa, "Takapourewa.txt", quote=FALSE, row.names=FALSE, col.names=FALSE, sep = " ")
 ```
 
-#### Takapourewa
-After sub-setting and removing singletons, looks like Takapourewa has lots of monomoprhic loci. Normally, these are excluded from analysis; the current Takapourewa subset fails to run any anlaysis even simple method of moments. I believe the large number of monomoprhic loci is why this population isn't running. I will go through and remove the monomorphic sites to see if this helps:
+### Additional filtering for Takapourewa
+After sub-setting and removing singletons, looks like Takapourewa has lots of monomorphic loci. Normally, these are excluded from analysis; the current Takapourewa subset fails to run any analysis even using a simple method of moments. The large number of monomorphic loci is likely why this population isn't running. 
 
-I've used a function *sapply* this is a shortcut for looping over elements of something (vecotr,list or sequence) and applying the same function to each element one at a time
-e.g. I first use it to ensure every genotype column is coded as.numeric 
+I removed the monomorphic sites to see if this helps. I used a function *sapply* this is a shortcut for looping over elements of something (vector,list or sequence) and applying the same function to each element one at a time e.g. I first use it to ensure every genotype column is coded as.numeric 
 
-I also used base R subsetting:
-         object[ rows , columns ]
+I also used base R sub setting: object[ rows , columns ]
 - Leave something blank to select all in that dimension.
 - Numeric index = positions
 - Logical index = TRUE/FALSE mask (length must match rows/columns)
@@ -184,18 +179,16 @@ write.table(Takapourewa_poly, "Takapourewa_poly.txt",
             quote=FALSE, row.names=FALSE, col.names=FALSE, sep=" ")
 ```
 
-### Calculate Relatedness
-I will calculate relatedness using the [triadic likelihood method](https://www.cambridge.org/core/journals/genetics-research/article/triadic-ibd-coefficients-and-applications-to-estimating-pairwise-relatedness/19C27DCC0F90870C52B5040132922281). I will use the entire data as the reference population, the default is normally 100 so this is prudent. 
+## Calculate Relatedness
+I calculated relatedness using the [triadic likelihood method](https://www.cambridge.org/core/journals/genetics-research/article/triadic-ibd-coefficients-and-applications-to-estimating-pairwise-relatedness/19C27DCC0F90870C52B5040132922281). I used all data as the reference population, the default is normally 100 so this is prudent. 
 
-Example Code (see the r script I've run for each population seperately):
-
+Example Code:
 ```{r}
 BoatBay_results <- coancestry("BoatBay.txt", trioml =1, trioml.num.reference = 20)
 #RDS means we can save the R object for plotting later :) 
 saveRDS(BoatBay_results, file = "BoatBay_results.rds")
 ```
-I ran this as a SLURM job, because it ran all weekend on my laptop and had not finished! I think the walltime etc. are massive overkill now that I have removed singletons, but we will see!
-
+See the separate Slurm script:
 ```
 #!/bin/bash -e
 #SBATCH --job-name= TrioML # job name (shows up in the queue)
@@ -208,6 +201,3 @@ module load R
 Rscript --vanilla TrioML_SLURM.R
 echo done
 ```
-
-
-
