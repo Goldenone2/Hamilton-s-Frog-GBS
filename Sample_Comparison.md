@@ -1,14 +1,9 @@
 # Sample comparison
 
-I have completed SNP calling for the Hamilton’s Frog GBS data, which
-contains both toe clips and, buccal swabs; because this is the first
-time anyone has utilised buccal swabbing on *Leiopelma*, I’d will
-produce jitter plots comparing total sites and individual missingness.
+I have completed SNP calling for the Hamilton’s Frog GBS data, which contains both toe clips and, buccal swabs; because this is the first time anyone has utilised buccal swabbing on *Leiopelma*, I’d will produce jitter plots comparing total sites and individual missingness. In addition, I investigate the apparent difference in coverage depth
+between these sample types. Results from these analyses were published in [the New Zealand Journal of Ecology](https://newzealandecology.org/nzje/3631)
 
-In addtion, I investigate the apparent difference in coverage depth
-between these sample types.
-
-### Data Import and Setup
+## Data Import and Setup
 
 ``` r
 # Clear workspace
@@ -51,7 +46,7 @@ data <- left_join(Dep, Miss, by = "INDV") %>%
     ))
 ```
 
-### Simple t-test
+## Simple t-test
 
 ``` r
 #Subset data
@@ -93,7 +88,7 @@ t.test(Ntoeclip, Nswab, var.equal=FALSE)
     ## mean of x mean of y 
     ##  18266.85  18347.67
 
-### Create Jitterplots
+## Create Jitter plots
 
 ``` r
 #Total Sites
@@ -175,7 +170,7 @@ countdata <- left_join(Counts$QC, Counts$NO, by = "V1") %>%
     ))
 ```
 
-### Create Jitterplots
+### Create Jitter plots
 
 ``` r
 # Coverage depth
