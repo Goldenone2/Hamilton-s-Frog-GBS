@@ -1,15 +1,7 @@
-TrioML Plotting
-================
-Hadley Muller
-2025-08-03
-
-# Analysis Overview
-
-I’ve got the .rds results saved and, I’d like to make a nice box plot to
-visualise the results.
+# Relatedness Plotting
+I saved the .rds results locally from the HPC cluster to visualise results.
 
 ## Data Import and Setup
-
 ``` r
 # Clear workspace
 rm(list = ls())
@@ -42,7 +34,6 @@ Boatbay <- readRDS("BoatBay_results.rds")
 ## Simple ANOVA
 
 ### Create a merged data frame
-
 ``` r
 data_list <- list(Boatbay, Takapourewa, Motuara, TePakeka)
 
@@ -64,8 +55,8 @@ for (i in 1:length(data_list)) {
 TrioML <- do.call(rbind, data_list)
 ```
 
-### ANOVA and menas
-
+### ANOVA and Means
+These summary statistics were included in final publication.
 ``` r
 m1 <- aov(trioml ~ group, data = TrioML)
 summary(m1)
@@ -115,7 +106,7 @@ print(group_mean)
     ## 4 TATA          0.0103
 
 ## Create Jitterplots
-
+Due to highly zero skewed values this was excluded from publication.
 ``` r
 make_relatedness_plot <- function(data, pop_name) {
   ggplot(data$relatedness, aes(x = 1, y = trioml)) +
@@ -154,15 +145,6 @@ done
     ## (`geom_point()`).
 
 ![](Plotting_TrioML_files/figure-gfm/unnamed-chunk-5-1.png)<!-- -->
-
-``` r
-ggsave(filename="done.png", plot = done, dpi = 300, width = 9, height = 8 )
-```
-
-    ## Warning: Removed 148 rows containing missing values or values outside the scale range
-    ## (`geom_point()`).
-
-    ## Warning: Removed 87 rows containing missing values or values outside the scale range
     ## (`geom_point()`).
 
     ## Warning: Removed 86 rows containing missing values or values outside the scale range
