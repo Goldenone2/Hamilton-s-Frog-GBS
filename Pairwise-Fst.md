@@ -1,20 +1,10 @@
-### Analysis Overview
+# Analysis Overview
+We will calculate F<sub>st</sub> across the four populations in this analysis. Although [VCFtools](https://vcftools.github.io/documentation.html) does allow you to do this, it is inefficient and we'd have to do so manually for each pair. Instead, we we'll try to streamline this analysis in R with the package SNPRelate.
 
-I’d like to calculate pairwise F<sub>st</sub> across
-my four populations in this analysis. Although
-[VCFtools](https://vcftools.github.io/documentation.html) does allow you
-to do this, it is inefficient and I’d have to do so manually for each
-pair. Instead, I’ll try to streamline this anlaysis in R with the
-package SNPRelate.
+Code loosely follows tutorials [here](https://github.com/rgiannico/RpairwiseFST/tree/master?tab=readme-ov-file), also utilising the package [vignette](https://bioconductor.org/packages/release/bioc/vignettes/SNPRelate/inst/doc/SNPRelate.html#format-conversion-from-vcf-files).
 
-I’ve followed code I found
-[here](https://github.com/rgiannico/RpairwiseFST/tree/master?tab=readme-ov-file),
-also utilising the package
-[tutorial](https://bioconductor.org/packages/release/bioc/vignettes/SNPRelate/inst/doc/SNPRelate.html#format-conversion-from-vcf-files).
-
-### Data Import and Setup
-
-Let's first take our popmap.txt we've used for denovo_map.pl in Stacks, and create a new tab separted .txt file that *actually* contains the relevant 'pop' information
+## Data Import and Setup
+Create a  tab separated .txt file that describes the population information, based on our popmap.txt from denovo_map.pl in Stacks.
 
 ```bash
 cd /home/mulha552/uoo04306/frogs_gbs
@@ -27,7 +17,7 @@ awk '{
   print $1, $2;
 }' popmap.txt > meta.txt
 ```
-
+Export to R, code can be run locally on a PC.
 ``` r
 # Clear workspace
 rm(list = ls())
