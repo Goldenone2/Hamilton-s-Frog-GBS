@@ -1,27 +1,22 @@
-# SNP calling
-
-First, I create a folder for the source files and folders to run Stacks, raw (which will contain the trimmed data) and samples. For my future reference, my source files are called NS0229_S1_L004_R1_001.fastq.gz & NS0229_S1_L004_R2_001.fastq.gz
-
+# Single Nucleotide Polymorphism Calling 
+Create a folder for the (raw data) source files my source files.
 ```bash 
 mkdir source_files
 ```
-
-Once the raw data is in source_files, I go in there and take a subset of 1'00000 lines, 250'000 reads. I will use the subset to trial the code on the firest run through, and check there are no issues with my sequences before I submit a full job (which runs for ages).
-
+Take a subset of 1'00000 lines i.e. 250'000 reads. I will use the subset to trial code on the first run through, and check there are no issues with my sequences before I submit a full SLURM job. 
 ```bash 
 cd source_files
 zcat NS0229_S1_L004_R1_001.fastq.gz | head -n 1000000 > testR1.fastq 
 zcat NS0229_S1_L004_R2_001.fastq.gz | head -n 1000000 > testR2.fastq
 ```
-Let's check quality with FastQC
+## Quality Control with FastQC
 ```bash 
 module load FastQC 
 fastqc *.fastq # The star means everything that ends with fastq.
 ```
-I then look at the generated testR1.html and testR2.html after downloading them (I just had a look in the Jupyter borwser). There's quite a few adapter's in there, especially in high read positions.
+Looking at the generated testR1.html and testR2.html, there is quite a few adapter's in there, especially in high read positions.
 
 ## Adapter trimming
-
 Trimming off adapters and removing reads shorter than 125p with cutadapt. We choose 125bp based on the our FastQC quality check, stacks requeires everything to be the same length: if we cut too high the we will loose too many loose reads after the adaptors are removed, but if we make it too low then for those (in our case ~90%) of reads with no adaptors will be shortened too much loosing information. Also, it's good for you to remeber Ilumina reads are only 150bp long.
 
 First on the sample files. The files with trimmed are the output files. Use `cutadapt --help` after loading the module to learn what all the parameters are:
