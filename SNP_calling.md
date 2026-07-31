@@ -80,33 +80,26 @@ fastqc trimmed_NS0229_Hamiltons_S1_R1_001.fastq trimmed_NS0229_Hamiltons_S1_R2_0
 ```
 
 ## Demultiplexing
+Barcode.txt contains all three plates sequenced at Ag Research on a Single NovaSeq lane with the unique PstI barcodes which identify the wells on each plate. I changed the names of the wells with frogs to give an informative name on population and other metadata etc.
 
-*Breif Information on barcode.txt and popmap.txt*
-
-Barcode.txt was created by Ludo, which contains all three plates (remeber PstI-1a,2a,3a) with the unique barcode which identify the wells on each palte. I have changed the names of my frogs in each well to give an informative name on population etc; remeber this must simple to make future analysis easy. 
-
-Popmap.txt is created/will be created by me and has a first column as the frogIDs taken from Barcode.txt, with the second column just all filled with 'Pop.' Basically this allows us to just analyse all of the frogs, ignore the skinks, snails etc. verything is labeled 'pop' as we do not want to run stacks based on population.  
-
-Copy trimmed data to raw folder.
+Make directory:
 ```bash 
 cd .. #assuming I'm in source files
 mkdir raw
-mkdir # I recived an error trying process_radtags without this directory.
 ```
+Copy files:
 ```bash 
 cd raw
 cp /home/mulha552/uoo04306/frogs_gbs/source_files/trimmed_NS0229_Hamiltons_S1_R1_001.fastq /home/mulha552/uoo04306/frogs_gbs/source_files/trimmed_NS0229_Hamiltons_S1_R2_001.fastq /home/mulha552/uoo04306/frogs_gbs/raw
 cd ..
 ```
-Run demultiplexing, here is some [info](https://catchenlab.life.illinois.edu/stacks/comp/process_radtags.php) on files and run. I have run the code below as a SLURM job, as above in adaptor trimming. 
-
+Run demultiplexing as a SLURM job. Useful info can be found [here](https://catchenlab.life.illinois.edu/stacks/comp/process_radtags.php):
 ```bash 
 cd /home/mulha552/uoo04306/frogs_gbs/source_files/raw
 module load Stacks #2.61
 process_radtags -P   -p ../raw/ -o ../samples/ -b ../barcodes.txt -e pstI -r -c  --inline-inline # NO -q often used for process-radtags gives me an error because of it, but no worries, cutadapatalready took care of this
  ```
-
-My Results (maybe to ask Ludo about at a later date..)
+Results:
  ```
 3666129448 total sequences
  489768784 barcode not found drops (13.4%)
@@ -115,20 +108,26 @@ My Results (maybe to ask Ludo about at a later date..)
   43575443 RAD cutsite not found drops (1.2%)
 3131895512 retained reads (85.4%)
 ```
-## Concatenate reads
 
-The goal is to have one file per sample, that we care about, (remeber there are skinks, snails etc in this sequencing run) inside the folder samples_concat. The file popmap is the stacks population map [info](http://catchenlab.life.illinois.edu/stacks/manual/#popmap); Create popmap.txt:
+## Concatenate Reads
+To produce one file per sample, excluding the skinks, snails, tuatara etc. sequenced on this same sequencing run
+
+Popmap.txt has a first column as the frogIDs taken from Barcode.txt, with the second column just all filled with 'Pop';[Info](http://catchenlab.life.illinois.edu/stacks/manual/#popmap).
+
+Make directory:
 ```bash 
-nano popmap.txt #copy in the frogs sample prefixes and keep all in a single 'pop'
-# mkdir samples_concat
+mkdir samples_concat
 ```
-As normal we will be running concatenating as a SLURM job, but because this is in a Python Enviornment we must do this a little differently....
+### Python SLURM
+Run concatenation as a SLURM job. Because this is within a Python Environment, submission looks different. 
+
+Create a new job file:
 ```bash 
 nano frogconcat.py #create python script
 ```
-We use a python shebang for this file (rather than a shell/bash one) and we cannot specify requirments using #SBATCH, this is now done later. Copy the code below into 'frogconcat.py'
-
-Note: popmap.txt needs to be in the current working directoy (/frogs_gbs) from which it will look for the subdirectory samples, and create a new directory as output samples_concat
+We use a python shebang for this file (rather than a shell/bash one) and we cannot specify requirements using #SBATCH, this is now done later. 
+- Copy the code below into frogconcat.py.
+- popmap.txt needs to be in the current working directory.
 
 ```python
 #!/usr/bin/env python3
@@ -150,17 +149,17 @@ with open("popmap.txt") as f:
 			os.system("zcat "+" ".join(["samples/"+checkfile for checkfile in checkfiles])+"|  gzip -c > samples_concat/"+samplename+".fq.gz" )
 
 ```
-I'll check the code before submitting the job
+Check code works (i.e. no syntax errors) before we submit:
 ```bash
 module load Python #need to load a python environment//ipython console
 python3 frogconcat.py
 ```
-Finally, once this is working we can submit a job, and ofr python we specify arguments here. -A specifies the account to 'charge' the job, -t specifies time, -c specifies the number of cpus per task, --mem specifies memory, --job-name specifies a job name
+Submit a job. For python specify arguments here in the command line: -A specifies the account to 'charge' the job, -t specifies time, -c specifies the number of cpus per task, --mem specifies memory, --job-name specifies a job name
 ```bash
 sbatch -A uoo04306 -t 48:00:00 -c 8 --mem 8G --job-name=frogconcat frogconcat.py
 squeue -u mulha552 #check its working
 ```
-I want to take a final check of how many million reads I have per sample, important for later discussion
+Check of how many million reads we have per sample:
 ```
 cd /home/mulha552/uoo04306/frogs_gbs//samples_concat
 for fq in *.fq.gz; do
