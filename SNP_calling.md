@@ -17,11 +17,9 @@ fastqc *.fastq # The star means everything that ends with fastq.
 Looking at the generated testR1.html and testR2.html, there is quite a few adapter's in there, especially in high read positions.
 
 ## Adapter trimming
-Trimming off adapters and removing reads shorter than 125p with cutadapt. We choose 125bp based on the our FastQC quality check, stacks requeires everything to be the same length: if we cut too high the we will loose too many loose reads after the adaptors are removed, but if we make it too low then for those (in our case ~90%) of reads with no adaptors will be shortened too much loosing information. Also, it's good for you to remeber Ilumina reads are only 150bp long.
-
-First on the sample files. The files with trimmed are the output files. Use `cutadapt --help` after loading the module to learn what all the parameters are:
-
--a specifies the adaptor sequence for forward reads (R1), and -A for reverse (R2) reads, -q specifies trimming low quaility bases below a QC score of 25 from the 3' end, -o (-p) specifies the output file for forward reads (and for reverse reads), minimum length specifies that reads must be 125bp long or should be discarded, length shortens all reads to the requeired 125 length.
+Trim off adapters and remove reads shorter than 125p with Cutadapt; 125bp was chosen based on the our FastQC quality check. 
+Stacks requires al reads to be the same length. Cutting too high the will loose too many reads after the adaptors are removed, but if we make it too low then for those, in our case ~90%, of reads with no adaptors will be shortened too much loosing information (Remember Ilumina reads are only 150bp long).
+Parameters are: -a specifies the adaptor sequence for forward reads (R1), and -A for reverse (R2) reads, -q specifies trimming low quality bases below a QC score of 25 from the 3' end, -o (-p) specifies the output file for forward reads (and for reverse reads), minimum length specifies that reads must be 125bp long or should be discarded, length shortens all reads to the required 125 length.
 
 ```bash 
 cd source_files
