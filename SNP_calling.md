@@ -1,75 +1,74 @@
 # Single Nucleotide Polymorphism Calling 
-Create a folder for the (raw data) source files:
-```bash 
-mkdir source_files
-```
+SNP calling with [Stacks](https://catchenlab.life.illinois.edu/stacks/) for a [Genotyping_by_Sequencing](https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0019379) dataset of *Leiopelma hamiltoni*
 
 ## Quality Control and Adaptor Trimming
-
 ### Testing: QC
-```bash 
+```bash
+# Create a subset of 250,000 from the raw reads: 
+zcat NS0229_S1_L004_R1_001.fastq.gz | head -n 1000000 > testR1.fastq 
+zcat NS0229_S1_L004_R2_001.fastq.gz | head -n 1000000 > testR2.fastq
+
+# Run QC
 module load FastQC 
 fastqc *.fastq
 ```
-Looking at the generated testR1.html and testR2.html, there is quite a few adapter's in there, especially in high read positions.
 
 ### Testing: adapter trimming
-Trim off adapters and remove reads shorter than 125p with Cutadapt; 125bp was chosen based on the our Fastq quality check. 
+We need to remove quite a few adapter's from our sequences, especially at high read positions. So, based on the FastQC, we are trimming off adapters and remove reads shorter than 125p with Cutadapt.
 
-Stacks requires al reads to be the same length. Cutting too high the will loose too many reads after the adaptors are removed, but if we make it too low then for those, in our case ~90%, of reads with no adaptors will be shortened too much loosing information (Remember Ilumina reads are only 150bp long).
+Stacks requires all reads to be the same length. Cutting too high the would loose too many reads after the adaptors are removed, but if we made it too low then for those, in our case ~90%, of reads with no adaptors will be shortened too much loosing information (Remember Ilumina reads are only 150bp long).
 
-Parameters are: -a specifies the adaptor sequence for forward reads (R1), and -A for reverse (R2) reads, -q specifies trimming low quality bases below a QC score of 25 from the 3' end, -o (-p) specifies the output file for forward reads (and for reverse reads), minimum length specifies that reads must be 125 bp long or should be discarded, length shortens all reads to the required 125 length.
+Parameters were: 
+- -a specifies the adaptor sequence for forward reads (R1), and -A for reverse (R2) reads;
+- -q specifies trimming low quality bases below a QC score of 25 from the 3' end;
+- -o (-p) specifies the output file for forward reads (and for reverse reads);
+- --minimum length specifies that trimmed reads must be 125 bp long or should be discarded;
+- --length shortens all reads to the required 125 length.
 ```bash 
-cd source_files
-module load cutadapt # 
+module load cutadapt 
 cutadapt -a AGATCGGAAGAGC -A AGATCGGAAGAGC  -q 25 -o trimmed_testR1.fastq  --minimum-length 125:125 --length 125  -p  trimmed_testR2.fastq testR1.fastq  testR2.fastq
-cd ..
-```
-Check the adapters are gone, we need to make this decision based on the output from the Cutadapt testing. Specifically, looks for "bases proceeding adaptors" these should be random, if a single nucleotide were to be overrepresented it may indicate the entire adaptor wasn't removed.
-```bash 
+
 fastqc trimmed*fastq
 ```
-Checking the .html files to see whether that worked. For the Hamilton's frog data, we do see there is a problematic 'per base sequence content.' However this is caused by the presence of a limited the number of barcodes in the sequences, ignore for now.
+To check the adapters were gone, we look in the FastQC reports of these trimmed test data. Specifically, we looked for "bases proceeding adaptors" as these should be random, if a single nucleotide were to be overrepresented it may indicate the entire adaptor wasn't removed. For the Hamilton's frog data, we do see there is a problematic 'per base sequence content.' However, this was caused by the presence of a limited the number of barcodes in the sequences, ignored for now.
 
-### SLURM Job
-Run that on all reads. Note: as my first analysis on NeSi (New Zealand's national HPC), I will include some superfluous detail on submitting jobs etc. 😊
-
-Create a new job file:
-```bash 
-nano Frogtrim.sl
+### CutAdapt (an example SLURM Jobs on NeSi)
+NeSi or the New Zealand eScience Infrastructure is the national HPC platform. Including an exemplar on submitting jobs etc 😊
+```bash
+# Create a new job file with nano
+nano Frog_trim.sl
 ```
-Specify arguments with #SBATCH, and afterwards include code:
+Specify arguments with #SBATCH, and then our code:
 ```bash 
 #!/bin/bash -e
-#SBATCH --job-name=Frogtrim # job name (shows up in the queue)
+#SBATCH --job-name=Frogtrim # Job name (shows up in the queue)
 #SBATCH --time=48:00:00      # Walltime (HH:MM:SS), if our job finishes before this no worries, give ample time in case
 #SBATCH --mem=8G          # Memory in G, minimum 1G per core.
-#SBATCH --cpus-per-task=8 #number of cores for our job
+#SBATCH --cpus-per-task=8 # Number of cores for our job
 
 cd /home/mulha552/uoo04306/frogs_gbs/source_files
 module load cutadapt
 cutadapt -j 8 -a AGATCGGAAGAGC -A AGATCGGAAGAGC  -q 25  -o trimmed_NS0229_Hamiltons_S1_R1_001.fastq  --minimum-length 125:125  --length 125  -p trimmed_NS0229_Hamiltons_S1_R2_001.fastq  NS0229_S1_L004_R1_001.fastq.gz  NS0229_S1_L004_R2_001.fastq.gz
 cd ..
 ```
-Check code works (i.e. no syntax errors) before we submit:
-```bash 
-sh Frogtrim.sl
-```
-Kill the local processing with Ctrl+C, and Submit the job:
-```bash 
-sbatch Frogtrim.sl
-```
-Check the queue: We can also cancel by ' scancel '<jobid>" '. Use squeue to get the ID. 
-```bash 
-squeue -u mulha552 # -u specifies just my user's jobs
-```
-or cancel the job:
+Useful SLURM commands:
 ```bash
-scancel frogtrim
-```
-SLURM jobs produce a .log file, inspect the log file with less, cat or nano to verify code has run correctly.
+# In an interactive session, we can check code works (i.e. no syntax errors) before we submit:
+bash Frog_trim.sl
 
-Once trimmed, make a final Fastq check. 
+# Use Ctrl+C to abort the local processing; and Submit the job:
+sbatch Frogtrim.sl
+
+# Check the queue:  
+squeue -u mulha552 
+
+# or cancel the job:
+scancel Frogtrim
+
+# Inspect .log file, with less, tail, or cat:
+cat Frogtrim.log
+```
+Run trimming utilising the exemplar SLURM job, and check with a final FastQC.
 ```bash 
 fastqc trimmed_NS0229_Hamiltons_S1_R1_001.fastq trimmed_NS0229_Hamiltons_S1_R2_001.fastq
 ```
