@@ -3,12 +3,7 @@ Create a folder for the (raw data) source files:
 ```bash 
 mkdir source_files
 ```
-Take a subset of 1'00000 lines i.e. 250'000 reads. Use this subset to trial code on the first run through, and check there are no issues with my sequences before submitting a full SLURM job. 
-```bash 
-cd source_files
-zcat NS0229_S1_L004_R1_001.fastq.gz | head -n 1000000 > testR1.fastq 
-zcat NS0229_S1_L004_R2_001.fastq.gz | head -n 1000000 > testR2.fastq
-```
+
 ## Quality Control and Adaptor Trimming
 
 ### Testing: QC
