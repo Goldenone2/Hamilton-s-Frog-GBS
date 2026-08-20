@@ -1,5 +1,5 @@
 # Single Nucleotide Polymorphism Calling 
-Create a folder for the (raw data) source files my source files.
+Create a folder for the (raw data) source files:
 ```bash 
 mkdir source_files
 ```
