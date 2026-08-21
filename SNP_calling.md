@@ -74,28 +74,20 @@ fastqc trimmed_NS0229_Hamiltons_S1_R1_001.fastq trimmed_NS0229_Hamiltons_S1_R2_0
 ```
 
 ## Demultiplexing
-Barcode.txt contains all three plates sequenced at Ag Research on a Single NovaSeq lane with the unique PstI barcodes which identify the wells on each plate. I changed the names of the wells with frogs to give an informative name on population and other metadata etc.
+The file Barcode.txt contains all three plates sequenced at AgResearch on a Single NovaSeq lane with the unique PstI barcodes identifying  wells on each plate. I changed the names of the wells with Hamilton's frogs to give an informative name on population / individual ID.
 
-Make directory:
-```bash 
-cd .. #assuming I'm in source files
-mkdir raw
-```
-Copy files:
-```bash 
-cd raw
-cp /home/mulha552/uoo04306/frogs_gbs/source_files/trimmed_NS0229_Hamiltons_S1_R1_001.fastq /home/mulha552/uoo04306/frogs_gbs/source_files/trimmed_NS0229_Hamiltons_S1_R2_001.fastq /home/mulha552/uoo04306/frogs_gbs/raw
-cd ..
-```
-Run demultiplexing as a SLURM job. Useful info can be found [here](https://catchenlab.life.illinois.edu/stacks/comp/process_radtags.php):
+Demultiplexing is run as a SLURM job. Stacks has great documentation, including useful information on [process_radtags](https://catchenlab.life.illinois.edu/stacks/comp/process_radtags.php).
 ```bash 
 cd /home/mulha552/uoo04306/frogs_gbs/source_files/raw
 module load Stacks #2.61
-process_radtags -P   -p ../raw/ -o ../samples/ -b ../barcodes.txt -e pstI -r -c  --inline-inline # NO -q often used for process-radtags gives me an error because of it, but no worries, cutadapatalready took care of this
+process_radtags -P   -p ../raw/ -o ../samples/ -b ../barcodes.txt -e pstI -r -c  --inline-inline
+```
+Results
+| ------------- | ------------- |
+| 3666129448  |  total sequences  |
+| Content Cell  | Content Cell  |
  ```
-Results:
- ```
-3666129448 total sequences
+
  489768784 barcode not found drops (13.4%)
     889709 low quality read drops (0.0%)
          0 poly-G run drops (0.0%)
