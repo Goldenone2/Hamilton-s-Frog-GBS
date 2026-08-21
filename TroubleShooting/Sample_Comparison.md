@@ -109,7 +109,7 @@ plot2 <- ggplot(data, aes(x = Tissue, y = F_MISS)) +
   plot_layout(axis_titles = "collect")
 ```
 
-![](Swab.Tissue.Jitter_files/figure-gfm/unnamed-chunk-3-1.png)<!-- -->
+![](../Swab.Tissue.Jitter_files/figure-gfm/unnamed-chunk-3-1.png)<!-- -->
 
 ## Investigating Coverage Depth
 
@@ -140,7 +140,7 @@ ggplot(data, aes(x = Tissue, y = MEAN_DEPTH)) +
   labs(y= "Mean Depth", x = "Sample material")
 ```
 
-![](Swab.Tissue.Jitter_files/figure-gfm/unnamed-chunk-4-1.png)<!-- -->
+![](../Swab.Tissue.Jitter_files/figure-gfm/unnamed-chunk-4-1.png)<!-- -->
 
 ### Forwards Reads
 We can see there is a significant difference between our two sample types. Before these results were published, I needed to find out whether this is because of 1) sample quality or 2) sequencing / lab error. So, I’ve counted the number of forwards reads from all our samples, with and, without quality control by Cutadapt.
@@ -187,6 +187,6 @@ plot4 <- ggplot(countdata, aes(x = Tissue, y = count_noQC)) +
   plot_layout(axis_titles = "collect")
 ```
 
-![](Swab.Tissue.Jitter_files/figure-gfm/unnamed-chunk-6-1.png)<!-- -->
+![](../Swab.Tissue.Jitter_files/figure-gfm/unnamed-chunk-6-1.png)<!-- -->
 
 We can see a difference in forwards reads with *and* without quality control indicating the difference in coverage depth is not due to sample quality differences. My lab book indicates F103 & F28 were normalised during pooling in the lab which could, in part, contribute to this coverage depth effect.
