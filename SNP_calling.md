@@ -1,4 +1,4 @@
-# Single Nucleotide Polymorphism Calling 
+# Single Nucleotide Polymorphism Calling for Hamilton's frog *Leiopelma hamiltoni*
 SNP calling with [Stacks](https://catchenlab.life.illinois.edu/stacks/) for a [Genotyping_by_Sequencing](https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0019379) dataset of *Leiopelma hamiltoni*
 
 ## Quality Control and Adaptor Trimming
@@ -82,39 +82,26 @@ cd /home/mulha552/uoo04306/frogs_gbs/source_files/raw
 module load Stacks #2.61
 process_radtags -P   -p ../raw/ -o ../samples/ -b ../barcodes.txt -e pstI -r -c  --inline-inline
 ```
-Results
-| ------------- | ------------- |
-| 3666129448  |  total sequences  |
-| Content Cell  | Content Cell  |
+Results:
  ```
-
- 489768784 barcode not found drops (13.4%)
-    889709 low quality read drops (0.0%)
-         0 poly-G run drops (0.0%)
-  43575443 RAD cutsite not found drops (1.2%)
+3666129448  total sequences  
+489768784 barcode not found drops (13.4%)
+889709 low quality read drops (0.0%)
+0 poly-G run drops (0.0%)
+43575443 RAD cutsite not found drops (1.2%)
 3131895512 retained reads (85.4%)
 ```
 
 ## Concatenate Reads
-To produce one file per sample, excluding the skinks, snails, tuatara etc. sequenced on this same sequencing run
+We want to produce a single file per sample, excluding the skinks, snails, tuatara etc. sequenced on this same sequencing run. Popmap.txt has a first column as the frogIDs taken from Barcode.txt, with the second column, in our case, just all filled with 'Pop.'See the [information](http://catchenlab.life.illinois.edu/stacks/manual/#popmap) available in the Stacks documentation.
 
-Popmap.txt has a first column as the frogIDs taken from Barcode.txt, with the second column just all filled with 'Pop';[Info](http://catchenlab.life.illinois.edu/stacks/manual/#popmap).
-
-Make directory:
-```bash 
-mkdir samples_concat
+### Python (an example SLURM Job)
+Run concatenation as a SLURM job, but as a Python Environment.
+```bash
+# Create a new job file with nano
+nano nano frogconcat.py
 ```
-### Python SLURM
-Run concatenation as a SLURM job. Because this is within a Python Environment, submission looks different. 
-
-Create a new job file:
-```bash 
-nano frogconcat.py #create python script
-```
-We use a python shebang for this file (rather than a shell/bash one) and we cannot specify requirements using #SBATCH, this is now done later. 
-- Copy the code below into frogconcat.py.
-- popmap.txt needs to be in the current working directory.
-
+We use a python shebang for this file, and cannot specify requirements using #SBATCH as with bash or shell. Popmap.txt needs to be in the current working directory.
 ```python
 #!/usr/bin/env python3
 
@@ -135,18 +122,18 @@ with open("popmap.txt") as f:
 			os.system("zcat "+" ".join(["samples/"+checkfile for checkfile in checkfiles])+"|  gzip -c > samples_concat/"+samplename+".fq.gz" )
 
 ```
-Check code works (i.e. no syntax errors) before we submit:
 ```bash
-module load Python #need to load a python environment//ipython console
+# In an interactive session, we can check code works (i.e. no syntax errors) before we submit:
+module load Python
 python3 frogconcat.py
-```
-Submit a job. For python specify arguments here in the command line: -A specifies the account to 'charge' the job, -t specifies time, -c specifies the number of cpus per task, --mem specifies memory, --job-name specifies a job name
-```bash
+
+# Submit the a job, with arguments specified in command line:
 sbatch -A uoo04306 -t 48:00:00 -c 8 --mem 8G --job-name=frogconcat frogconcat.py
-squeue -u mulha552 #check its working
 ```
-Check of how many million reads we have per sample:
+
+## Subsampling
 ```
+# Check how many million reads we have per sample:
 cd /home/mulha552/uoo04306/frogs_gbs//samples_concat
 for fq in *.fq.gz; do
    sample=$(basename "$fq" .fq.gz)
@@ -155,14 +142,10 @@ for fq in *.fq.gz; do
      echo -e "${sample}\t${reads}\t${reads_mill}M"
 done > ../read_counts_all_samples.txt
 ```
-## Subsampling
-*Hamilton's frog have a large genome so I have special code*
-We will subsample from the concatenated reads to take the first 5 million reads (code reads 20,000,000 lines because each read is 4 lines in a .fastq) so we are working with an actually workable amount of sequence. We still run the previous code, because for those samples where we may have <5million reads we need to take all of it.
 
- We're also running as a pyhton slurm job, as above...
-```bash
-mkdir samples_subsampled
-```
+Because our dataset has such a huge number of reads, we subsample to take the first 5 millions reads (i.e. 20 million lines). We need a workable amount of sequencing for our computing capacity. For any samples where we may have < 5million reads, we analyse to take all of the data. 
+
+Run as a python SLURM job
 ```python
 import os
 os.chdir('/home/mulha552/uoo04306/frogs_gbs') #python for 'cd'
@@ -172,113 +155,79 @@ with open("popmap.txt") as f:
 		print(sample)
 		os.system("zcat samples_concat/"+sample+".fq.gz |  head -n 20000000  | gzip -c > samples_subsampled/"+sample+".fq.gz ") 
 ```
-Then, run denovo_map with samples_concat as input.
 
 ## Parameters optimisation
-Ok, so, paramater optimisation is about deciding with stacks paramters (-M, -m, -o, -T etc) we will continue to use when running on the entire dataset. You can read a relatively clear tutorial [here](http://catchenlab.life.illinois.edu/stacks/param_tut.php), which describes how stacks without a reference genome works and, what these paramters dictate. Not included here are -o, output directory and, -t, number of threads.
-
-At this stage, I'll make a popmap and exclude all samples with less than 100'000 reads (combining forward and reverse, i.e. 50k retained reads). First check number of reads (remember .fq files have 4 lines for each read), then create popmap.
-
+Parameter optimisation is about deciding with which stacks parameters (-M, -m, -o, -T etc.) we continue to use when running on the entire dataset. You can read a relatively clear tutorial [here](http://catchenlab.life.illinois.edu/stacks/param_tut.php), which describes the parameters dictating stack and SNP calling de-Novo. We roughly followed optimisations methods described in this [paper](https://besjournals.onlinelibrary.wiley.com/doi/10.1111/2041-210X.12775).
 ```bash
-cd samples_subsampled #assuming in frogs_gbs
-output_file="read_counts.txt"
-> "$output_file" # clears previous contents
-for fq_file in *.fq.gz; do # Loop through all fq.gz files in the current directory
-lines=$(zcat "$fq_file" | wc -l)  # retrieve number of lines in the file
-reads=$((lines / 4)) # Calculate the number of reads
-echo "$fq_file: $reads reads" >> "$output_file"  # echo the file name and number of reads to the output file
-done
-
-# read_counts.txt #optionally delete text file, I'm unsure whether this inerfere's with future script...
+# Testing on 30 sample subset:
+shuf ../popmap.txt | head -n 30 > popmap_opti.txt
 ```
-
-Great, it looks like we don't need to remove any frogs from our analysis!
-
-## Parameter optimisation
-
-Run on a random 30 samples.
-```bash
-#mkdir para_opti
-cd para_opti
-shuf ../popmap.txt | head -n 30 > popmap_opti.txt # not done if no optimisation
-```
-This code is a "for loop." This loop automates the creation of directories, scripts, and slurm job for processing the specified random 30 samples using the denovo_map.pl tool. Each job is submitted with different parameters (based on the loop variable i), and each job will run with different configurations of parameters (see where variable i is included in the code). 
-
-Note from future Hadley, Ludo has used echo which doesn't execute the code rather repeats it in the terminal; Ludo's told it to 'echo' in the slurm (.sh) files. This technique is different from something you could just do in the terminal....
-
-I believe this method of paramater optimisation, roughly, follow this [paper](https://besjournals.onlinelibrary.wiley.com/doi/10.1111/2041-210X.12775).
-
+This loop automates the creation of directories, scripts, and submission of a SLURM job for processing the specified random 30 samples using the denovo_map.pl commando; each job is submitted with different parameters, based on the loop variable i:
 ```bash
 for i in 2 3 4 5 6 7 8
 do mkdir -p M$i; echo '#!/bin/sh' > runM$i.sh
-echo cd /home/mulha552/uoo04306/frogs_gbs/source_files/para_opti
+echo cd /home/mulha552/uoo04306/frogs_gbs/source_files/para_opti >> runM$i.sh
 echo "module load Stacks/2.61-gimkl-2022a" >> runM$i.sh
 echo "denovo_map.pl --samples ../samples_subsampled/ --popmap popmap_opti.txt  -o M$i  -M $i -n $i -m 3 -T 8" >> runM$i.sh
 sbatch -A uoo04306 -t 2-00:00:00 -J M$i -c 8 --mem=64G runM$i.sh
 done
 ```
-```bash
-squeue -u mulha552
-```
-The *populations* command takes the the SNP data from *denovo_map.pl* and, can compute a variety of useful population genetics statistics, See [here](http://catchenlab.life.illinois.edu/stacks/comp/populations.php) for more information. 
-Focus on the number of loci at -R 0.8 (loci covered in 80% of inds):
+We take the SNP data from denovo_map.pl and compute a variety of useful statistics using [populations](http://catchenlab.life.illinois.edu/stacks/comp/populations.php). We are interest in the number of polymorphic loci at -R 0.8 i.e. loci covered in 80% of individuals. 
 ```bash
 module load Stacks/2.61-gimkl-2022a
-```
-```bash
+
 for i in 2 3 4 5 6 7 8 
 do
 populations -P M$i -R 0.8 -M popmap_opti.txt --vcf
 done
-```
-See how many loci are left by looking in the log of populations:
 
-cut -f 1, is looking only a column one which lists fragment ID, and uniq means we are only counting unique fragment IDs....
-```bash
+# See how many loci are left by looking in the log of populations;
+# cut -f 1, is looking only a column one which lists fragment ID, and uniq means we are only counting unique fragment IDs:
+
 for i in 2 3 4 5 6 7 8
 do
 echo $i
 cat M$i/populations.snps.vcf | grep -v '#' | cut -f 1 | uniq | wc -l
 done
 ```
-We have the most polymoprhic loci with M=n of 2, so that is now what we'll run for the enitre study!!
+Hamilton's frog data have the most polymorphic loci with M= 2 and n = 2 ... these parameters will be run on the entire dataset!
 
 
-## Run on the whole dataset
-I will run this as SLURM job, we have a lot of data...
-```bash
-mkdir M2_final
-```
+## Final SNP Calling
 ```bash
 #!/bin/bash
 cd /home/mulha552/uoo04306/frogs_gbs
 module load Stacks/2.61-gimkl-2022a
 denovo_map.pl --samples samples_subsampled/ --popmap popmap.txt  -o M2_final  -M 2 -n 2 -m 3 -T 8
 ```
+SLURM job, given the amount of data:
 ```bash
 sbatch -A uoo04306 -t 5-00:00:00 -J M2Final -c 8 --mem=300G -p hugemem M2Final.sl
 ```
-First lets run populations with a lower threshold (-R 0.5) aallowing us to check for low quality samples. 
+
+## Population Statistics
+Run populations at a lower threshold (-R 0.5) allowing us to check for low quality samples.
 ```bash
+# You could reduce the -R value here if you had a poor read depth dataset:
 populations -P M2_final -M popmap.txt  --vcf --structure --plink --treemix --max-obs-het 0.65 -R 0.8  -O M2_Final
-```
-You can reduce the -R value here if you had a poor read depth dataset. *For your info sort is a shell command -k is saying to sort in order by column 4, so it shows everything sorted by the amount of missing data*
-```bash
+
+# View and sort individual frogs by missingness:
 module load VCFtools 
 vcftools --vcf M2_Final/populations.snps.vcf --missing-indv
 sort -k 4n out.imiss
-```
-The following sample has more than 60% missing data: MT_24_FAU
-```
-Let's remove 'FAU' from popmap.txt and create popmap_clean.txt by using -v which prints all the lines that *do not* match waht I've specified. ^ ensures our match is at the beginning of a line and \\s account for any whitespace; Grep is a tool used to search and manipulate text within files.
-```bash
+
+# Only MT_24_FAU has more than 60% missing data. Remove from popmap.txt, to create popmap_clean.txt:
 grep -v "^MT_24_FAU\\s" popmap.txt > popmap_clean.txt
 ```
-Now I'll re-run populations, but filtering positions found in less than 80% and keeping a maximum of one SNP per locus. I keep one SNP per locus because ou anlaysis assume that SNPs are independant, and thsoe on the same loci are not (also because it can reduce the impact of erroneous loci made up of repetitive regions....but not a reason for my methods). I've also set the max-obs-het to 0.65, becasue we'd never expect het to be >0.5. If we have a duplication in the Hamilton's frog genome then these may assemble together with all individuals called at Heterozygotes at a mutation site, max-obvs-het allows us to filter this out. 
+Run populations, but filtering positions found in less than 80%, keeping a maximum of one SNP per locus, and a maximum observed heterozygosity to 0.65. 
+
+We keep one SNP per locus because our analysis assume that SNPs are independent, and those on the same loci may not. Also because it can reduce the impact of erroneous loci made up of repetitive regions, although not a primary reason for this filtering in our method. 
+
+Maximum observed heterozygosity is set to 0.65, because we'd never reasonably expect heterozygosity to be > 0.5 in a natural populations. Were Hamilton's frog to have a duplication in its genome then these may assemble together with all individuals called at Heterozygotes at a mutation site.
 ```bash
 populations -P M2_final/ -M popmap_clean.txt  --vcf --structure --plink --treemix --max-obs-het 0.65 -R 0.8  --write-single-snp -O M2_final
 ```
-My results:
+Results:
 ```
 Removed 4068568 loci that did not pass sample/population constraints from 4090567 loci.
 Kept 21999 loci, composed of 2605505 sites; 37125 of those sites were filtered, 21250 variant sites remained.
@@ -288,23 +237,12 @@ Population summary statistics (more detail in populations.sumstats_summary.tsv):
   pop: 70.591 samples per locus; pi: 0.028234; all/variant/polymorphic sites: 2605505/21250/21250; private alleles: 0
 Populations is done.
 ```
-Only SNPs found in 80% of individuals are kept, so 21,250 variable sites! 
-
-We also have indv missigness (using code above) <0.23 which is great give we subsampled, reaffirms our choice.
-
-Save it with a meaningful name:
-
 ```bash
- cp M2_final/populations.snps.vcf HamFrogR08maxsnps1.vcf
+# Save with a meaningful name:
+cp M2_final/populations.snps.vcf HamFrogR08maxsnps1.vcf
 ```
-## Coverage
-I must filter my dataset by coverage; remeber, if we have a 'true' heterozygote, but at low coverage (say two), then we have a 50% chance of incorrectly calling a homozygote in our data.... there will be an inherent relationship between coverage depth and heterozygosity (at low depth). I want to filter my SNPs so that we loose this relationship. 
-
-I've madea bsic a 'for' loop. I filter for minimum depth using --minDP from values of 2 to 6, --recode generate a new .vcf files for each filter. Then I calculte heterozygosity  using --het, and depth using --depth.
-```bash
-module load VCFtools
-mkdir filtered_coverage
-```
+### Coverage
+If we have a 'true' heterozygote, but at low coverage, say 2x, then we have a 50% chance of incorrectly calling a homozygote in our data. Potentially we could see a relationship between coverage depth and heterozygosity, at low depth. We want to ensure to filter SNPs so that we loose this relationship. 
 ```bash
 for i in 2 3 4 5 6
 do
@@ -314,34 +252,4 @@ vcftools --vcf filtered_Depth$i.recode.vcf --depth --out depth$i
 echo "Complete for minDP = $i"
 done
 ```
-Right, so, if we have a lack at the Coverage Plots we can see that even with a minimum coverage depth of two there is no relationship at all! Overall, the results usggest we have a high coverage dataset. I'll still make the choice to cut of at a miniumum depth of five; although we don't see any relationship this is still a good choice and, given our dataset we will not use much data!
-
-### Re-run populations
-For some analyses, specifcally for Stairway Plot, we need to filter using *populaitons* not *VCFTools.* When we filter with VCFTools we may remove the variable individuals for some of the called SNPs making them monomorphic, which can be problematic. Addtionally, stairway plot 2 requires accurate information of the number of *sites* both monomoprhic and polymorphics; it's easiest to get this infromation directly from population's output. 
-
-**in the final published version of this code this should happen in the initial instance afterwhich we'd still check for any addtional realtionship (which are more likely in low coverage datasets).**
-
-```bash
-mkdir M2_FInal_minGT5
-populations -P M2_final/ -M popmap_clean.txt  --vcf --structure --plink --treemix --max-obs-het 0.65 -R 0.8  --write-single-snp --min-gt-depth 5 -O M2_FInal_minGT5
-```
-My results:
-```
-Removed 4068568 loci that did not pass sample/population constraints from 4090567 loci.
-Kept 21999 loci, composed of 2605505 sites; 280618 of those sites were filtered, 11611 variant sites remained.
-Filtered 912593 genotypes that fell below the minimum genotype depth threshold.
-Mean genotyped sites per locus: 111.27bp (stderr 0.04).
-
-Population summary statistics (more detail in populations.sumstats_summary.tsv):
-  pop: 70.486 samples per locus; pi: 0.029416; all/variant/polymorphic sites: 2447914/11611/11611; private alleles: 0
-Populations is done.
-```
-!!!!! Ineeed to remove this section, actually this will not impact Stairway Plot except in the negative sense because have so so many less loci .......
-## Final Datasets
-```bash
-cd /home/mulha552/uoo04306/frogs_gbs
-cp M2_FInal_minGT5/populations.snps.vcf HamFrogR08maxsnps1minGT5.vcf
-module load VCFtools
-vcftools --vcf HamFrogR08maxsnps1minGT5.vcf --het --out Heterozygosity
-vcftools --vcf HamFrogR08maxsnps1minGT5.vcf --depth --out Depth
-```
+I ran [Troubleshooting](./TroubleShooting/) in R, and even with a minimum coverage depth of two there is no relationship at all. The results suggest we have a high coverage dataset, but we will still utilise data cut of at a minimum depth of five for analyses.
