@@ -41,9 +41,22 @@ paste <(bcftools view Te_Pakeka_Only.bcf \
 ```
 Remember total SNPs is 21250; count the number of SNPs > 0.65. 
 ```bash
-awk 'NR > 1 && $8 > 0.65 {count++} END {print count}' Takapourewa_Per_SNP_Het.txt
+awk 'NR > 1 && $8 > 0.65 {print $1 "\t" $2}' Takapourewa_Per_SNP_Het.txt > Takapourewa_highHet.txt
+wc -l Takapourewa_highHet.txt
 # Result: 256
 
-awk 'NR > 1 && $8 > 0.65 {count++} END {print count}' Te_Pakeka_Per_SNP_Het.txt
+awk 'NR > 1 && $8 > 0.65 {print $1 "\t" $2}' Te_Pakeka_Per_SNP_Het.txt > Te_Pakeka_highHet.txt
+wc -l Te_Pakeka_highHet.txt
 # Result: 26
+
+cat Takapourewa_highHet.txt Te_Pakeka_highHet.txt | sort -k1,1 -k2,2n -u > all_highHet.txt
+wc -l all_highHet.txt
+#Result: 282
 ```
+
+## Filtering
+```bash
+bcftools view -T ^all_highHet.txt -Ov -o HamFrogR08maxsnps1DP5.Under065.vcf HamFrogR08maxsnps1DP5.fixed.vcf
+vcftools --vcf HamFrogR08maxsnps1DP5.Under065.vcf --het --out het_Under065
+```
+
