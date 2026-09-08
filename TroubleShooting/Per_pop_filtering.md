@@ -61,6 +61,7 @@ vcftools --vcf HamFrogR08maxsnps1DP5.Under065.vcf --het --out het_Under065
 ```
 
 ## Plotting in R
+See original results here in [Jitter.md](../Jitter.md)
 
 ### Data Import and Setup
 
