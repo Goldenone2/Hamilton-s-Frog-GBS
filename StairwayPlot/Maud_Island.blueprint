@@ -1,6 +1,6 @@
 popid: Maud # id of the population (no white space)
 nseq: 28 # number of sequences
-L: 2605505  # total number of observed nucleic sites, including polymorphic and monomorphic
+L: 2605223  # total number of observed nucleic sites, including polymorphic and monomorphic
 whether_folded: true # whethr the SFS is folded (true or false)
 SFS:3990.49377594579 205.8015562155046 41.10281998993425 29.3359917588935 23.47440889751082 23.24587809887668 22.52634844971833 17.87349364512086 16.60029162694293 14.84758793996528 13.11203409113026 14.31931186166462 17.25389942709211 10.11797459072216
 smallest_size_of_SFS_bin_used_for_estimation: 2 # default is 1; to ignore singletons, uncomment this line and change this number to 2
@@ -16,8 +16,8 @@ mu:9.15e-9 # assumed mutation rate per site per generation based on bombina (ano
 year_per_generation: 7 # assumed generation time (in years)
 #plot setting
 plot_title: Folded SFS Maud Island # title of the plot
-xrange: 0,0 # Time (1k year) range; format: xmin,xmax; "0,0" for default
+xrange: 0.1,10000 # Time (1k year) range; format: xmin,xmax; "0,0" for default
 yrange: 0,0 # Ne (1k individual) range; format: xmin,xmax; "0,0" for default
-xspacing: 4 # X axis spacing
-yspacing: 4 # Y axis spacing
+xspacing: 2 # X axis spacing
+yspacing: 2 # Y axis spacing
 fontsize: 12 # Font size
