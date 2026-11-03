@@ -1,4 +1,4 @@
-### admixture
+### Admixture
 
 based on: https://speciationgenomics.github.io/ADMIXTURE/
 
