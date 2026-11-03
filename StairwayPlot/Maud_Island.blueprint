@@ -2,7 +2,7 @@ popid: Maud # id of the population (no white space)
 nseq: 40 # number of sequences
 L: 2605505  # total number of observed nucleic sites, including polymorphic and monomorphic
 whether_folded: true # whethr the SFS is folded (true or false)
-SFS:1704.375413890783 83.6364445207216 29.10547129405669 23.85557294590281 23.52054970321175 22.94194565168612 20.48442680527139 17.35117731143767 15.3260291972195 7.347162079966698 0 0 0 0 0 0 0 0 0 0
+SFS:3286.700091852359 149.1443544501828 44.38686822507395 34.22219093373761 30.91160129301559 27.23826258132994 22.77634334376145 22.35169268704135 23.78853374207648 12.41565260947677 0 0 0 0 0 0 0 0 0 0
 smallest_size_of_SFS_bin_used_for_estimation: 2 # default is 1; to ignore singletons, uncomment this line and change this number to 2
 largest_size_of_SFS_bin_used_for_estimation: 20 # default is nseq/2 for folded SFS
 pct_training: 0.67 # percentage of sites for training
