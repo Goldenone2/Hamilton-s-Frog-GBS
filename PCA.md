@@ -70,11 +70,11 @@ library(dplyr)
 
 ``` r
 # Load eigenvectors and eigenvalues
-eigenvec <- read.delim("PCA_Ham.eigenvec", header = FALSE, sep = " ")
-eigenval <- read.delim("PCA_Ham.eigenval", header = FALSE)
+eigenvec <- read.delim("PCA_Ham_Filtered.eigenvec", header = FALSE, sep = " ")
+eigenval <- read.delim("PCA_Ham_Filtered.eigenval", header = FALSE)
 
-Maud_eigenvec <- read.delim("PCA_Maud.eigenvec", header = FALSE, sep = " ")
-Maud_eigenval <- read.delim("PCA_Maud.eigenval", header = FALSE)
+Maud_eigenvec <- read.delim("PCA_Maud_Filtered.eigenvec", header = FALSE, sep = " ")
+Maud_eigenval <- read.delim("PCA_Maud_Filtered.eigenval", header = FALSE)
 ```
 I’ll tidied the data set. PLINK’s output aren’t informative for visualisation out the box; I had to add population information.
 ``` r
