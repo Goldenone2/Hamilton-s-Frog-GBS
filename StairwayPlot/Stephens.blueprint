@@ -1,13 +1,13 @@
 #input setting
 popid: Stephens # id of the population (no white space)
-nseq: 30 # number of sequences
+nseq: 20 # number of sequences
 L: 2605505  # total number of observed nucleic sites, including polymorphic and monomorphic
 whether_folded: true # whethr the SFS is folded (true or false)
-SFS:2866.301391915227 166.785961393497 81.14595773285636 60.37076462237975 43.24902903295521 35.3356508278369 34.6542266405497 0 0 0 0 0 0 0 0
+SFS:3256.122058756383 156.6643814179047 62.57718356938739 45.77198816509143 34.2607777363399 26.64993763524496 26.04052426001456 19.971056 89579457 17.9563796745206 8.244737948486085
 smallest_size_of_SFS_bin_used_for_estimation: 2 # default is 1; to ignore singletons, uncomment this line and change this number to 2
-largest_size_of_SFS_bin_used_for_estimation: 15 # default is nseq/2 for folded SFS
+largest_size_of_SFS_bin_used_for_estimation: 10 # default is nseq/2 for folded SFS
 pct_training: 0.67 # percentage of sites for training
-nrand: 7      14      22    28 # number of random break points for each try (separated by white space) integers only
+nrand: 4     9      13    18 # number of random break points for each try (separated by white space) integers only
 project_dir: Stephens_Island # project directory
 stairway_plot_dir: stairway_plot_es # directory to the stairway plot files
 ninput: 200 # number of input files to be created for each estimation
