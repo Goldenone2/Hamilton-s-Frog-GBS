@@ -16,19 +16,18 @@ Stairway Plot will not incorporate information from founder effects or drift exp
 mkdir stairway
 cd stairway
 git clone https://github.com/isaacovercast/easySFS.git
-easySFS/easySFS.py -i ../HamFrogR08maxsnps1DP5.recode.vcf -p pops_file_updated.txt --preview
+easySFS/easySFS.py -i ../HamFrogR08maxsnps1DP5.Under065.vcf -p pops_file_updated.txt --preview
 ```
-Preview mode allows us to project segregating sites for multiple values of projecting down for each population. **We want to maximise the number of segregating sites** see easySFS help for more details, but depending on your data, downsampling will be a superior choice; do not sample *more* than the real value of n.
+Preview mode allows us to project segregating sites for multiple values of projecting down for each population. **We want to maximise the number of segregating sites** see easySFS help for more details, but depending on your data, downsampling will be a superior choice.
 ```    
 Maud
-(2, 466)        (3, 700)        (4, 910)        (5, 1108)       (6, 1299)       (7, 1486)       (8, 1668)       (9, 1849)       (10, 2026)      (11, 2203)      (12, 2377)      (13, 2550)     (14, 2722)       (15, 2893)      (16, 3063)      (17, 3231)      (18, 3399)      (19, 3567)      (20, 3733)      (21, 3898)      (22, 4063)      (23, 4227)      (24, 4391)      (25, 4554)     (26, 4716)       (27, 4877)      (28, 5038)      (29, 5199)      (30, 5358)      (31, 5518)      (32, 5676)      (33, 5834)      (34, 5992)      (35, 6149)      (36, 6305)      (37, 6461)     (38, 6616)       (39, 6771)      (40, 6926)
-
-Stephens
-(2, 699)        (3, 1045)       (4, 1334)       (5, 1585)       (6, 1828)       (7, 2046)       (8, 2270)       (9, 2456)       (10, 2668)      (11, 2836)      (12, 3041)      (13, 3172)     (14, 3370)       (15, 3444)      (16, 3634)      (17, 3625)      (18, 3805)      (19, 3629)      (20, 3792)      (21, 3391)      (22, 3530)      (23, 2918)      (24, 3029)      (25, 2159)     (26, 2235)       (27, 1257)      (28, 1298)      (29, 487)       (30, 502)
+(2, 447)        (3, 670)        (4, 873)        (5, 1067)       (6, 1255)       (7, 1438)       (8, 1619)       (9, 1797)       (10, 1972)      (11, 2147)      (12, 2319)      (13, 2491)      (14, 2661)      (15, 2830)      (16, 2998)      (17, 3164)      (18, 3330)      (19, 3490)      (20, 3654)     (21, 3799)       (22, 3961)      (23, 4063)      (24, 4221)      (25, 4261)      (26, 4414)      (27, 4298)      (28, 4440)      (29, 4042)      (30, 4166)      (31, 3547)      (32, 3649)      (33, 2808)      (34, 2884)      (35, 1912)      (36, 1962)      (37, 1028)      (38, 1053)      (39, 369)      (40, 378)
+Takapourewa
+(2, 596)        (3, 894)        (4, 1160)       (5, 1402)       (6, 1640)       (7, 1859)       (8, 2082)       (9, 2273)       (10, 2485)      (11, 2658)      (12, 2863)      (13, 3005)      (14, 3203)      (15, 3288)      (16, 3477)      (17, 3473)      (18, 3653)      (19, 3491)      (20, 3654)     (21, 3274)       (22, 3413)      (23, 2825)      (24, 2936)      (25, 2081)      (26, 2157)      (27, 1209)      (28, 1250)      (29, 466)       (30, 481)
 ```
-Based on these results I will use 20 & 15 i.e the actual sample sizes:
+Based on these results I will use 28, and 20. Note: this downsampling has important implications for calculating nseq for Stairway Plot v2 later.
 ```bash
-easySFS/easySFS.py -i ../HamFrogR08maxsnps1DP5.Under065.vcf -p pops_file_updated.txt --proj 20,15
+easySFS/easySFS.py -i ../HamFrogR08maxsnps1DP5.Under065.vcf -p pops_file_updated.txt --proj 28,20
 ```
 ## Run Stairway Plot 2
 I ran this for the two natural populations 'Maud' and 'Stephens.' Remember, that the Stairway plot is only using information from mutation and coalescence to understand historical demographics. Towards recent event it will become unreliable, what is more important to infer from this analysis is the overall trend we see in the data here. Other methods, based on recombinations or drift, such as GONE are more reliable for these more recent events, while PSMC utilising whole genome data can infer further into the past; Stairway sits in the 'middle'.
@@ -69,5 +68,4 @@ Check status
 ```
 squeue -u mulha552
 ```
-
-Before plotting it is important to understand that using to many breakpoints can 'overfit' your data. Depedning on sample size select the fewest number of breakpoints see Lapierre et al. 2017.
+Before plotting it is important to understand that using to many breakpoints can 'overfit' your data. Depending on sample size select the fewer number of breakpoints see Lapierre et al. 2017.
