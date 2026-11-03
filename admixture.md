@@ -31,11 +31,12 @@ source /projects/sciences/zoology/rawlence_lab/conda/etc/profile.d/conda.sh
 export PYTHONNOUSERSITE=1
 conda activate bcftools_hadley
 
-VCF=../HamFrogR08maxsnps1DP5.Under065.vcf
 
 ##----------Code-------------##
+awk '{if($0 !~ /^#/) print "contig"$0; else print $0}' ../HamFrogR08maxsnps1DP5.Under065.vcf > PLINKvcf_with_contig.vcf
+
 echo "filtering singletons and invariant sites..."
-vcftools --vcf ${VCF} \
+vcftools --vcf PLINKvcf_with_contig.vcf \
 	--mac 2 \
 	--min-alleles 2 --max-alleles 2 \
 	--recode --recode-INFO-all \
