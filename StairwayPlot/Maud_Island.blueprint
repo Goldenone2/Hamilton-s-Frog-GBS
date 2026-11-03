@@ -6,7 +6,7 @@ SFS:3990.49377594579 205.8015562155046 41.10281998993425 29.3359917588935 23.474
 smallest_size_of_SFS_bin_used_for_estimation: 2 # default is 1; to ignore singletons, uncomment this line and change this number to 2
 largest_size_of_SFS_bin_used_for_estimation: 14 # default is nseq/2 for folded SFS
 pct_training: 0.67 # percentage of sites for training
-nrand: 6      13      19    28 # number of random break points for each try (separated by white space) integers only
+nrand: 6      13      19    26 # number of random break points for each try (separated by white space) integers only
 project_dir: Maud_Island # project directory
 stairway_plot_dir: stairway_plot_es # directory to the stairway plot files
 ninput: 200 # number of input files to be created for each estimation
