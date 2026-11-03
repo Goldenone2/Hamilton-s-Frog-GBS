@@ -94,7 +94,7 @@ library(ggplot2)
 
 ``` r
 # Load data
-Tree <- read.iqtree('Final.FrogTree.treefile')
+Tree <- read.iqtree('Final.FrogTree_Filtered.treefile')
 meta <- read.csv('meta.csv', fileEncoding = "UTF-8")
 
 # Set factor levels
