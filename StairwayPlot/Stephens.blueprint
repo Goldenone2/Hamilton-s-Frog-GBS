@@ -1,7 +1,7 @@
 #input setting
 popid: Stephens # id of the population (no white space)
 nseq: 20 # number of sequences
-L: 2605505  # total number of observed nucleic sites, including polymorphic and monomorphic
+L: 2605223  # total number of observed nucleic sites, including polymorphic and monomorphic
 whether_folded: true # whethr the SFS is folded (true or false)
 SFS:3256.122058756383 156.6643814179047 62.57718356938739 45.77198816509143 34.2607777363399 26.64993763524496 26.04052426001456 19.97105689579457 17.9563796745206 8.244737948486085
 smallest_size_of_SFS_bin_used_for_estimation: 2 # default is 1; to ignore singletons, uncomment this line and change this number to 2
@@ -17,8 +17,8 @@ mu:9.15e-9 # assumed mutation rate per site per generation based on bombina (ano
 year_per_generation: 7 # assumed generation time (in years)
 #plot setting
 plot_title: Folded_SFS Takapourewa
-xrange: 0,0 # Time (1k year) range; format: xmin,xmax; "0,0" for default
+xrange: 0.1,10000 # Time (1k year) range; format: xmin,xmax; "0,0" for default
 yrange: 0,0 # Ne (1k individual) range; format: xmin,xmax; "0,0" for default
-xspacing: 4 # X axis spacing
-yspacing: 4 # Y axis spacing
+xspacing: 2 # X axis spacing
+yspacing: 2 # Y axis spacing
 fontsize: 12 # Font size
