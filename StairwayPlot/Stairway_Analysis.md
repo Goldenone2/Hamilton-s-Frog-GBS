@@ -35,7 +35,7 @@ I ran this for the two natural populations 'Maud' and 'Stephens.' Remember, that
 
 Note: I manually uploaded the .zip file from the [Stairway Plot Github](https://github.com/xiaoming-liu/stairway-plot-v2/blob/master/stairway_plot_v2.1.1.zip), I couldn't get wget or curl to work.
 
-The folded SFS made by easySFS contains data for allele frequencies from 0 to N. For our purposes we removed the first column since data on invariant sites is included in the Stairway Plot blueprint file under "L" the total number of observed sites; the folded SFS is only describing the minor allele frequencies. 
+The folded SFS made by easySFS with *dadi* contains data for allele frequencies from 0 to N. For our purposes we removed the first column since data on invariant sites is included in the Stairway Plot blueprint file under "L" the total number of observed sites; the folded SFS is only describing the minor allele frequencies. 
 
 ```bash
 mkdir stairway_plot_v2.1
