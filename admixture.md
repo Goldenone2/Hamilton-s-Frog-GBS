@@ -54,6 +54,7 @@ mv filtered_renamed.bim.tmp filtered_renamed.bim
 echo "done"
 ```
 
+## Run Analysis
 Note: the run of admixture below is an array that will run jobs for each value of K between 2 and 12 (see line 57 '''#SBATCH --array=2-12''')
 ```
 #!/bin/bash
@@ -74,4 +75,20 @@ conda activate bcftools_hadley
 FILE=filtered_renamed.bed
 
 admixture --cv -j${SLURM_CPUS_PER_TASK} $FILE ${SLURM_ARRAY_TASK_ID} > log${SLURM_ARRAY_TASK_ID}.out
+```
+
+## Results
+Grouping of two has the lowest CV error which aligns with an intuitive understanding of Hamilton's frog phylogeography:
+```
+log10.out:CV error (K=10): 0.38009
+log11.out:CV error (K=11): 0.38260
+log12.out:CV error (K=12): 0.41503
+log2.out:CV error (K=2): 0.23532
+log3.out:CV error (K=3): 0.27520
+log4.out:CV error (K=4): 0.29071
+log5.out:CV error (K=5): 0.30999
+log6.out:CV error (K=6): 0.32591
+log7.out:CV error (K=7): 0.33965
+log8.out:CV error (K=8): 0.35469
+log9.out:CV error (K=9): 0.36008
 ```
