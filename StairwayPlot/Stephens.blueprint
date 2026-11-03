@@ -3,7 +3,7 @@ popid: Stephens # id of the population (no white space)
 nseq: 20 # number of sequences
 L: 2605505  # total number of observed nucleic sites, including polymorphic and monomorphic
 whether_folded: true # whethr the SFS is folded (true or false)
-SFS:3256.122058756383 156.6643814179047 62.57718356938739 45.77198816509143 34.2607777363399 26.64993763524496 26.04052426001456 19.971056 89579457 17.9563796745206 8.244737948486085
+SFS:3256.122058756383 156.6643814179047 62.57718356938739 45.77198816509143 34.2607777363399 26.64993763524496 26.04052426001456 19.97105689579457 17.9563796745206 8.244737948486085
 smallest_size_of_SFS_bin_used_for_estimation: 2 # default is 1; to ignore singletons, uncomment this line and change this number to 2
 largest_size_of_SFS_bin_used_for_estimation: 10 # default is nseq/2 for folded SFS
 pct_training: 0.67 # percentage of sites for training
