@@ -8,7 +8,7 @@ Notes from the [PLINK Documentation](https://www.cog-genomics.org/plink/1.9/inpu
 ```sh
 # mkdir PCA
 cd PCA
-awk '{if($0 !~ /^#/) print "contig"$0; else print $0}' ../HamFrogR08maxsnps1DP5.recode.vcf > PLINKvcf_with_contig.vcf
+awk '{if($0 !~ /^#/) print "contig"$0; else print $0}' ../HamFrogR08maxsnps1DP5.Under065.vcf > PLINKvcf_with_contig.vcf
 ```
 ```sh
 plink --vcf PLINKvcf_with_contig.vcf --make-bed --out PLINK_Ham --allow-extra-chr --double-id
@@ -25,11 +25,11 @@ I made a .txt file with the individuals I want to --keep
 ```sh
 cd /home/mulha552/uoo04306/frogs_gbs/PCA/PCA_Focused
 module load VCFtools
-vcftools --vcf ../PLINKvcf_with_contig.vcf --keep Maud.txt --recode --recode --out MaudIslandOnly
+vcftools --vcf PLINKvcf_with_contig.vcf --keep Maud.txt --recode --out MaudIslandOnly
 ```
 Run PCA
 ```sh
-plink --vcf MaudIslandOnly.recode.vcf plink --make-bed --out PLINK_Maud --allow-extra-chr --double-id
+plink --vcf MaudIslandOnly.recode.vcf --make-bed --out PLINK_Maud --allow-extra-chr --double-id
 plink --bfile PLINK_Maud --pca --out PCA_Maud --allow-extra-chr --double-id
 ```
 
