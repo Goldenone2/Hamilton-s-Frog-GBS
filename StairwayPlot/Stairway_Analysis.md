@@ -55,14 +55,15 @@ bash Maud_Island.blueprint.sh
 ### SLURM Job
 ```
 #!/bin/bash -e
-#SBATCH --job-name=Maud67 # job name (shows up in the queue)
+#SBATCH --job-name=Frog_Staiway # job name (shows up in the queue)
 #SBATCH --time=24:00:00      # Walltime (HH:MM:SS), if our job finishes before this no worries but we can give ample time in case
 #SBATCH --mem=8G          # Memory in G, minimum 1G per core.
 #SBATCH --cpus-per-task=8 #number of cores for our job
 
 cd /home/mulha552/uoo04306/frogs_gbs/stairway/stairway_plot_v2.1/stairway_plot_v2.1.1
 module load Java
-bash Maud67.blueprint.sh
+bash Maud.blueprint.sh
+bash Stephens.blueprint.sh
 ```
 Check status
 ```
