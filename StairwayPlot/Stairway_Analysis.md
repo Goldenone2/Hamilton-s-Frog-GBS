@@ -26,9 +26,9 @@ Maud
 Stephens
 (2, 699)        (3, 1045)       (4, 1334)       (5, 1585)       (6, 1828)       (7, 2046)       (8, 2270)       (9, 2456)       (10, 2668)      (11, 2836)      (12, 3041)      (13, 3172)     (14, 3370)       (15, 3444)      (16, 3634)      (17, 3625)      (18, 3805)      (19, 3629)      (20, 3792)      (21, 3391)      (22, 3530)      (23, 2918)      (24, 3029)      (25, 2159)     (26, 2235)       (27, 1257)      (28, 1298)      (29, 487)       (30, 502)
 ```
-Based on these results I will use 20, 20, 27 and, 15 i.e. the actual sample sizes.
+Based on these results I will use 20 & 15 i.e the actual sample sizes:
 ```bash
-easySFS/easySFS.py -i ../HamFrogR08maxsnps1minGT5.vcf -p pops_file_updated.txt --proj 67,15
+easySFS/easySFS.py -i ../HamFrogR08maxsnps1DP5.Under065.vcf -p pops_file_updated.txt --proj 20,15
 ```
 ## Run Stairway Plot 2
 I ran this for the two natural populations 'Maud' and 'Stephens.' Remember, that the Stairway plot is only using information from mutation and coalescence to understand historical demographics. Towards recent event it will become unreliable, what is more important to infer from this analysis is the overall trend we see in the data here. Other methods, based on recombinations or drift, such as GONE are more reliable for these more recent events, while PSMC utilising whole genome data can infer further into the past; Stairway sits in the 'middle'.
