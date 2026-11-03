@@ -1,12 +1,7 @@
-Genetic Diversity and Inbreeding
-================
-Hadley Muller
-2025-04-30
-
 # Genetic Diversity and Inbreeding
 
-I’d like to compare heterozygosity and, inbreeding across the four
-populations I’ve sequenced.
+I compared heterozygosity and, inbreeding across the four
+populations sequenced.
 
 ## Data Import and Setup
 
