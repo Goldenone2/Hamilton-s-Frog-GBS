@@ -51,7 +51,7 @@ library(tidyverse)
 
 ``` r
 # Set parameters & input files
-vcf.infile <- "HamFrogR08maxsnps1DP5.recode.vcf"
+vcf.infile <- "HamFrogR08maxsnps1DP5.Under065"
 metadata.infile <- "meta.txt"
 
 # Parse .vcf file only run "snpgdsVCF2GDS the first time....
