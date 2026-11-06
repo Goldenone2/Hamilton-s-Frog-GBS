@@ -253,4 +253,4 @@ fst_heat
     ## Warning: Removed 6 rows containing missing values or values outside the scale range
     ## (`geom_text()`).
 
-![](Pairwise-Fst_files/figure-gfm/unnamed-chunk-3-1.png)<!-- -->
+![](Pairwise-Fst_files/figure-gfm/Figure3.png)<!-- -->
