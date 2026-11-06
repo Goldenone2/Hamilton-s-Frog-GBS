@@ -5,11 +5,7 @@ setwd("/projects/sciences/zoology/rawlence_lab/hadley/Hamilton_Frog/relatedness"
 rm(list = ls())
 
 # Load Packages
-library("vcfR")
-library("ggplot2")
 library("related")
-library("adegenet")
-library("dplyr")
 
 message("Packages_Loaded")
 # these are great to check in the terminal my R code is working
