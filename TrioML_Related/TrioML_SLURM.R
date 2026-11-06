@@ -27,7 +27,7 @@ saveRDS(Motuara_results, file = "Motuara_results.rds")
 
 message("Motuara done")
 
-Takapourewa_results <- coancestry("Takapourewa_poly.txt", trioml = 1, trioml.num.reference = 15)
+Takapourewa_results <- coancestry("Takapourewa.txt", trioml = 1, trioml.num.reference = 15)
 saveRDS(Takapourewa_results, file = "Takapourewa_results.rds")
 
 message("Takapourewa done")
