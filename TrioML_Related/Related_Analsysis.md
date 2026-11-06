@@ -31,7 +31,7 @@ library("adegenet")
 ```
 Related is an R environment for an actual software called [COANCESTRY](https://onlinelibrary.wiley.com/doi/full/10.1111/j.1755-0998.2010.02885.x) and we had to to reformat our vcf file accordingly.
 ```{r}
-vcf <- read.vcfR("HamFrogR08maxsnps1DP5.recode.vcf")
+vcf <- read.vcfR("HamFrog_nosingletons.vcf")
 
 # Pull the genotype calls form the vcf, into a matrix
 gt <- extract.gt(vcf, element = "GT")
