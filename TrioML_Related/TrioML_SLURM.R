@@ -1,5 +1,5 @@
 # set working directory
-setwd("~/uoo04306/frogs_gbs/TrioML")
+setwd("/projects/sciences/zoology/rawlence_lab/hadley/Hamilton_Frog/relatedness")
 
 # Clear workspace
 rm(list = ls())
