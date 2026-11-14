@@ -1,6 +1,6 @@
 ### Admixture
-Based on: https://speciationgenomics.github.io/ADMIXTURE/
-Run on Aoraki Otago University's HPC for Supplementary Information based on reviewer suggestions :)
+Based on the [tutorial](https://speciationgenomics.github.io/ADMIXTURE/) 
+Run on the Otago University's HPC *Aoraki* for Supplementary Information based on reviewer suggestions.
 
 ```bash
 ## Already contains necessary packages to have re-run all other analyses with additional filtering:
