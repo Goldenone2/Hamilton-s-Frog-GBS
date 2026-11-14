@@ -25,7 +25,7 @@ Maud
 Takapourewa
 (2, 596)        (3, 894)        (4, 1160)       (5, 1402)       (6, 1640)       (7, 1859)       (8, 2082)       (9, 2273)       (10, 2485)      (11, 2658)      (12, 2863)      (13, 3005)      (14, 3203)      (15, 3288)      (16, 3477)      (17, 3473)      (18, 3653)      (19, 3491)      (20, 3654)     (21, 3274)       (22, 3413)      (23, 2825)      (24, 2936)      (25, 2081)      (26, 2157)      (27, 1209)      (28, 1250)      (29, 466)       (30, 481)
 ```
-Because of our genotyping by sequencing data, and a large amount of singletons I will downsample to the true sample size [1],(https://www.researchgate.net/publication/399762153_Genomic_Evidence_of_Low_Contemporary_Effective_Population_Size_and_Southern_Genetic_Reservoirs_in_an_Island_Endemic_Epiphytic_Orchid_of_Taiwan),[2](https://www.nature.com/articles/s41467-024-52612-y.pdf),[3](https://www.nature.com/articles/s41437-023-00662-1.pdf),[4](https://onlinelibrary.wiley.com/doi/pdf/10.1111/mec.17167).
+Because of our genotyping by sequencing data, and a large amount of singletons I will downsample to the true sample size [1](https://www.researchgate.net/publication/399762153_Genomic_Evidence_of_Low_Contemporary_Effective_Population_Size_and_Southern_Genetic_Reservoirs_in_an_Island_Endemic_Epiphytic_Orchid_of_Taiwan),[2](https://www.nature.com/articles/s41467-024-52612-y.pdf),[3](https://www.nature.com/articles/s41437-023-00662-1.pdf),[4](https://onlinelibrary.wiley.com/doi/pdf/10.1111/mec.17167).
 ```bash
 # Open an interactive session:
 srun --nodes=1 --ntasks=1 --cpus-per-task=4 --mem=16G --time=02:00:00 --pty bash
