@@ -32,12 +32,11 @@ easySFS/easySFS.py -i ../HamFrogR08maxsnps1DP5.Under065.vcf -p pops_file_updated
 ## Run Stairway Plot 2
 I ran this for the two natural populations 'Maud' and 'Stephens.' Remember, that the Stairway plot is only using information from mutation and coalescence to understand historical demographics. Towards recent event it will become unreliable, what is more important to infer from this analysis is the overall trend we see in the data here. Other methods, based on recombinations or drift, such as GONE are more reliable for these more recent events, while PSMC utilising whole genome data can infer further into the past; Stairway sits in the 'middle'.
 
-Note: I manually uploaded the .zip file from the [Stairway Plot Github](https://github.com/xiaoming-liu/stairway-plot-v2/blob/master/stairway_plot_v2.1.1.zip), I couldn't get wget or curl to work.
-
 The folded SFS made by easySFS with *dadi* contains data for allele frequencies from 0 to N. For our purposes we removed the first column since data on invariant sites is included in the Stairway Plot blueprint file under "L" the total number of observed sites; the folded SFS is only describing the minor allele frequencies. 
 
 ```bash
 mkdir stairway_plot_v2.1
+wget https://github.com/xiaoming-liu/stairway-plot-v2/raw/master/stairway_plot_v2.1.1.zip
 unzip stairway_plot_v2.1.1.zip -d stairway_plot_v2.1
 ```
 Navigate to the the folder with the directory *stairway_plot_es* and, create blueprint files for our two natural populations; pay attention to the parameters specified here always consult the [manual](https://github.com/xiaoming-liu/stairway-plot-v2/blob/master/READMEv2.1.pdf). Then, create the batch files (examples for Maud Island).
