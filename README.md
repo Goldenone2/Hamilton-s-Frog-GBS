@@ -1,4 +1,8 @@
-# Hamilton's Frog Genotyping by Sequencing 
-SNP calling with [Stacks](https://catchenlab.life.illinois.edu/stacks/) for a [Genotyping_by_Sequencing](https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0019379) dataset of *Leiopelma hamiltoni* under review in Molecular Ecology.
+# Hamilton's Frog 🐸 🇳🇿
+SNP calling, and downstream population genomic analyses of a Genotyping_by_Sequencing dataset of Hamilton's frog (*Leiopelma hamiltoni*); under review in Molecular Ecology:
 
-See also, the [troubleshooting folder](./TroubleShooting/) for brief genomic analyses published in the New Zealand Journal of Ecology. [Small swabs, small frogs: buccal swabbing for minimally-invasive genetic sampling of *Leiopelma* species. Muller et al. 2026](https://newzealandecology.org/nzje/3631).
+Muller HP, Monk JM, King TM, Bell BD, Rawlence NJ, Dutoit L (under review). Demographic history, not population size, predicts genetic diversity in an endangered amphibian. Molecular Ecology.
+
+Additionally see the [troubleshooting folder](./TroubleShooting/) for brief genomic analyses published in the New Zealand Journal of Ecology:
+
+[Muller HP, Monks JM, King TM, Bell BD, Rawlence NJ, Dutoit L 2026. Small swabs, small frogs: buccal swabbing for non-invasive genetic sampling of Leiopelma species. New Zealand Journal of Ecology 50(1): 3631.](https://newzealandecology.org/nzje/3631).
