@@ -5,4 +5,4 @@ Muller HP, Monk JM, King TM, Bell BD, Rawlence NJ, Dutoit L (under review). Demo
 
 Additionally see the [troubleshooting folder](./TroubleShooting/) for brief genomic analyses published in the New Zealand Journal of Ecology:
 
-[Muller HP, Monks JM, King TM, Bell BD, Rawlence NJ, Dutoit L 2026. Small swabs, small frogs: buccal swabbing for non-invasive genetic sampling of Leiopelma species. New Zealand Journal of Ecology 50(1): 3631.](https://newzealandecology.org/nzje/3631).
+[Muller HP, Monks JM, King TM, Bell BD, Rawlence NJ, Dutoit L 2026. Small swabs, small frogs: buccal swabbing for non-invasive genetic sampling of Leiopelma species. New Zealand Journal of Ecology 50(1): 3631.](https://newzealandecology.org/nzje/3631)
