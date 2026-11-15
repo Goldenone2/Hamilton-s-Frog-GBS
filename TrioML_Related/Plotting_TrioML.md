@@ -1,7 +1,6 @@
 # TrioML Relatedness Plotting
 
-I saved the .rds results locally from the HPC cluster to visualise
-results.
+We saved the .rds results locally from the HPC cluster to visualise results.
 
 ## Data Import and Setup
 
