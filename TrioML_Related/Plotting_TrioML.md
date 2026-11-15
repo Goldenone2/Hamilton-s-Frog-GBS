@@ -1,9 +1,4 @@
-TrioML Plotting
-================
-Hadley Muller
-2025-08-03
-
-# Relatedness Plotting
+# TrioML Relatedness Plotting
 
 I saved the .rds results locally from the HPC cluster to visualise
 results.
@@ -60,7 +55,7 @@ Motuara <- readRDS("Motuara_results.rds")
 Boatbay <- readRDS("BoatBay_results.rds")
 ```
 
-## Simple ANOVA
+## Kruskal Wallis
 
 ### Create a merged data frame
 
@@ -85,7 +80,7 @@ for (i in 1:length(data_list)) {
 TrioML <- do.call(rbind, data_list)
 ```
 
-### Kruskal and meanss
+### Testing and Means
 
 ``` r
 kruskal.test(trioml ~ group, data = TrioML)
