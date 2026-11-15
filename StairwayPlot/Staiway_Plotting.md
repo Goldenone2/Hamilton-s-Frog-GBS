@@ -1,12 +1,5 @@
-Stairway
-================
-Hadley Muller
-2025-05-27
-
-# Stairway Plot
-
+# Stairway Plotting
 ### Data Import and Setup
-
 ``` r
 # Clear workspace
 rm(list = ls())
@@ -64,11 +57,7 @@ Together <- bind_rows(
 ```
 
 # Plotting
-
-Geom_ribbon is creating the 95% confidence interval;Geom_Step is
-creating the Ne median line. I’ve borrowed the log scales limits from
-Stairway Plots native plots.
-
+Geom_ribbon is creating the 95% confidence interval;Geom_Step is creating the Ne median line. We’ve borrowed the x log scales limits from Stairway Plot's native plotting software.
 ``` r
 Stairway <- ggplot(Together, aes(x = yeark)) +
   geom_ribbon(aes(ymin = Ne_2.5.K, ymax = Ne_97.5.K, fill = pop), alpha = 0.1) +
@@ -97,14 +86,11 @@ Stairway
 ![](Staiway_Plotting_files/figure-gfm/unnamed-chunk-3-1.png)<!-- -->
 
 ### Chronology of the Marlborough Sounds
-
-I want to add vertical lines to represent the key events in the
-chronology of the Marlborough Sounds:
-
-stabilization of sea levels (7 Kya), arrival of Maori (0.75 Kya),
-colonisation of Europeans (0.204 Kya and, the introduction of cats to
-Takapourewa (0.132 Kya).
-
+We want to add vertical lines to represent the key events in the chronology of the Marlborough Sounds:
+- stabilization of sea levels (7 Kya),
+- arrival of Maori (0.75 Kya),
+- colonisation of Europeans (0.204 Kya and,
+- the introduction of cats to Takapourewa (0.132 Kya).
 ``` r
 # create data frame
  events <- data.frame(
